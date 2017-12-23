@@ -7,8 +7,12 @@
 //
 
 #import "ViewController.h"
+#import "YZChessView.h"
 
-@interface ViewController ()
+@interface ViewController (){
+    YZChessView *_kYZChessView;
+    NSMutableArray *placeArray;
+}
 
 @end
 
@@ -16,14 +20,31 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    [self initView];
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)initView{
+    self.view.backgroundColor = [UIColor whiteColor];
+    _kYZChessView = [[YZChessView alloc]init];
+    [self.view addSubview:_kYZChessView];
+    
+    UIBarButtonItem *rightBtn = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"下拉"] style:UIBarButtonItemStyleDone target:self action:@selector(pressRightBtn)];
+    self.navigationItem.rightBarButtonItem = rightBtn;
+    
+    placeArray = [[NSMutableArray alloc]init];
+    for (int i=0; i<36; i++) {
+        if (i<12) {
+            placeArray[i] = @-1;
+        }else if (i<24){
+            placeArray[i] = @0;
+        }else if (i<36){
+            placeArray[i] = @1;
+        }
+    }
 }
 
+- (void)pressRightBtn{
+    
+}
 
 @end

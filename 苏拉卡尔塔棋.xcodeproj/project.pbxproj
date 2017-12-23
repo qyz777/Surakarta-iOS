@@ -7,15 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		63A254A03495FEEA5E24E39B /* libPods-苏拉卡尔塔棋.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D08F9C527793E65D0203C3 /* libPods-苏拉卡尔塔棋.a */; };
 		A037743A1FEA95AD0051D41A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A03774391FEA95AD0051D41A /* AppDelegate.m */; };
 		A037743D1FEA95AD0051D41A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A037743C1FEA95AD0051D41A /* ViewController.m */; };
 		A03774401FEA95AD0051D41A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A037743E1FEA95AD0051D41A /* Main.storyboard */; };
 		A03774421FEA95AD0051D41A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A03774411FEA95AD0051D41A /* Assets.xcassets */; };
 		A03774451FEA95AD0051D41A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A03774431FEA95AD0051D41A /* LaunchScreen.storyboard */; };
 		A03774481FEA95AD0051D41A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A03774471FEA95AD0051D41A /* main.m */; };
+		A03774511FEA96070051D41A /* YZChessView.m in Sources */ = {isa = PBXBuildFile; fileRef = A037744F1FEA96070051D41A /* YZChessView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		52D08F9C527793E65D0203C3 /* libPods-苏拉卡尔塔棋.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-苏拉卡尔塔棋.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A03774351FEA95AD0051D41A /* 苏拉卡尔塔棋.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "苏拉卡尔塔棋.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A03774381FEA95AD0051D41A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A03774391FEA95AD0051D41A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -26,6 +29,11 @@
 		A03774441FEA95AD0051D41A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A03774461FEA95AD0051D41A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A03774471FEA95AD0051D41A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A037744E1FEA95D40051D41A /* YZGeneral.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZGeneral.pch; sourceTree = "<group>"; };
+		A037744F1FEA96070051D41A /* YZChessView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YZChessView.m; sourceTree = "<group>"; };
+		A03774501FEA96070051D41A /* YZChessView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZChessView.h; sourceTree = "<group>"; };
+		AC7BF90307B59AAFCF52187D /* Pods-苏拉卡尔塔棋.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-苏拉卡尔塔棋.release.xcconfig"; path = "Pods/Target Support Files/Pods-苏拉卡尔塔棋/Pods-苏拉卡尔塔棋.release.xcconfig"; sourceTree = "<group>"; };
+		C89659726618A3E4641CBF15 /* Pods-苏拉卡尔塔棋.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-苏拉卡尔塔棋.debug.xcconfig"; path = "Pods/Target Support Files/Pods-苏拉卡尔塔棋/Pods-苏拉卡尔塔棋.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63A254A03495FEEA5E24E39B /* libPods-苏拉卡尔塔棋.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +53,8 @@
 			children = (
 				A03774371FEA95AD0051D41A /* 苏拉卡尔塔棋 */,
 				A03774361FEA95AD0051D41A /* Products */,
+				DB181E5C54B828FE79D31A00 /* Pods */,
+				B2A1168A3C9D258A12C8C294 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,10 +69,14 @@
 		A03774371FEA95AD0051D41A /* 苏拉卡尔塔棋 */ = {
 			isa = PBXGroup;
 			children = (
+				A03774521FEA9A620051D41A /* model */,
+				A037744E1FEA95D40051D41A /* YZGeneral.pch */,
 				A03774381FEA95AD0051D41A /* AppDelegate.h */,
 				A03774391FEA95AD0051D41A /* AppDelegate.m */,
 				A037743B1FEA95AD0051D41A /* ViewController.h */,
 				A037743C1FEA95AD0051D41A /* ViewController.m */,
+				A03774501FEA96070051D41A /* YZChessView.h */,
+				A037744F1FEA96070051D41A /* YZChessView.m */,
 				A037743E1FEA95AD0051D41A /* Main.storyboard */,
 				A03774411FEA95AD0051D41A /* Assets.xcassets */,
 				A03774431FEA95AD0051D41A /* LaunchScreen.storyboard */,
@@ -71,6 +86,30 @@
 			path = "苏拉卡尔塔棋";
 			sourceTree = "<group>";
 		};
+		A03774521FEA9A620051D41A /* model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		B2A1168A3C9D258A12C8C294 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				52D08F9C527793E65D0203C3 /* libPods-苏拉卡尔塔棋.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DB181E5C54B828FE79D31A00 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C89659726618A3E4641CBF15 /* Pods-苏拉卡尔塔棋.debug.xcconfig */,
+				AC7BF90307B59AAFCF52187D /* Pods-苏拉卡尔塔棋.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -78,9 +117,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A037744B1FEA95AD0051D41A /* Build configuration list for PBXNativeTarget "苏拉卡尔塔棋" */;
 			buildPhases = (
+				AF0F7A8DA653AD089162DED7 /* [CP] Check Pods Manifest.lock */,
 				A03774311FEA95AD0051D41A /* Sources */,
 				A03774321FEA95AD0051D41A /* Frameworks */,
 				A03774331FEA95AD0051D41A /* Resources */,
+				76D1802EDECC741F3F615249 /* [CP] Embed Pods Frameworks */,
+				A717D3D9E16462DD31052A65 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -137,11 +179,63 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		76D1802EDECC741F3F615249 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-苏拉卡尔塔棋/Pods-苏拉卡尔塔棋-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A717D3D9E16462DD31052A65 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-苏拉卡尔塔棋/Pods-苏拉卡尔塔棋-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AF0F7A8DA653AD089162DED7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-苏拉卡尔塔棋-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A03774311FEA95AD0051D41A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A03774511FEA96070051D41A /* YZChessView.m in Sources */,
 				A037743D1FEA95AD0051D41A /* ViewController.m in Sources */,
 				A03774481FEA95AD0051D41A /* main.m in Sources */,
 				A037743A1FEA95AD0051D41A /* AppDelegate.m in Sources */,
@@ -276,9 +370,12 @@
 		};
 		A037744C1FEA95AD0051D41A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C89659726618A3E4641CBF15 /* Pods-苏拉卡尔塔棋.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 437JAL24TE;
+				GCC_PREFIX_HEADER = "/Users/qyizhong/Desktop/苏拉卡尔塔棋/苏拉卡尔塔棋/YZGeneral.pch";
 				INFOPLIST_FILE = "苏拉卡尔塔棋/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "QYizhong.------";
@@ -289,9 +386,12 @@
 		};
 		A037744D1FEA95AD0051D41A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AC7BF90307B59AAFCF52187D /* Pods-苏拉卡尔塔棋.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 437JAL24TE;
+				GCC_PREFIX_HEADER = "/Users/qyizhong/Desktop/苏拉卡尔塔棋/苏拉卡尔塔棋/YZGeneral.pch";
 				INFOPLIST_FILE = "苏拉卡尔塔棋/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "QYizhong.------";

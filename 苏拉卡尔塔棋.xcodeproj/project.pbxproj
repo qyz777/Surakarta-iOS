@@ -15,6 +15,7 @@
 		A03774451FEA95AD0051D41A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A03774431FEA95AD0051D41A /* LaunchScreen.storyboard */; };
 		A03774481FEA95AD0051D41A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A03774471FEA95AD0051D41A /* main.m */; };
 		A03774511FEA96070051D41A /* YZChessView.m in Sources */ = {isa = PBXBuildFile; fileRef = A037744F1FEA96070051D41A /* YZChessView.m */; };
+		A03774551FEE8A9F0051D41A /* YZChessPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = A03774541FEE8A9F0051D41A /* YZChessPlace.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,8 @@
 		A037744E1FEA95D40051D41A /* YZGeneral.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZGeneral.pch; sourceTree = "<group>"; };
 		A037744F1FEA96070051D41A /* YZChessView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YZChessView.m; sourceTree = "<group>"; };
 		A03774501FEA96070051D41A /* YZChessView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZChessView.h; sourceTree = "<group>"; };
+		A03774531FEE8A9F0051D41A /* YZChessPlace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZChessPlace.h; sourceTree = "<group>"; };
+		A03774541FEE8A9F0051D41A /* YZChessPlace.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZChessPlace.m; sourceTree = "<group>"; };
 		AC7BF90307B59AAFCF52187D /* Pods-苏拉卡尔塔棋.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-苏拉卡尔塔棋.release.xcconfig"; path = "Pods/Target Support Files/Pods-苏拉卡尔塔棋/Pods-苏拉卡尔塔棋.release.xcconfig"; sourceTree = "<group>"; };
 		C89659726618A3E4641CBF15 /* Pods-苏拉卡尔塔棋.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-苏拉卡尔塔棋.debug.xcconfig"; path = "Pods/Target Support Files/Pods-苏拉卡尔塔棋/Pods-苏拉卡尔塔棋.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -89,6 +92,8 @@
 		A03774521FEA9A620051D41A /* model */ = {
 			isa = PBXGroup;
 			children = (
+				A03774531FEE8A9F0051D41A /* YZChessPlace.h */,
+				A03774541FEE8A9F0051D41A /* YZChessPlace.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -236,6 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A03774511FEA96070051D41A /* YZChessView.m in Sources */,
+				A03774551FEE8A9F0051D41A /* YZChessPlace.m in Sources */,
 				A037743D1FEA95AD0051D41A /* ViewController.m in Sources */,
 				A03774481FEA95AD0051D41A /* main.m in Sources */,
 				A037743A1FEA95AD0051D41A /* AppDelegate.m in Sources */,

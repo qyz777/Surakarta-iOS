@@ -7,6 +7,7 @@
 //
 
 #import "YZChessView.h"
+#import "YZChessPlace.h"
 
 @implementation YZChessView
 
@@ -26,24 +27,35 @@
             [redBtn setImage:[UIImage imageNamed:@"red"] forState:UIControlStateNormal];
             redBtn.frame = CGRectMake(0, 0, 25, 25);
             redBtn.center = CGPointMake(CENTERX-75+i*30, CENTERY-75);
+            redBtn.tag = i + 1;
+            [redBtn addTarget:self action:@selector(pressChessBtn:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:redBtn];
             
             UIButton *blueBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             [blueBtn setImage:[UIImage imageNamed:@"blue"] forState:UIControlStateNormal];
             blueBtn.frame = CGRectMake(0, 0, 25, 25);
             blueBtn.center = CGPointMake(CENTERX-75+i*30, CENTERY+75);
+            blueBtn.tag = i + 19;
+            [blueBtn addTarget:self action:@selector(pressChessBtn:) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:redBtn];
             [self addSubview:blueBtn];
         }else{
             UIButton *redBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             [redBtn setImage:[UIImage imageNamed:@"red"] forState:UIControlStateNormal];
             redBtn.frame = CGRectMake(0, 0, 25, 25);
             redBtn.center = CGPointMake(CENTERX-75+(i-6)*30, CENTERY-45);
+            redBtn.tag = i + 1;
+            [redBtn addTarget:self action:@selector(pressChessBtn:) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:redBtn];
             [self addSubview:redBtn];
             
             UIButton *blueBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             [blueBtn setImage:[UIImage imageNamed:@"blue"] forState:UIControlStateNormal];
             blueBtn.frame = CGRectMake(0, 0, 25, 25);
             blueBtn.center = CGPointMake(CENTERX-75+(i-6)*30, CENTERY+45);
+            blueBtn.tag = i + 7;
+            [blueBtn addTarget:self action:@selector(pressChessBtn:) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:redBtn];
             [self addSubview:blueBtn];
         }
     }
@@ -95,6 +107,11 @@
         make.centerX.equalTo(self.popView);
         make.top.equalTo(self.popView).offset(0);
     }];
+}
+
+- (void)pressChessBtn:(UIButton*)btn{
+    NSLog(@"%ld",btn.tag);
+    [self.chessDelegate ChessBtnDidTouchWithTag:btn.tag];
 }
 
 - (void)pressSelectBtn{
@@ -155,6 +172,41 @@
             break;
         default:
             break;
+    }
+}
+
+- (void)setWalkEngineWithArray:(NSArray *)array{
+    for (UIButton *btn in self.subviews) {
+        if (btn.tag<0) {
+            [btn removeFromSuperview];
+        }
+    }
+    for (YZChessPlace *p in array) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.frame = CGRectMake(0, 0, 15, 15);
+        btn.center = CGPointMake(p.frameX, p.frameY);
+        btn.tag = -1;
+        [btn setBackgroundImage:[UIImage imageNamed:@"圆叉"] forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(pressWalkBtn:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:btn];
+    }
+}
+
+- (void)pressWalkBtn:(UIButton*)btn{
+    UIButton *shortBtn;
+    for (UIButton *b in self.subviews) {
+        if (b.tag == self.walkTag) {
+            shortBtn = b;
+            [UIView animateWithDuration:0.3f animations:^{
+                b.center = btn.center;
+            }];
+        }
+    }
+    [self.chessDelegate walkBtnDidTouchWithTag:shortBtn.tag X:shortBtn.center.x Y:shortBtn.center.y];
+    for (UIButton *b in self.subviews) {
+        if (b.tag<0) {
+            [b removeFromSuperview];
+        }
     }
 }
 

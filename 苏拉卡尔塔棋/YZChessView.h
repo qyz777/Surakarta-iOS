@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 @protocol YZChessViewDelegate <NSObject>
 
-
+- (void)ChessBtnDidTouchWithTag:(NSInteger)tag;
+- (void)walkBtnDidTouchWithTag:(NSInteger)tag X:(CGFloat)x Y:(CGFloat)y;
 
 @end
 
@@ -19,5 +20,11 @@
 @property(strong,nonatomic)UIPickerView *pickView;
 @property(strong,nonatomic)UIView *popView;
 @property(strong,nonatomic)UIButton *selectPickViewBtn;
+
+@property(assign,nonatomic)NSInteger walkTag;
+
+@property(weak,nonatomic)id<YZChessViewDelegate> chessDelegate;
+
+- (void)setWalkEngineWithArray:(NSArray*)array;
 
 @end

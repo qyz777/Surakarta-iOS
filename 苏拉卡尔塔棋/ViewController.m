@@ -28,6 +28,7 @@
 /**
  初始化界面
  这里的新建棋盘矩阵的过程中把每个点位的初始化数据为YZChessPlace，具体数据内容请查看YZChessPlace
+ 棋子的tag初始为1
  */
 - (void)initView{
     self.view.backgroundColor = [UIColor whiteColor];
@@ -72,26 +73,142 @@
 
 #pragma make - 协议
 - (void)ChessBtnDidTouchWithTag:(NSInteger)tag{
-    //设置walk引擎
     NSInteger x = 0;
     NSInteger y = 0;
+    NSInteger camp = 0;
     for (int i=0; i<6; i++) {
         for (int j=0; j<6; j++) {
             YZChessPlace *p = placeArray[i][j];
             if (p.tag == tag) {
                 x = p.x;
                 y = p.y;
+                camp = p.camp;
             }
         }
     }
     
-    NSArray *array = [self walkEngine:x Y:y];
-    NSLog(@"%@",array);
-    [_kYZChessView setWalkEngineWithArray:array];
+    //设置walk引擎
+    NSArray *arrayWalk = [self walkEngine:x Y:y];
+    NSLog(@"%@",arrayWalk);
+    [_kYZChessView setWalkEngineWithArray:arrayWalk];
     _kYZChessView.walkTag = tag;
     
     //设置飞行引擎
+    NSArray *arrayFly = [self flyEngine:x Y:y Camp:camp];
+}
+
+/**
+ 判断对方的哪些棋子跟点击的棋子在一条轨道上
+
+ @param x x坐标
+ @param y y坐标
+ @param camp 棋子的类型
+ @return 返回的数组是在同一条轨道上的棋子
+ */
+- (NSMutableArray*)judgePath:(NSInteger)x Y:(NSInteger)y Camp:(NSInteger)camp{
+    NSMutableArray *array = [[NSMutableArray alloc]init];
+    if (x == 1 || x == 4) {
+        for (int i=0; i<6; i++) {
+            YZChessPlace *p1 = placeArray[1][i];
+            YZChessPlace *p2 = placeArray[4][i];
+            YZChessPlace *p3 = placeArray[i][1];
+            YZChessPlace *p4 = placeArray[i][4];
+            if (p1.camp + camp == 0) {
+                [array addObject:p1];
+            }
+            if (p2.camp + camp == 0 ) {
+                [array addObject:p2];
+            }
+            if (p3.camp + camp == 0) {
+                [array addObject:p3];
+            }
+            if (p4.camp + camp == 0) {
+                [array addObject:p4];
+            }
+        }
+        if (y == 2 || y == 3) {
+            for (int i=0; i<6; i++) {
+                YZChessPlace *p1 = placeArray[2][i];
+                YZChessPlace *p2 = placeArray[3][i];
+                YZChessPlace *p3 = placeArray[i][2];
+                YZChessPlace *p4 = placeArray[i][3];
+                if (p1.camp + camp == 0) {
+                    [array addObject:p1];
+                }
+                if (p2.camp + camp == 0 ) {
+                    [array addObject:p2];
+                }
+                if (p3.camp + camp == 0) {
+                    [array addObject:p3];
+                }
+                if (p4.camp + camp == 0) {
+                    [array addObject:p4];
+                }
+            }
+        }
+    }
+    if (x == 2 || x == 3) {
+        for (int i=0; i<6; i++) {
+            YZChessPlace *p1 = placeArray[2][i];
+            YZChessPlace *p2 = placeArray[3][i];
+            YZChessPlace *p3 = placeArray[i][2];
+            YZChessPlace *p4 = placeArray[i][3];
+            if (p1.camp + camp == 0) {
+                [array addObject:p1];
+            }
+            if (p2.camp + camp == 0 ) {
+                [array addObject:p2];
+            }
+            if (p3.camp + camp == 0) {
+                [array addObject:p3];
+            }
+            if (p4.camp + camp == 0) {
+                [array addObject:p4];
+            }
+        }
+        if (y == 1 || y == 4) {
+            for (int i=0; i<6; i++) {
+                YZChessPlace *p1 = placeArray[1][i];
+                YZChessPlace *p2 = placeArray[4][i];
+                YZChessPlace *p3 = placeArray[i][1];
+                YZChessPlace *p4 = placeArray[i][4];
+                if (p1.camp + camp == 0) {
+                    [array addObject:p1];
+                }
+                if (p2.camp + camp == 0 ) {
+                    [array addObject:p2];
+                }
+                if (p3.camp + camp == 0) {
+                    [array addObject:p3];
+                }
+                if (p4.camp + camp == 0) {
+                    [array addObject:p4];
+                }
+            }
+        }
+    }
+    for (int i=0; i<array.count; i++) {
+        YZChessPlace *p = array[i];
+        if (p.x == x && p.y == y) {
+            [array removeObjectAtIndex:i];
+        }
+    }
     
+    NSMutableArray *shortArray = [[NSMutableArray alloc]init];
+    NSMutableSet *set = [NSMutableSet setWithArray:array];
+    shortArray = (NSMutableArray*)[set allObjects];
+    return shortArray;
+}
+
+- (NSMutableArray*)flyEngine:(NSInteger)x Y:(NSInteger)y Camp:(NSInteger)camp{
+    NSMutableArray *array = [[NSMutableArray alloc]init];
+    NSArray *pathArray = [self judgePath:x Y:y Camp:camp];
+    for (int i=0; i<pathArray.count; i++) {
+        YZChessPlace *p = pathArray[i];
+        NSLog(@"%ld",p.tag);
+    }
+    
+    return array;
 }
 
 

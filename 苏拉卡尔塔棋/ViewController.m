@@ -24,6 +24,11 @@
     [self initView];
 }
 
+
+/**
+ 初始化界面
+ 这里的新建棋盘矩阵的过程中把每个点位的初始化数据为YZChessPlace，具体数据内容请查看YZChessPlace
+ */
 - (void)initView{
     self.view.backgroundColor = [UIColor whiteColor];
     _kYZChessView = [[YZChessView alloc]init];
@@ -35,6 +40,7 @@
     UIBarButtonItem *rightBtn = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"下拉"] style:UIBarButtonItemStyleDone target:self action:@selector(pressRightBtn)];
     self.navigationItem.rightBarButtonItem = rightBtn;
     
+    //新建棋盘矩阵
     NSInteger k = 1;
     for (int i=0; i<6; i++) {
         NSMutableArray *array = [[NSMutableArray alloc]init];
@@ -66,6 +72,7 @@
 
 #pragma make - 协议
 - (void)ChessBtnDidTouchWithTag:(NSInteger)tag{
+    //设置walk引擎
     NSInteger x = 0;
     NSInteger y = 0;
     for (int i=0; i<6; i++) {
@@ -82,8 +89,19 @@
     NSLog(@"%@",array);
     [_kYZChessView setWalkEngineWithArray:array];
     _kYZChessView.walkTag = tag;
+    
+    //设置飞行引擎
+    
 }
 
+
+/**
+ 棋子经过walk引擎然后改矩阵
+
+ @param tag 需要移动棋子的tag值
+ @param x x坐标
+ @param y y坐标
+ */
 - (void)walkBtnDidTouchWithTag:(NSInteger)tag X:(CGFloat)x Y:(CGFloat)y{
     NSInteger shortTag = tag;
     NSInteger shortCamp = 0;
@@ -109,6 +127,14 @@
     placeArray[m][n] = shortP;
 }
 
+
+/**
+ walk下子引擎
+
+ @param x x坐标
+ @param y y坐标
+ @return 把满足可以下子的位置的YZChessPlace数据存到数组中返回
+ */
 - (NSMutableArray*)walkEngine:(NSInteger)x Y:(NSInteger)y{
     NSMutableArray *array = [[NSMutableArray alloc]init];
     

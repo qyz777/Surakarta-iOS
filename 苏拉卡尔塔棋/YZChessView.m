@@ -109,6 +109,7 @@
     }];
 }
 
+//点击了哪个棋子
 - (void)pressChessBtn:(UIButton*)btn{
     NSLog(@"%ld",btn.tag);
     [self.chessDelegate ChessBtnDidTouchWithTag:btn.tag];
@@ -210,7 +211,12 @@
     }
 }
 
-//棋盘一个格子30
+
+/**
+ 贝塞尔曲线绘制棋盘，一个格子30
+
+ @param rect nope
+ */
 - (void)drawRect:(CGRect)rect{
     //绘制棋盘
     UIBezierPath *bezierPath = UIBezierPath.bezierPath;

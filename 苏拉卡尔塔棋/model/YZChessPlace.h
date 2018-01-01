@@ -17,4 +17,8 @@
 @property(assign,nonatomic)CGFloat frameX;
 @property(assign,nonatomic)CGFloat frameY;
 
++ (NSArray*)pathwayTable:(NSInteger)x Y:(NSInteger)y;
+
++ (NSInteger)directionTable:(NSInteger)x Y:(NSInteger)y;
+
 @end

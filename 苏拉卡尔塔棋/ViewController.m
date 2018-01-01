@@ -10,9 +10,14 @@
 #import "YZChessView.h"
 #import "YZChessPlace.h"
 
+
 @interface ViewController ()<YZChessViewDelegate>{
     YZChessView *_kYZChessView;
     NSMutableArray *placeArray;
+    NSMutableArray *flyPath;
+    NSMutableArray *flyFinalPath;
+    NSInteger flyX;
+    NSInteger flyY;
 }
 
 @end
@@ -94,123 +99,133 @@
     _kYZChessView.walkTag = tag;
     
     //设置飞行引擎
-    NSArray *arrayFly = [self flyEngine:x Y:y Camp:camp];
+    NSDate *startTime = [NSDate date];//计算运行时间
+    
+    flyPath = [[NSMutableArray alloc]init];
+    flyFinalPath = [[NSMutableArray alloc]init];
+    for (int i = UP_TO_FLY; i<=LEFT_TO_FLY; i++) {
+        flyX = x;
+        flyY = y;
+        [self flyEngine:x Y:y Direction:i Camp:camp CanFly:false];
+    }
+    NSLog(@"%@",flyPath);
+    for (YZChessPlace *p in flyPath) {
+        NSLog(@"x=%ld y=%ld",p.x,p.y);
+    }
+    
+    NSLog(@"飞行轨道计算运行时间: %f", -[startTime timeIntervalSinceNow]);//计算运行时间
+    [flyPath removeAllObjects];
 }
 
-/**
- 判断对方的哪些棋子跟点击的棋子在一条轨道上
+- (BOOL)canFlyWtihDircetion:(NSInteger)dircetion{
+    switch (dircetion) {
+        case UP_TO_FLY:{
+            flyX -= 1;
+            if (flyX < 0) {
+                flyX += 1;
+                return false;
+            }else{
+                return true;
+            }
+        }
+        case RIGHT_TO_FLY:{
+            flyY += 1;
+            if (flyY > 5) {
+                flyY -= 1;
+                return false;
+            }else{
+                return true;
+            }
+        }
+        case DOWN_TO_FLY:{
+            flyX += 1;
+            if (flyX > 5) {
+                flyX -= 1;
+                return false;
+            }else{
+                return true;
+            }
+        }
+        case LEFT_TO_FLY:{
+            flyY -= 1;
+            if (flyY < 0) {
+                flyY += 1;
+                return false;
+            }else{
+                return true;
+            }
+        }
+        default:
+            NSLog(@"飞行溢出");
+            break;
+    }
+    
+    return false;
+}
 
- @param x x坐标
- @param y y坐标
- @param camp 棋子的类型
- @return 返回的数组是在同一条轨道上的棋子
- */
-- (NSMutableArray*)judgePath:(NSInteger)x Y:(NSInteger)y Camp:(NSInteger)camp{
-    NSMutableArray *array = [[NSMutableArray alloc]init];
-    if (x == 1 || x == 4) {
-        for (int i=0; i<6; i++) {
-            YZChessPlace *p1 = placeArray[1][i];
-            YZChessPlace *p2 = placeArray[4][i];
-            YZChessPlace *p3 = placeArray[i][1];
-            YZChessPlace *p4 = placeArray[i][4];
-            if (p1.camp + camp == 0) {
-                [array addObject:p1];
-            }
-            if (p2.camp + camp == 0 ) {
-                [array addObject:p2];
-            }
-            if (p3.camp + camp == 0) {
-                [array addObject:p3];
-            }
-            if (p4.camp + camp == 0) {
-                [array addObject:p4];
-            }
-        }
-        if (y == 2 || y == 3) {
-            for (int i=0; i<6; i++) {
-                YZChessPlace *p1 = placeArray[2][i];
-                YZChessPlace *p2 = placeArray[3][i];
-                YZChessPlace *p3 = placeArray[i][2];
-                YZChessPlace *p4 = placeArray[i][3];
-                if (p1.camp + camp == 0) {
-                    [array addObject:p1];
-                }
-                if (p2.camp + camp == 0 ) {
-                    [array addObject:p2];
-                }
-                if (p3.camp + camp == 0) {
-                    [array addObject:p3];
-                }
-                if (p4.camp + camp == 0) {
-                    [array addObject:p4];
-                }
-            }
-        }
+- (void)flyEngine:(NSInteger)x Y:(NSInteger)y Direction:(NSInteger) dircetion Camp:(NSInteger)camp CanFly:(BOOL)alreadyFly{
+    if ((flyX == 0 && flyY == 0) || (flyX == 5 && flyY == 0) || (flyX == 0 && flyY == 5) || (flyX == 5 && flyY == 5)) {
+        return;
     }
-    if (x == 2 || x == 3) {
-        for (int i=0; i<6; i++) {
-            YZChessPlace *p1 = placeArray[2][i];
-            YZChessPlace *p2 = placeArray[3][i];
-            YZChessPlace *p3 = placeArray[i][2];
-            YZChessPlace *p4 = placeArray[i][3];
-            if (p1.camp + camp == 0) {
-                [array addObject:p1];
-            }
-            if (p2.camp + camp == 0 ) {
-                [array addObject:p2];
-            }
-            if (p3.camp + camp == 0) {
-                [array addObject:p3];
-            }
-            if (p4.camp + camp == 0) {
-                [array addObject:p4];
-            }
-        }
-        if (y == 1 || y == 4) {
-            for (int i=0; i<6; i++) {
-                YZChessPlace *p1 = placeArray[1][i];
-                YZChessPlace *p2 = placeArray[4][i];
-                YZChessPlace *p3 = placeArray[i][1];
-                YZChessPlace *p4 = placeArray[i][4];
-                if (p1.camp + camp == 0) {
-                    [array addObject:p1];
+    
+    while ([self canFlyWtihDircetion:dircetion]) {
+        YZChessPlace *p = placeArray[flyX][flyY];
+        if (p.camp != 0) {
+            if (p.camp + camp == 0) {
+                //敌方棋子
+                if (alreadyFly) {
+                    [flyPath addObject:p];
+                    //可以飞行了
+//                    [flyFinalPath addObject:flyPath];
+//                    [flyPath removeAllObjects];
+                    return;
+                }else{
+                    return;
                 }
-                if (p2.camp + camp == 0 ) {
-                    [array addObject:p2];
-                }
-                if (p3.camp + camp == 0) {
-                    [array addObject:p3];
-                }
-                if (p4.camp + camp == 0) {
-                    [array addObject:p4];
+            }else{
+                //自己棋子
+                if (flyX == x && flyY == y) {
+                    if (flyPath.count < 6) {
+                        continue;
+                    }else{
+                        return;
+                    }
+                }else{
+                    //和起点不同
+                    return;
                 }
             }
-        }
-    }
-    for (int i=0; i<array.count; i++) {
-        YZChessPlace *p = array[i];
-        if (p.x == x && p.y == y) {
-            [array removeObjectAtIndex:i];
         }
     }
     
-    NSMutableArray *shortArray = [[NSMutableArray alloc]init];
-    NSMutableSet *set = [NSMutableSet setWithArray:array];
-    shortArray = (NSMutableArray*)[set allObjects];
-    return shortArray;
-}
-
-- (NSMutableArray*)flyEngine:(NSInteger)x Y:(NSInteger)y Camp:(NSInteger)camp{
-    NSMutableArray *array = [[NSMutableArray alloc]init];
-    NSArray *pathArray = [self judgePath:x Y:y Camp:camp];
-    for (int i=0; i<pathArray.count; i++) {
-        YZChessPlace *p = pathArray[i];
-        NSLog(@"%ld",p.tag);
+    YZChessPlace *pp = placeArray[flyX][flyY];
+    [flyPath addObject:pp];
+    
+    NSArray *pathwayArray = [YZChessPlace pathwayTable:flyX Y:flyY];
+    if (pathwayArray.count > 0) {
+        NSNumber *nX = pathwayArray[0];
+        NSNumber *nY = pathwayArray[1];
+        flyX = [nX integerValue];
+        flyY = [nY integerValue];
     }
     
-    return array;
+    YZChessPlace *ppp = placeArray[flyX][flyY];
+    if (ppp.camp != 0) {
+        if (ppp.camp + camp == 0) {
+            [flyPath addObject:ppp];
+            //可以飞行了
+//            [flyFinalPath addObject:flyPath];
+//            [flyPath removeAllObjects];
+            return;
+        }else{
+            return;
+        }
+    }else{
+        [placeArray addObject:ppp];
+        dircetion = [YZChessPlace directionTable:flyX Y:flyY];
+        [self flyEngine:x Y:y Direction:dircetion Camp:camp CanFly:true];
+    }
 }
-
 
 /**
  棋子经过walk引擎然后改矩阵
@@ -231,6 +246,7 @@
                 shortCamp = p.camp;
                 p.tag = 0;
                 p.camp = 0;
+                placeArray[i][j] = p;
             }
             if (p.frameX == x && p.frameY == y) {
                 m = i;

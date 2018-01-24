@@ -15,7 +15,7 @@
     YZChessView *_kYZChessView;
     NSMutableArray *placeArray;
     NSMutableArray *flyPath;
-    NSMutableArray *flyFinalPath;
+    NSMutableArray *finishFlyPath;
     NSInteger flyX;
     NSInteger flyY;
 }
@@ -77,7 +77,7 @@
 }
 
 #pragma make - 协议
-- (void)ChessBtnDidTouchWithTag:(NSInteger)tag{
+- (void)chessBtnDidTouchWithTag:(NSInteger)tag{
     NSInteger x = 0;
     NSInteger y = 0;
     NSInteger camp = 0;
@@ -94,7 +94,7 @@
     
     //设置walk引擎
     NSArray *arrayWalk = [self walkEngine:x Y:y];
-    NSLog(@"%@",arrayWalk);
+//    NSLog(@"%@",arrayWalk);
     [_kYZChessView setWalkEngineWithArray:arrayWalk];
     _kYZChessView.walkTag = tag;
     
@@ -102,19 +102,19 @@
     NSDate *startTime = [NSDate date];//计算运行时间
     
     flyPath = [[NSMutableArray alloc]init];
-    flyFinalPath = [[NSMutableArray alloc]init];
+    finishFlyPath = [[NSMutableArray alloc]init];
     for (int i = UP_TO_FLY; i<=LEFT_TO_FLY; i++) {
         flyX = x;
         flyY = y;
         [self flyEngine:x Y:y Direction:i Camp:camp CanFly:false];
     }
-    NSLog(@"%@",flyPath);
-    for (YZChessPlace *p in flyPath) {
-        NSLog(@"x=%ld y=%ld",p.x,p.y);
-    }
     
     NSLog(@"飞行轨道计算运行时间: %f", -[startTime timeIntervalSinceNow]);//计算运行时间
-    [flyPath removeAllObjects];
+
+    if (finishFlyPath.count > 0) {
+        [_kYZChessView setFlyEngineWithArray:finishFlyPath.copy];
+        [finishFlyPath removeAllObjects];
+    }
 }
 
 - (BOOL)canFlyWtihDircetion:(NSInteger)dircetion{
@@ -156,7 +156,6 @@
             }
         }
         default:
-            NSLog(@"飞行溢出");
             break;
     }
     
@@ -176,10 +175,11 @@
                 if (alreadyFly) {
                     [flyPath addObject:p];
                     //可以飞行了
-//                    [flyFinalPath addObject:flyPath];
-//                    [flyPath removeAllObjects];
+                    [finishFlyPath addObject:flyPath.copy];
+                    [flyPath removeAllObjects];
                     return;
                 }else{
+                    [flyPath removeAllObjects];
                     return;
                 }
             }else{
@@ -192,10 +192,15 @@
                     }
                 }else{
                     //和起点不同
+                    [flyPath removeAllObjects];
                     return;
                 }
             }
         }
+    }
+    
+    if ((flyX == 0 && flyY == 0) || (flyX == 5 && flyY == 0) || (flyX == 0 && flyY == 5) || (flyX == 5 && flyY == 5)) {
+        return;
     }
     
     YZChessPlace *pp = placeArray[flyX][flyY];
@@ -214,10 +219,11 @@
         if (ppp.camp + camp == 0) {
             [flyPath addObject:ppp];
             //可以飞行了
-//            [flyFinalPath addObject:flyPath];
-//            [flyPath removeAllObjects];
+            [finishFlyPath addObject:flyPath.copy];
+            [flyPath removeAllObjects];
             return;
         }else{
+            [flyPath removeAllObjects];
             return;
         }
     }else{
@@ -228,13 +234,43 @@
 }
 
 /**
+ 棋子吃子完以后的协议
+
+ @param firstTag 吃子的tag
+ @param lastTag 被吃子的tag
+ */
+- (void)chessBtnDidEatWithFirstTag:(NSInteger)firstTag lastTag:(NSInteger)lastTag{
+    NSInteger shortCamp = 0;
+    int m = 0,n = 0;
+    for (int i=0; i<6; i++) {
+        for (int j=0; j<6; j++) {
+            YZChessPlace *p = placeArray[i][j];
+            if (p.tag == firstTag) {
+                shortCamp = p.camp;
+                p.tag = 0;
+                p.camp = 0;
+                placeArray[i][j] = p;
+            }
+            if (p.tag == lastTag) {
+                m = i;
+                n = j;
+            }
+        }
+    }
+    YZChessPlace *shortP = placeArray[m][n];
+    shortP.tag = firstTag;
+    shortP.camp = shortCamp;
+    placeArray[m][n] = shortP;
+}
+
+/**
  棋子经过walk引擎然后改矩阵
 
  @param tag 需要移动棋子的tag值
  @param x x坐标
  @param y y坐标
  */
-- (void)walkBtnDidTouchWithTag:(NSInteger)tag X:(CGFloat)x Y:(CGFloat)y{
+- (void)walkBtnDidTouchWithTag:(NSInteger)tag frameX:(CGFloat)x frameY:(CGFloat)y{
     NSInteger shortTag = tag;
     NSInteger shortCamp = 0;
     int m = 0;

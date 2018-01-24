@@ -8,6 +8,14 @@
 
 #import "YZChessView.h"
 #import "YZChessPlace.h"
+#import <objc/runtime.h>
+
+@interface YZChessView()<CAAnimationDelegate>{
+    NSArray *flyArray;
+    NSArray *shortFlyArray;
+}
+
+@end
 
 @implementation YZChessView
 
@@ -111,8 +119,7 @@
 
 //点击了哪个棋子
 - (void)pressChessBtn:(UIButton*)btn{
-    NSLog(@"%ld",btn.tag);
-    [self.chessDelegate ChessBtnDidTouchWithTag:btn.tag];
+    [self.chessDelegate chessBtnDidTouchWithTag:btn.tag];
 }
 
 - (void)pressSelectBtn{
@@ -184,7 +191,7 @@
     }
     for (YZChessPlace *p in array) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.frame = CGRectMake(0, 0, 15, 15);
+        btn.frame = CGRectMake(0, 0, 25, 25);
         btn.center = CGPointMake(p.frameX, p.frameY);
         btn.tag = -1;
         [btn setBackgroundImage:[UIImage imageNamed:@"圆叉"] forState:UIControlStateNormal];
@@ -203,7 +210,7 @@
             }];
         }
     }
-    [self.chessDelegate walkBtnDidTouchWithTag:shortBtn.tag X:shortBtn.center.x Y:shortBtn.center.y];
+    [self.chessDelegate walkBtnDidTouchWithTag:shortBtn.tag frameX:shortBtn.center.x frameY:shortBtn.center.y];
     for (UIButton *b in self.subviews) {
         if (b.tag<0) {
             [b removeFromSuperview];
@@ -211,6 +218,203 @@
     }
 }
 
+- (void)setFlyEngineWithArray:(NSArray*)array{
+    for (UIButton *btn in self.subviews) {
+        if (btn.tag == -2) {
+            [btn removeFromSuperview];
+        }
+    }
+    flyArray = array;
+    
+    for (NSArray *array in flyArray) {
+        YZChessPlace *p = array.lastObject;
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.frame = CGRectMake(0, 0, 25, 25);
+        btn.center = CGPointMake(p.frameX, p.frameY);
+        btn.tag = -2;
+        [btn setBackgroundImage:[UIImage imageNamed:@"圆叉"] forState:UIControlStateNormal];
+        objc_setAssociatedObject(btn, "firstObject", array, OBJC_ASSOCIATION_COPY_NONATOMIC);
+        [btn addTarget:self action:@selector(flyEatChess:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:btn];
+    }
+}
+
+- (void)flyEatChess:(UIButton*)btn{
+    NSArray *array = objc_getAssociatedObject(btn, "firstObject");
+    YZChessPlace *zeroP = array.firstObject;
+    YZChessPlace *lastP = array.lastObject;
+    for (UIButton *b in self.subviews) {
+        if (b.tag == self.walkTag) {
+            [b bringSubviewToFront:b];
+            UIBezierPath *path = [UIBezierPath bezierPath];
+            [path moveToPoint:b.center];
+            [path addLineToPoint:CGPointMake(zeroP.frameX, zeroP.frameY)];
+            double duration = 1.0;
+            for (int i = 0; i<array.count-1; i++) {
+                YZChessPlace *p = array[i];
+                path = [self flyPathWithX:p.x Y:p.y frameX:p.frameX frameY:p.frameY Path:path];
+                duration += 0.5;
+            }
+            [path addLineToPoint:CGPointMake(lastP.frameX, lastP.frameY)];
+            duration += 0.5;
+            CAKeyframeAnimation *animation = [CAKeyframeAnimation animation];
+            animation.keyPath = @"position";
+            animation.duration = duration;
+            animation.path = path.CGPath;
+            animation.removedOnCompletion = NO;
+            animation.fillMode = kCAFillModeForwards;
+            animation.delegate = self;
+            [b.layer addAnimation:animation forKey:nil];
+            shortFlyArray = array;
+        }
+    }
+}
+
+- (void)flyEatWillEndWithTag:(NSInteger)tag{
+    for (UIButton *btn in self.subviews) {
+        if (btn.tag < 0 || btn.tag == tag) {
+            [btn removeFromSuperview];
+        }
+    }
+}
+
+- (UIBezierPath*)flyPathWithX:(NSInteger)x Y:(NSInteger)y frameX:(CGFloat)frameX frameY:(CGFloat)frameY Path:(UIBezierPath*)path{
+    if (x == 0) {
+        switch (y) {
+            case 1:{
+                [path addArcWithCenter:CGPointMake(CENTERX-75, CENTERY-75) radius:30 startAngle:0 endAngle:-M_PI_2*3 clockwise:false];
+                return path;
+            }
+            case 2:{
+                [path addArcWithCenter:CGPointMake(CENTERX-75, CENTERY-75) radius:60 startAngle:0 endAngle:-M_PI_2*3 clockwise:false];
+                return path;
+            }
+            case 3:{
+                [path addArcWithCenter:CGPointMake(CENTERX+75, CENTERY-75) radius:60 startAngle:M_PI endAngle:M_PI_2 clockwise:true];
+                return path;
+            }
+            case 4:{
+                [path addArcWithCenter:CGPointMake(CENTERX+75, CENTERY-75) radius:30 startAngle:M_PI endAngle:M_PI_2 clockwise:true];
+                return path;
+            }
+            default:
+                break;
+        }
+    }
+    if (x == 1) {
+        switch (y) {
+            case 0:{
+                [path addArcWithCenter:CGPointMake(CENTERX-75, CENTERY-75) radius:30 startAngle:M_PI_2 endAngle:M_PI*2 clockwise:true];
+                return path;
+            }
+            case 5:{
+                [path addArcWithCenter:CGPointMake(CENTERX+75, CENTERY-75) radius:30 startAngle:M_PI_2 endAngle:M_PI clockwise:false];
+                return path;
+            }
+                
+            default:
+                break;
+        }
+    }
+    if (x == 2) {
+        switch (y) {
+            case 0:{
+                [path addArcWithCenter:CGPointMake(CENTERX-75, CENTERY-75) radius:60 startAngle:M_PI_2 endAngle:M_PI*2 clockwise:true];
+                return path;
+            }
+            case 5:{
+                [path addArcWithCenter:CGPointMake(CENTERX+75, CENTERY-75) radius:60 startAngle:M_PI_2 endAngle:M_PI clockwise:false];
+                return path;
+            }
+            default:
+                break;
+        }
+    }
+    if (x == 3) {
+        switch (y) {
+            case 0:{
+                [path addArcWithCenter:CGPointMake(CENTERX-75, CENTERY+75) radius:60 startAngle:-M_PI_2 endAngle:-M_PI*2 clockwise:false];
+                return path;
+            }
+            case 5:{
+                [path addArcWithCenter:CGPointMake(CENTERX+75, CENTERY+75) radius:60 startAngle:-M_PI_2 endAngle:M_PI clockwise:true];
+                return path;
+            }
+            default:
+                break;
+        }
+    }
+    if (x == 4) {
+        switch (y) {
+            case 0:{
+                [path addArcWithCenter:CGPointMake(CENTERX-75, CENTERY+75) radius:30 startAngle:-M_PI_2 endAngle:-M_PI*2 clockwise:false];
+                return path;
+            }
+            case 5:{
+                [path addArcWithCenter:CGPointMake(CENTERX+75, CENTERY+75) radius:30 startAngle:-M_PI_2 endAngle:M_PI clockwise:true];
+                return path;
+            }
+            default:
+                break;
+        }
+    }
+    if (x == 5) {
+        switch (y) {
+            case 1:{
+                [path addArcWithCenter:CGPointMake(CENTERX-75, CENTERY+75) radius:30 startAngle:0 endAngle:M_PI_2*3 clockwise:true];
+                return path;
+            }
+            case 2:{
+                [path addArcWithCenter:CGPointMake(CENTERX-75, CENTERY+75) radius:60 startAngle:0 endAngle:M_PI_2*3 clockwise:true];
+                return path;
+            }
+            case 3:{
+                [path addArcWithCenter:CGPointMake(CENTERX+75, CENTERY+75) radius:60 startAngle:M_PI endAngle:M_PI_2*3 clockwise:false];
+                return path;
+            }
+            case 4:{
+                [path addArcWithCenter:CGPointMake(CENTERX+75, CENTERY+75) radius:30 startAngle:M_PI endAngle:M_PI_2*3 clockwise:false];
+                return path;
+            }
+            default:
+                break;
+        }
+    }
+    [path addLineToPoint:CGPointMake(frameX, frameY)];
+    return path;
+}
+
+#pragma make - 动画协议
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag{
+    YZChessPlace *zeroP = shortFlyArray.firstObject;
+    YZChessPlace *lastP = shortFlyArray.lastObject;
+    for (UIButton *btn in self.subviews) {
+        if (btn.tag == self.walkTag) {
+            btn.center = CGPointMake(lastP.frameX, lastP.frameY);
+            [btn.layer removeAllAnimations];
+        }
+    }
+    NSLog(@"%ld号 Attack %ld号",zeroP.tag,lastP.tag);
+    [self flyEatWillEndWithTag:lastP.tag];
+    [self.chessDelegate chessBtnDidEatWithFirstTag:self.walkTag lastTag:lastP.tag];
+}
+
+- (void)animationDidStart:(CAAnimation *)anim{
+    for (UIButton *btn in self.subviews) {
+        if (btn.tag < 0) {
+            [btn removeFromSuperview];
+        }
+    }
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    for (UIButton *btn in self.subviews) {
+        if (btn.tag < 0) {
+            [btn removeFromSuperview];
+        }
+        
+    }
+}
 
 /**
  贝塞尔曲线绘制棋盘，一个格子30
@@ -288,12 +492,12 @@
     [bezier9Path stroke];
     
     //曲线-左上-大
-    UIBezierPath *circle1Path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(CENTERX-75, CENTERY-75) radius:60 startAngle:0 endAngle:M_PI_2 clockwise:false];
+    UIBezierPath *circle1Path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(CENTERX-75, CENTERY-75) radius:60 startAngle:0 endAngle:-M_PI_2*3 clockwise:false];
     [RGB(0, 139, 69) setStroke];
     circle1Path.lineWidth = 1;
     [circle1Path stroke];
     //曲线-左上-小
-    UIBezierPath *circle2Path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(CENTERX-75, CENTERY-75) radius:30 startAngle:0 endAngle:M_PI_2 clockwise:false];
+    UIBezierPath *circle2Path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(CENTERX-75, CENTERY-75) radius:30 startAngle:0 endAngle:-M_PI_2*3 clockwise:false];
     [UIColor.purpleColor setStroke];
     circle2Path.lineWidth = 1;
     [circle2Path stroke];

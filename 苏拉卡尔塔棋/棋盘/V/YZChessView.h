@@ -15,20 +15,24 @@
 
 @end
 
-@interface YZChessView : UIView<UIPickerViewDelegate,UIPickerViewDataSource>
+@interface YZChessView : UIView
 
 @property(strong,nonatomic)UILabel *label;
-@property(strong,nonatomic)UIPickerView *pickView;
-@property(strong,nonatomic)UIView *popView;
-@property(strong,nonatomic)UIButton *selectPickViewBtn;
+@property(strong,nonatomic)UILabel *messageLabel;
+@property(strong,nonatomic)UIButton *cleanBtn;
 
 @property(assign,nonatomic)NSInteger walkTag;
 @property(assign,nonatomic)NSInteger flyTag;
+@property(assign,nonatomic)BOOL isRedChess;
 
 @property(weak,nonatomic)id<YZChessViewDelegate> chessDelegate;
 
 - (void)setWalkEngineWithArray:(NSArray*)array;
 
 - (void)setFlyEngineWithArray:(NSArray*)array;
+
+- (void)redChessGo;
+
+- (void)blueChessGo;
 
 @end

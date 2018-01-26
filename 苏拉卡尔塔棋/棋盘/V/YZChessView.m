@@ -38,6 +38,7 @@
             redBtn.tag = i + 1;
             [redBtn addTarget:self action:@selector(pressChessBtn:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:redBtn];
+            redBtn.userInteractionEnabled = false;
             
             UIButton *blueBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             [blueBtn setImage:[UIImage imageNamed:@"blue"] forState:UIControlStateNormal];
@@ -45,7 +46,6 @@
             blueBtn.center = CGPointMake(CENTERX-75+i*30, CENTERY+75);
             blueBtn.tag = i + 19;
             [blueBtn addTarget:self action:@selector(pressChessBtn:) forControlEvents:UIControlEventTouchUpInside];
-            [self addSubview:redBtn];
             [self addSubview:blueBtn];
         }else{
             UIButton *redBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -55,7 +55,7 @@
             redBtn.tag = i + 1;
             [redBtn addTarget:self action:@selector(pressChessBtn:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:redBtn];
-            [self addSubview:redBtn];
+            redBtn.userInteractionEnabled = false;
             
             UIButton *blueBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             [blueBtn setImage:[UIImage imageNamed:@"blue"] forState:UIControlStateNormal];
@@ -63,15 +63,13 @@
             blueBtn.center = CGPointMake(CENTERX-75+(i-6)*30, CENTERY+45);
             blueBtn.tag = i + 7;
             [blueBtn addTarget:self action:@selector(pressChessBtn:) forControlEvents:UIControlEventTouchUpInside];
-            [self addSubview:redBtn];
             [self addSubview:blueBtn];
         }
     }
     
     self.label = [[UILabel alloc]init];
-    self.label.userInteractionEnabled = true;
     self.label.textAlignment = NSTextAlignmentCenter;
-    self.label.text = @"蓝方先手";
+    self.label.text = @"PVP";
     self.label.font = [UIFont systemFontOfSize:30.0f];
     [self addSubview:self.label];
     [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -80,40 +78,15 @@
         make.top.equalTo(self).offset(80);
     }];
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapLabel)];
-    [self.label addGestureRecognizer:tap];
-    
-    self.popView = [[UIView alloc]init];
-    self.popView.hidden = true;
-    self.popView.backgroundColor = [UIColor grayColor];
-    self.popView.alpha = 0;
-    [self addSubview:self.popView];
-    [self.popView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH, 150));
+    self.messageLabel = [[UILabel alloc]init];
+    self.messageLabel.userInteractionEnabled = true;
+    self.messageLabel.textAlignment = NSTextAlignmentCenter;
+    self.messageLabel.font = [UIFont systemFontOfSize:18.0f];
+    [self addSubview:self.messageLabel];
+    [self.messageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_offset(CGSizeMake(250, 40));
         make.centerX.equalTo(self);
-        make.top.equalTo(self).offset(SCREEN_HEIGHT-150);
-    }];
-    self.popView.transform = CGAffineTransformConcat(CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 150), CGAffineTransformScale(CGAffineTransformIdentity, 1, 0.5));
-    
-    self.pickView = [[UIPickerView alloc]init];
-    self.pickView.delegate = self;
-    self.pickView.dataSource = self;
-    [self.popView addSubview:self.pickView];
-    [self.pickView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH, 100));
-        make.centerX.equalTo(self.popView);
-        make.top.equalTo(self.popView).offset(40);
-    }];
-    
-    self.selectPickViewBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.selectPickViewBtn setTintColor:[UIColor blackColor]];
-    [self.selectPickViewBtn setTitle:@"确认" forState:UIControlStateNormal];
-    [self.selectPickViewBtn addTarget:self action:@selector(pressSelectBtn) forControlEvents:UIControlEventTouchUpInside];
-    [self.popView addSubview:self.selectPickViewBtn];
-    [self.selectPickViewBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH, 40));
-        make.centerX.equalTo(self.popView);
-        make.top.equalTo(self.popView).offset(0);
+        make.bottom.equalTo(self).offset(-150);
     }];
 }
 
@@ -122,65 +95,28 @@
     [self.chessDelegate chessBtnDidTouchWithTag:btn.tag];
 }
 
-- (void)pressSelectBtn{
-    [UIView animateWithDuration:0.3 animations:^{
-        self.popView.transform = CGAffineTransformConcat(CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 75), CGAffineTransformScale(CGAffineTransformIdentity, 1, 0.5));
-        self.popView.alpha = 0;
-    }completion:^(BOOL finished) {
-        self.popView.hidden = true;
-    }];
-}
-
-- (void)tapLabel{
-    if (self.popView.isHidden) {
-        [UIView animateWithDuration:0.3 animations:^{
-            self.popView.hidden = false;
-            self.popView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1, 1);
-            self.popView.alpha = 0.7;
-        }];
-    }else{
-        [UIView animateWithDuration:0.3 animations:^{
-            self.popView.transform = CGAffineTransformConcat(CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 75), CGAffineTransformScale(CGAffineTransformIdentity, 1, 0.5));
-            self.popView.alpha = 0;
-        }completion:^(BOOL finished) {
-            self.popView.hidden = true;
-        }];
+- (void)redChessGo{
+    for (UIButton *btn in self.subviews) {
+        if (btn.tag > 0 && btn.tag <= 12) {
+            btn.userInteractionEnabled = true;
+        }
+        if (btn.tag > 12 && btn.tag <= 24) {
+            btn.userInteractionEnabled = false;
+        }
     }
+    self.isRedChess = true;
 }
 
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
-    return 1;
-}
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
-    return 2;
-}
-
-- (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
-    NSString *str;
-    switch (row) {
-        case 0:
-            str = @"红方先手";
-            break;
-        case 1:
-            str = @"蓝方先手";
-            break;
-        default:
-            break;
+- (void)blueChessGo{
+    for (UIButton *btn in self.subviews) {
+        if (btn.tag > 0 && btn.tag <= 12) {
+            btn.userInteractionEnabled = false;
+        }
+        if (btn.tag > 12 && btn.tag <= 24) {
+            btn.userInteractionEnabled = true;
+        }
     }
-    return str;
-}
-
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-    switch (row) {
-        case 0:
-            self.label.text = @"红方先手";
-            break;
-        case 1:
-            self.label.text = @"蓝方先手";
-            break;
-        default:
-            break;
-    }
+    self.isRedChess = false;
 }
 
 - (void)setWalkEngineWithArray:(NSArray *)array{
@@ -215,6 +151,11 @@
         if (b.tag<0) {
             [b removeFromSuperview];
         }
+    }
+    if (self.isRedChess) {
+        [self blueChessGo];
+    }else{
+        [self redChessGo];
     }
 }
 
@@ -395,6 +336,7 @@
         }
     }
     NSLog(@"%ld号 Attack %ld号",zeroP.tag,lastP.tag);
+    self.messageLabel.text = [NSString stringWithFormat:@"%ld号 Attack %ld号",zeroP.tag,lastP.tag];
     [self flyEatWillEndWithTag:lastP.tag];
     [self.chessDelegate chessBtnDidEatWithFirstTag:self.walkTag lastTag:lastP.tag];
 }
@@ -404,6 +346,11 @@
         if (btn.tag < 0) {
             [btn removeFromSuperview];
         }
+    }
+    if (self.isRedChess) {
+        [self blueChessGo];
+    }else{
+        [self redChessGo];
     }
 }
 

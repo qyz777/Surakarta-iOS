@@ -1,17 +1,16 @@
 //
-//  ViewController.m
+//  YZChessViewController.m
 //  苏拉卡尔塔棋
 //
-//  Created by Q YiZhong on 2017/12/20.
-//  Copyright © 2017年 Q YiZhong. All rights reserved.
+//  Created by Q YiZhong on 2018/1/25.
+//  Copyright © 2018年 Q YiZhong. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "YZChessViewController.h"
 #import "YZChessView.h"
 #import "YZChessPlace.h"
 
-
-@interface ViewController ()<YZChessViewDelegate>{
+@interface YZChessViewController ()<YZChessViewDelegate>{
     YZChessView *_kYZChessView;
     NSMutableArray *placeArray;
     NSMutableArray *flyPath;
@@ -22,7 +21,7 @@
 
 @end
 
-@implementation ViewController
+@implementation YZChessViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -39,13 +38,13 @@
     self.view.backgroundColor = [UIColor whiteColor];
     _kYZChessView = [[YZChessView alloc]init];
     _kYZChessView.chessDelegate = self;
+    _kYZChessView.isRedChess = false;
     [self.view addSubview:_kYZChessView];
-    
+    [self initPlace];
+}
+
+- (void)initPlace{
     placeArray = [[NSMutableArray alloc]init];
-    
-    UIBarButtonItem *rightBtn = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"下拉"] style:UIBarButtonItemStyleDone target:self action:@selector(pressRightBtn)];
-    self.navigationItem.rightBarButtonItem = rightBtn;
-    
     //新建棋盘矩阵
     NSInteger k = 1;
     for (int i=0; i<6; i++) {
@@ -72,10 +71,6 @@
     }
 }
 
-- (void)pressRightBtn{
-    
-}
-
 #pragma make - 协议
 - (void)chessBtnDidTouchWithTag:(NSInteger)tag{
     NSInteger x = 0;
@@ -94,7 +89,7 @@
     
     //设置walk引擎
     NSArray *arrayWalk = [self walkEngine:x Y:y];
-//    NSLog(@"%@",arrayWalk);
+    //    NSLog(@"%@",arrayWalk);
     [_kYZChessView setWalkEngineWithArray:arrayWalk];
     _kYZChessView.walkTag = tag;
     
@@ -110,7 +105,7 @@
     }
     
     NSLog(@"飞行轨道计算运行时间: %f", -[startTime timeIntervalSinceNow]);//计算运行时间
-
+    
     if (finishFlyPath.count > 0) {
         [_kYZChessView setFlyEngineWithArray:finishFlyPath.copy];
         [finishFlyPath removeAllObjects];
@@ -235,7 +230,7 @@
 
 /**
  棋子吃子完以后的协议
-
+ 
  @param firstTag 吃子的tag
  @param lastTag 被吃子的tag
  */
@@ -265,12 +260,17 @@
 
 /**
  棋子经过walk引擎然后改矩阵
-
+ 
  @param tag 需要移动棋子的tag值
  @param x x坐标
  @param y y坐标
  */
 - (void)walkBtnDidTouchWithTag:(NSInteger)tag frameX:(CGFloat)x frameY:(CGFloat)y{
+//    if (_kYZChessView.isRedChess) {
+//        [_kYZChessView blueChessGo];
+//    }else{
+//        [_kYZChessView redChessGo];
+//    }
     NSInteger shortTag = tag;
     NSInteger shortCamp = 0;
     int m = 0;
@@ -299,7 +299,7 @@
 
 /**
  walk下子引擎
-
+ 
  @param x x坐标
  @param y y坐标
  @return 把满足可以下子的位置的YZChessPlace数据存到数组中返回
@@ -357,5 +357,4 @@
     }
     return array;
 }
-
 @end

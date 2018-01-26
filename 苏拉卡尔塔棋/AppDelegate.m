@@ -7,7 +7,8 @@
 //
 
 #import "AppDelegate.h"
-#import "ViewController.h"
+#import "YZMenuViewController.h"
+#import "YZChessViewController.h"
 
 @interface AppDelegate ()
 
@@ -18,7 +19,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:[[ViewController alloc]init]];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:[[YZMenuViewController alloc]init]];
     self.window.rootViewController = nav;
     [self.window makeKeyAndVisible];
     return YES;

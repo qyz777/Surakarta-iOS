@@ -9,13 +9,17 @@
 /* Begin PBXBuildFile section */
 		63A254A03495FEEA5E24E39B /* libPods-苏拉卡尔塔棋.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D08F9C527793E65D0203C3 /* libPods-苏拉卡尔塔棋.a */; };
 		A037743A1FEA95AD0051D41A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A03774391FEA95AD0051D41A /* AppDelegate.m */; };
-		A037743D1FEA95AD0051D41A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A037743C1FEA95AD0051D41A /* ViewController.m */; };
 		A03774401FEA95AD0051D41A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A037743E1FEA95AD0051D41A /* Main.storyboard */; };
 		A03774421FEA95AD0051D41A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A03774411FEA95AD0051D41A /* Assets.xcassets */; };
 		A03774451FEA95AD0051D41A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A03774431FEA95AD0051D41A /* LaunchScreen.storyboard */; };
 		A03774481FEA95AD0051D41A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A03774471FEA95AD0051D41A /* main.m */; };
 		A03774511FEA96070051D41A /* YZChessView.m in Sources */ = {isa = PBXBuildFile; fileRef = A037744F1FEA96070051D41A /* YZChessView.m */; };
 		A03774551FEE8A9F0051D41A /* YZChessPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = A03774541FEE8A9F0051D41A /* YZChessPlace.m */; };
+		A0FC10A520196921000AA35F /* YZMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FC10A420196921000AA35F /* YZMenuViewController.m */; };
+		A0FC10A820196931000AA35F /* YZMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FC10A720196931000AA35F /* YZMenuView.m */; };
+		A0FC10AC201969A9000AA35F /* YZChessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FC10AB201969A9000AA35F /* YZChessViewController.m */; };
+		A0FC10B52019720E000AA35F /* YZBeginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FC10B42019720E000AA35F /* YZBeginViewController.m */; };
+		A0FC10B92019722F000AA35F /* YZBeginView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FC10B82019722F000AA35F /* YZBeginView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,8 +27,6 @@
 		A03774351FEA95AD0051D41A /* 苏拉卡尔塔棋.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "苏拉卡尔塔棋.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A03774381FEA95AD0051D41A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A03774391FEA95AD0051D41A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		A037743B1FEA95AD0051D41A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		A037743C1FEA95AD0051D41A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		A037743F1FEA95AD0051D41A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A03774411FEA95AD0051D41A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A03774441FEA95AD0051D41A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -35,6 +37,16 @@
 		A03774501FEA96070051D41A /* YZChessView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZChessView.h; sourceTree = "<group>"; };
 		A03774531FEE8A9F0051D41A /* YZChessPlace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZChessPlace.h; sourceTree = "<group>"; };
 		A03774541FEE8A9F0051D41A /* YZChessPlace.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZChessPlace.m; sourceTree = "<group>"; };
+		A0FC10A320196921000AA35F /* YZMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZMenuViewController.h; sourceTree = "<group>"; };
+		A0FC10A420196921000AA35F /* YZMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZMenuViewController.m; sourceTree = "<group>"; };
+		A0FC10A620196931000AA35F /* YZMenuView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZMenuView.h; sourceTree = "<group>"; };
+		A0FC10A720196931000AA35F /* YZMenuView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZMenuView.m; sourceTree = "<group>"; };
+		A0FC10AA201969A9000AA35F /* YZChessViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZChessViewController.h; sourceTree = "<group>"; };
+		A0FC10AB201969A9000AA35F /* YZChessViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZChessViewController.m; sourceTree = "<group>"; };
+		A0FC10B32019720E000AA35F /* YZBeginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZBeginViewController.h; sourceTree = "<group>"; };
+		A0FC10B42019720E000AA35F /* YZBeginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZBeginViewController.m; sourceTree = "<group>"; };
+		A0FC10B72019722F000AA35F /* YZBeginView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZBeginView.h; sourceTree = "<group>"; };
+		A0FC10B82019722F000AA35F /* YZBeginView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZBeginView.m; sourceTree = "<group>"; };
 		AC7BF90307B59AAFCF52187D /* Pods-苏拉卡尔塔棋.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-苏拉卡尔塔棋.release.xcconfig"; path = "Pods/Target Support Files/Pods-苏拉卡尔塔棋/Pods-苏拉卡尔塔棋.release.xcconfig"; sourceTree = "<group>"; };
 		C89659726618A3E4641CBF15 /* Pods-苏拉卡尔塔棋.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-苏拉卡尔塔棋.debug.xcconfig"; path = "Pods/Target Support Files/Pods-苏拉卡尔塔棋/Pods-苏拉卡尔塔棋.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,16 +84,14 @@
 		A03774371FEA95AD0051D41A /* 苏拉卡尔塔棋 */ = {
 			isa = PBXGroup;
 			children = (
+				A0FC10A0201968D6000AA35F /* 菜单 */,
+				A0FC10B0201971EC000AA35F /* 开始菜单 */,
+				A0FC10AD20196A72000AA35F /* 棋盘 */,
+				A0FC10A92019694D000AA35F /* extern */,
 				A03774521FEA9A620051D41A /* model */,
-				A037744E1FEA95D40051D41A /* YZGeneral.pch */,
 				A03774381FEA95AD0051D41A /* AppDelegate.h */,
 				A03774391FEA95AD0051D41A /* AppDelegate.m */,
-				A037743B1FEA95AD0051D41A /* ViewController.h */,
-				A037743C1FEA95AD0051D41A /* ViewController.m */,
-				A03774501FEA96070051D41A /* YZChessView.h */,
-				A037744F1FEA96070051D41A /* YZChessView.m */,
 				A037743E1FEA95AD0051D41A /* Main.storyboard */,
-				A03774411FEA95AD0051D41A /* Assets.xcassets */,
 				A03774431FEA95AD0051D41A /* LaunchScreen.storyboard */,
 				A03774461FEA95AD0051D41A /* Info.plist */,
 				A03774471FEA95AD0051D41A /* main.m */,
@@ -96,6 +106,96 @@
 				A03774541FEE8A9F0051D41A /* YZChessPlace.m */,
 			);
 			path = model;
+			sourceTree = "<group>";
+		};
+		A0FC10A0201968D6000AA35F /* 菜单 */ = {
+			isa = PBXGroup;
+			children = (
+				A0FC10A2201968F6000AA35F /* C */,
+				A0FC10A1201968EE000AA35F /* V */,
+			);
+			path = "菜单";
+			sourceTree = "<group>";
+		};
+		A0FC10A1201968EE000AA35F /* V */ = {
+			isa = PBXGroup;
+			children = (
+				A0FC10A620196931000AA35F /* YZMenuView.h */,
+				A0FC10A720196931000AA35F /* YZMenuView.m */,
+			);
+			path = V;
+			sourceTree = "<group>";
+		};
+		A0FC10A2201968F6000AA35F /* C */ = {
+			isa = PBXGroup;
+			children = (
+				A0FC10A320196921000AA35F /* YZMenuViewController.h */,
+				A0FC10A420196921000AA35F /* YZMenuViewController.m */,
+			);
+			path = C;
+			sourceTree = "<group>";
+		};
+		A0FC10A92019694D000AA35F /* extern */ = {
+			isa = PBXGroup;
+			children = (
+				A037744E1FEA95D40051D41A /* YZGeneral.pch */,
+				A03774411FEA95AD0051D41A /* Assets.xcassets */,
+			);
+			path = extern;
+			sourceTree = "<group>";
+		};
+		A0FC10AD20196A72000AA35F /* 棋盘 */ = {
+			isa = PBXGroup;
+			children = (
+				A0FC10AF20196A8A000AA35F /* C */,
+				A0FC10AE20196A7F000AA35F /* V */,
+			);
+			path = "棋盘";
+			sourceTree = "<group>";
+		};
+		A0FC10AE20196A7F000AA35F /* V */ = {
+			isa = PBXGroup;
+			children = (
+				A03774501FEA96070051D41A /* YZChessView.h */,
+				A037744F1FEA96070051D41A /* YZChessView.m */,
+			);
+			path = V;
+			sourceTree = "<group>";
+		};
+		A0FC10AF20196A8A000AA35F /* C */ = {
+			isa = PBXGroup;
+			children = (
+				A0FC10AA201969A9000AA35F /* YZChessViewController.h */,
+				A0FC10AB201969A9000AA35F /* YZChessViewController.m */,
+			);
+			path = C;
+			sourceTree = "<group>";
+		};
+		A0FC10B0201971EC000AA35F /* 开始菜单 */ = {
+			isa = PBXGroup;
+			children = (
+				A0FC10B220197202000AA35F /* C */,
+				A0FC10B1201971FB000AA35F /* V */,
+			);
+			path = "开始菜单";
+			sourceTree = "<group>";
+		};
+		A0FC10B1201971FB000AA35F /* V */ = {
+			isa = PBXGroup;
+			children = (
+				A0FC10B72019722F000AA35F /* YZBeginView.h */,
+				A0FC10B82019722F000AA35F /* YZBeginView.m */,
+			);
+			path = V;
+			sourceTree = "<group>";
+		};
+		A0FC10B220197202000AA35F /* C */ = {
+			isa = PBXGroup;
+			children = (
+				A0FC10B32019720E000AA35F /* YZBeginViewController.h */,
+				A0FC10B42019720E000AA35F /* YZBeginViewController.m */,
+			);
+			path = C;
 			sourceTree = "<group>";
 		};
 		B2A1168A3C9D258A12C8C294 /* Frameworks */ = {
@@ -241,9 +341,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A03774511FEA96070051D41A /* YZChessView.m in Sources */,
+				A0FC10B52019720E000AA35F /* YZBeginViewController.m in Sources */,
+				A0FC10B92019722F000AA35F /* YZBeginView.m in Sources */,
 				A03774551FEE8A9F0051D41A /* YZChessPlace.m in Sources */,
-				A037743D1FEA95AD0051D41A /* ViewController.m in Sources */,
+				A0FC10AC201969A9000AA35F /* YZChessViewController.m in Sources */,
 				A03774481FEA95AD0051D41A /* main.m in Sources */,
+				A0FC10A520196921000AA35F /* YZMenuViewController.m in Sources */,
+				A0FC10A820196931000AA35F /* YZMenuView.m in Sources */,
 				A037743A1FEA95AD0051D41A /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -381,7 +485,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 437JAL24TE;
-				GCC_PREFIX_HEADER = "/Users/qyizhong/Desktop/Surakarta/苏拉卡尔塔棋/YZGeneral.pch";
+				GCC_PREFIX_HEADER = "/Users/qyizhong/Desktop/Surakarta/苏拉卡尔塔棋/extern/YZGeneral.pch";
 				INFOPLIST_FILE = "苏拉卡尔塔棋/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "QYizhong.------";
@@ -397,7 +501,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 437JAL24TE;
-				GCC_PREFIX_HEADER = "/Users/qyizhong/Desktop/Surakarta/苏拉卡尔塔棋/YZGeneral.pch";
+				GCC_PREFIX_HEADER = "/Users/qyizhong/Desktop/Surakarta/苏拉卡尔塔棋/extern/YZGeneral.pch";
 				INFOPLIST_FILE = "苏拉卡尔塔棋/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "QYizhong.------";

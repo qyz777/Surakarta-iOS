@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		63A254A03495FEEA5E24E39B /* libPods-苏拉卡尔塔棋.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D08F9C527793E65D0203C3 /* libPods-苏拉卡尔塔棋.a */; };
+		A00F94802042A0EE001D3AE5 /* YZWalkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A00F947F2042A0EE001D3AE5 /* YZWalkManager.m */; };
+		A00F94852042A691001D3AE5 /* YZFlyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A00F94842042A691001D3AE5 /* YZFlyManager.m */; };
 		A037743A1FEA95AD0051D41A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A03774391FEA95AD0051D41A /* AppDelegate.m */; };
 		A03774401FEA95AD0051D41A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A037743E1FEA95AD0051D41A /* Main.storyboard */; };
 		A03774421FEA95AD0051D41A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A03774411FEA95AD0051D41A /* Assets.xcassets */; };
@@ -24,6 +26,10 @@
 
 /* Begin PBXFileReference section */
 		52D08F9C527793E65D0203C3 /* libPods-苏拉卡尔塔棋.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-苏拉卡尔塔棋.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A00F947E2042A0EE001D3AE5 /* YZWalkManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZWalkManager.h; sourceTree = "<group>"; };
+		A00F947F2042A0EE001D3AE5 /* YZWalkManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZWalkManager.m; sourceTree = "<group>"; };
+		A00F94832042A691001D3AE5 /* YZFlyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZFlyManager.h; sourceTree = "<group>"; };
+		A00F94842042A691001D3AE5 /* YZFlyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZFlyManager.m; sourceTree = "<group>"; };
 		A03774351FEA95AD0051D41A /* 苏拉卡尔塔棋.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "苏拉卡尔塔棋.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A03774381FEA95AD0051D41A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A03774391FEA95AD0051D41A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -63,6 +69,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A00F947D2042A0AC001D3AE5 /* walkManager */ = {
+			isa = PBXGroup;
+			children = (
+				A00F947E2042A0EE001D3AE5 /* YZWalkManager.h */,
+				A00F947F2042A0EE001D3AE5 /* YZWalkManager.m */,
+			);
+			path = walkManager;
+			sourceTree = "<group>";
+		};
+		A00F94812042A671001D3AE5 /* flyManager */ = {
+			isa = PBXGroup;
+			children = (
+				A00F94832042A691001D3AE5 /* YZFlyManager.h */,
+				A00F94842042A691001D3AE5 /* YZFlyManager.m */,
+			);
+			path = flyManager;
+			sourceTree = "<group>";
+		};
+		A00F94822042A679001D3AE5 /* chessPlace */ = {
+			isa = PBXGroup;
+			children = (
+				A03774531FEE8A9F0051D41A /* YZChessPlace.h */,
+				A03774541FEE8A9F0051D41A /* YZChessPlace.m */,
+			);
+			path = chessPlace;
+			sourceTree = "<group>";
+		};
 		A037742C1FEA95AD0051D41A = {
 			isa = PBXGroup;
 			children = (
@@ -102,8 +135,9 @@
 		A03774521FEA9A620051D41A /* model */ = {
 			isa = PBXGroup;
 			children = (
-				A03774531FEE8A9F0051D41A /* YZChessPlace.h */,
-				A03774541FEE8A9F0051D41A /* YZChessPlace.m */,
+				A00F94822042A679001D3AE5 /* chessPlace */,
+				A00F94812042A671001D3AE5 /* flyManager */,
+				A00F947D2042A0AC001D3AE5 /* walkManager */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -347,8 +381,10 @@
 				A0FC10AC201969A9000AA35F /* YZChessViewController.m in Sources */,
 				A03774481FEA95AD0051D41A /* main.m in Sources */,
 				A0FC10A520196921000AA35F /* YZMenuViewController.m in Sources */,
+				A00F94802042A0EE001D3AE5 /* YZWalkManager.m in Sources */,
 				A0FC10A820196931000AA35F /* YZMenuView.m in Sources */,
 				A037743A1FEA95AD0051D41A /* AppDelegate.m in Sources */,
+				A00F94852042A691001D3AE5 /* YZFlyManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

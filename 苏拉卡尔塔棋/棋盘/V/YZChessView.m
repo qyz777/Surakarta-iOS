@@ -335,7 +335,6 @@
             [btn.layer removeAllAnimations];
         }
     }
-    NSLog(@"%ld号 Attack %ld号",zeroP.tag,lastP.tag);
     self.messageLabel.text = [NSString stringWithFormat:@"%ld号 Attack %ld号",zeroP.tag,lastP.tag];
     [self flyEatWillEndWithTag:lastP.tag];
     [self.chessDelegate chessBtnDidEatWithFirstTag:self.walkTag lastTag:lastP.tag];

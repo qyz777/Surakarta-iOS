@@ -17,8 +17,16 @@
 @property(assign,nonatomic)CGFloat frameX;
 @property(assign,nonatomic)CGFloat frameY;
 
+//初始化棋盘
++ (NSMutableArray*)initPlace;
+
+//获取飞行点位
 + (NSArray*)pathwayTable:(NSInteger)x Y:(NSInteger)y;
 
+//获取飞行方向
 + (NSInteger)directionTable:(NSInteger)x Y:(NSInteger)y;
+
+//获取盘面价值
++ (NSInteger)chessValueWithX:(NSInteger)x Y:(NSInteger)y;
 
 @end

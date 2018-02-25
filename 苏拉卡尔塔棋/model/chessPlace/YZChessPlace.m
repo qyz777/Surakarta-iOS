@@ -10,6 +10,33 @@
 
 @implementation YZChessPlace
 
++ (NSMutableArray*)initPlace{
+    NSMutableArray *placeArray = [[NSMutableArray alloc]init];
+    NSInteger k = 1;
+    for (int i=0; i<6; i++) {
+        NSMutableArray *array = [[NSMutableArray alloc]init];
+        for (int j=0; j<6; j++) {
+            YZChessPlace *place = [[YZChessPlace alloc]init];
+            place.x = i;
+            place.y = j;
+            if (i<2) {
+                place.camp = -1;
+                place.tag = k;
+            }else if (i<4){
+                place.camp = 0;
+            }else if (i<6) {
+                place.camp = 1;
+                place.tag = k-12;
+            }
+            place.frameX = CENTERX-75+j*30;
+            place.frameY = CENTERY-75+i*30;
+            k++;
+            [array addObject:place];
+        }
+        [placeArray addObject:array];
+    }
+    return placeArray;
+}
 
 /**
  返回的数组中第一个元素是x，第二个元素是y
@@ -172,6 +199,78 @@
             break;
     }
     return -1;
+}
+
++ (NSInteger)chessValueWithX:(NSInteger)x Y:(NSInteger)y{
+    switch (x) {
+        case 0:{
+            if (y == 0 || y == 5) {
+                return 5;
+            }else {
+                return 20;
+            }
+            break;
+        }
+        case 1:{
+            if (y == 0 || y == 5) {
+                return 20;
+            }
+            if (y == 1 || y == 4) {
+                return 30;
+            }
+            if (y == 2 || y == 3) {
+                return 50;
+            }
+            break;
+        }
+        case 2:{
+            if (y == 0 || y == 5) {
+                return 20;
+            }
+            if (y == 1 || y == 4) {
+                return 50;
+            }
+            if (y == 2 || y == 3) {
+                return 40;
+            }
+            break;
+        }
+        case 3:{
+            if (y == 0 || y == 5) {
+                return 20;
+            }
+            if (y == 1 || y == 4) {
+                return 50;
+            }
+            if (y == 2 || y == 3) {
+                return 40;
+            }
+            break;
+        }
+        case 4:{
+            if (y == 0 || y == 5) {
+                return 20;
+            }
+            if (y == 1 || y == 4) {
+                return 30;
+            }
+            if (y == 2 || y == 3) {
+                return 50;
+            }
+            break;
+        }
+        case 5:{
+            if (y == 0 || y == 5) {
+                return 5;
+            }else {
+                return 20;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+    return 0;
 }
 
 @end

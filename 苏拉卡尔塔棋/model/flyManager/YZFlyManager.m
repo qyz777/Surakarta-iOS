@@ -21,13 +21,10 @@
 
 @implementation YZFlyManager
 
-+ (NSDictionary*)flyManageWithX:(NSInteger)x Y:(NSInteger)y Camp:(NSInteger)camp placeArray:(NSMutableArray*)plaArray{
++ (NSMutableArray*)flyManageWithX:(NSInteger)x Y:(NSInteger)y Camp:(NSInteger)camp placeArray:(NSMutableArray*)plaArray{
     YZFlyManager *manager = [[YZFlyManager alloc]init];
     [manager beginFlyWithX:x Y:y Camp:camp placeArray:plaArray];
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-    [dict setObject:manager.finishFlyPath forKey:@"finishFlyPath"];
-    [dict setObject:manager.placeArray forKey:@"placeArray"];
-    return dict.copy;
+    return manager.finishFlyPath;
 }
 
 - (void)beginFlyWithX:(NSInteger)x Y:(NSInteger)y Camp:(NSInteger)camp placeArray:(NSMutableArray*)plaArray{
@@ -154,7 +151,6 @@
             return;
         }
     }else{
-        [_placeArray addObject:ppp];
         dircetion = [YZChessPlace directionTable:_flyX Y:_flyY];
         [self flyEngine:x Y:y Direction:dircetion Camp:camp CanFly:true];
     }

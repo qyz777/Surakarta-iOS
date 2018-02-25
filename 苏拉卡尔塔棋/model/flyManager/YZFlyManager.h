@@ -10,6 +10,6 @@
 
 @interface YZFlyManager : NSObject
 
-+ (NSDictionary*)flyManageWithX:(NSInteger)x Y:(NSInteger)y Camp:(NSInteger)camp placeArray:(NSMutableArray*)plaArray;
++ (NSMutableArray*)flyManageWithX:(NSInteger)x Y:(NSInteger)y Camp:(NSInteger)camp placeArray:(NSMutableArray*)plaArray;
 
 @end

@@ -65,9 +65,7 @@
     _kYZChessView.walkTag = tag;
     
     //设置飞行引擎
-    NSDictionary *dict = [YZFlyManager flyManageWithX:x Y:y Camp:camp placeArray:placeArray];
-    placeArray = dict[@"placeArray"];
-    finishFlyPath = dict[@"finishFlyPath"];
+    finishFlyPath = [YZFlyManager flyManageWithX:x Y:y Camp:camp placeArray:placeArray];
     
     if (finishFlyPath.count > 0) {
         [_kYZChessView setFlyEngineWithArray:finishFlyPath.copy];

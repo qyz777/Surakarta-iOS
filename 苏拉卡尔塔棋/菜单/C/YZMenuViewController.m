@@ -8,17 +8,28 @@
 
 #import "YZMenuViewController.h"
 #import "YZMenuView.h"
-#import "YZBeginViewController.h"
+#import "YZChessViewController.h"
+#import "YZSettingViewController.h"
 
 @interface YZMenuViewController ()<YZMenuViewDelegate>
 
 @end
 
-@implementation YZMenuViewController
+@implementation YZMenuViewController{
+    YZMenuView *menuView;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initView];
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    menuView.beginBtn.hidden = false;
+    menuView.settingBtn.hidden = false;
+    menuView.pvpBtn.hidden = true;
+    menuView.pveBtn.hidden = true;
 }
 
 - (void)initView{
@@ -30,9 +41,22 @@
 }
 
 #pragma make - YZMenuView协议
-- (void)userDidTouchBeginBtn{
-    YZBeginViewController *vc = [[YZBeginViewController alloc]init];
-    [self.navigationController pushViewController:vc animated:true];
+- (void)userDidTouchPVPBtn{
+    YZChessViewController *vc = [[YZChessViewController alloc]init];
+    [self presentViewController:vc animated:true completion:^{
+        
+    }];
+}
+
+- (void)userDidTouchPVEBtn{
+    
+}
+
+- (void)userDidTouchSettingBtn{
+    YZSettingViewController *vc = [[YZSettingViewController alloc]init];
+    [self presentViewController:vc animated:true completion:^{
+        
+    }];
 }
 
 @end

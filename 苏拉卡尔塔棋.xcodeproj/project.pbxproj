@@ -17,11 +17,15 @@
 		A03774481FEA95AD0051D41A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A03774471FEA95AD0051D41A /* main.m */; };
 		A03774511FEA96070051D41A /* YZChessView.m in Sources */ = {isa = PBXBuildFile; fileRef = A037744F1FEA96070051D41A /* YZChessView.m */; };
 		A03774551FEE8A9F0051D41A /* YZChessPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = A03774541FEE8A9F0051D41A /* YZChessPlace.m */; };
+		A084451D20456CF900ECABF2 /* YZFlyAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = A084451C20456CF900ECABF2 /* YZFlyAnimation.m */; };
+		A08445222045789F00ECABF2 /* eatChess.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A08445212045789F00ECABF2 /* eatChess.mp3 */; };
+		A084452820457BF500ECABF2 /* go.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A084452720457BF500ECABF2 /* go.mp3 */; };
+		A084452E20457C7500ECABF2 /* YZSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A084452D20457C7500ECABF2 /* YZSettingViewController.m */; };
+		A084453120457D3B00ECABF2 /* YZSettingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A084453020457D3B00ECABF2 /* YZSettingTableView.m */; };
+		A08445352045878700ECABF2 /* YZSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A08445342045878700ECABF2 /* YZSettings.m */; };
 		A0FC10A520196921000AA35F /* YZMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FC10A420196921000AA35F /* YZMenuViewController.m */; };
 		A0FC10A820196931000AA35F /* YZMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FC10A720196931000AA35F /* YZMenuView.m */; };
 		A0FC10AC201969A9000AA35F /* YZChessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FC10AB201969A9000AA35F /* YZChessViewController.m */; };
-		A0FC10B52019720E000AA35F /* YZBeginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FC10B42019720E000AA35F /* YZBeginViewController.m */; };
-		A0FC10B92019722F000AA35F /* YZBeginView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FC10B82019722F000AA35F /* YZBeginView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,16 +47,22 @@
 		A03774501FEA96070051D41A /* YZChessView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZChessView.h; sourceTree = "<group>"; };
 		A03774531FEE8A9F0051D41A /* YZChessPlace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZChessPlace.h; sourceTree = "<group>"; };
 		A03774541FEE8A9F0051D41A /* YZChessPlace.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZChessPlace.m; sourceTree = "<group>"; };
+		A084451B20456CF900ECABF2 /* YZFlyAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZFlyAnimation.h; sourceTree = "<group>"; };
+		A084451C20456CF900ECABF2 /* YZFlyAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZFlyAnimation.m; sourceTree = "<group>"; };
+		A08445212045789F00ECABF2 /* eatChess.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = eatChess.mp3; sourceTree = "<group>"; };
+		A084452720457BF500ECABF2 /* go.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = go.mp3; sourceTree = "<group>"; };
+		A084452C20457C7500ECABF2 /* YZSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZSettingViewController.h; sourceTree = "<group>"; };
+		A084452D20457C7500ECABF2 /* YZSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZSettingViewController.m; sourceTree = "<group>"; };
+		A084452F20457D3B00ECABF2 /* YZSettingTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZSettingTableView.h; sourceTree = "<group>"; };
+		A084453020457D3B00ECABF2 /* YZSettingTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZSettingTableView.m; sourceTree = "<group>"; };
+		A08445332045878700ECABF2 /* YZSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZSettings.h; sourceTree = "<group>"; };
+		A08445342045878700ECABF2 /* YZSettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZSettings.m; sourceTree = "<group>"; };
 		A0FC10A320196921000AA35F /* YZMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZMenuViewController.h; sourceTree = "<group>"; };
 		A0FC10A420196921000AA35F /* YZMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZMenuViewController.m; sourceTree = "<group>"; };
 		A0FC10A620196931000AA35F /* YZMenuView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZMenuView.h; sourceTree = "<group>"; };
 		A0FC10A720196931000AA35F /* YZMenuView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZMenuView.m; sourceTree = "<group>"; };
 		A0FC10AA201969A9000AA35F /* YZChessViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZChessViewController.h; sourceTree = "<group>"; };
 		A0FC10AB201969A9000AA35F /* YZChessViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZChessViewController.m; sourceTree = "<group>"; };
-		A0FC10B32019720E000AA35F /* YZBeginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZBeginViewController.h; sourceTree = "<group>"; };
-		A0FC10B42019720E000AA35F /* YZBeginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZBeginViewController.m; sourceTree = "<group>"; };
-		A0FC10B72019722F000AA35F /* YZBeginView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZBeginView.h; sourceTree = "<group>"; };
-		A0FC10B82019722F000AA35F /* YZBeginView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZBeginView.m; sourceTree = "<group>"; };
 		AC7BF90307B59AAFCF52187D /* Pods-苏拉卡尔塔棋.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-苏拉卡尔塔棋.release.xcconfig"; path = "Pods/Target Support Files/Pods-苏拉卡尔塔棋/Pods-苏拉卡尔塔棋.release.xcconfig"; sourceTree = "<group>"; };
 		C89659726618A3E4641CBF15 /* Pods-苏拉卡尔塔棋.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-苏拉卡尔塔棋.debug.xcconfig"; path = "Pods/Target Support Files/Pods-苏拉卡尔塔棋/Pods-苏拉卡尔塔棋.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -118,7 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				A0FC10A0201968D6000AA35F /* 菜单 */,
-				A0FC10B0201971EC000AA35F /* 开始菜单 */,
+				A084452920457C4000ECABF2 /* 设置 */,
 				A0FC10AD20196A72000AA35F /* 棋盘 */,
 				A0FC10A92019694D000AA35F /* extern */,
 				A03774521FEA9A620051D41A /* model */,
@@ -135,11 +145,66 @@
 		A03774521FEA9A620051D41A /* model */ = {
 			isa = PBXGroup;
 			children = (
+				A08445322045877200ECABF2 /* settings */,
 				A00F94822042A679001D3AE5 /* chessPlace */,
 				A00F94812042A671001D3AE5 /* flyManager */,
 				A00F947D2042A0AC001D3AE5 /* walkManager */,
 			);
 			path = model;
+			sourceTree = "<group>";
+		};
+		A084451A20456C6000ECABF2 /* 动画 */ = {
+			isa = PBXGroup;
+			children = (
+				A084451B20456CF900ECABF2 /* YZFlyAnimation.h */,
+				A084451C20456CF900ECABF2 /* YZFlyAnimation.m */,
+			);
+			path = "动画";
+			sourceTree = "<group>";
+		};
+		A084451E204576D700ECABF2 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				A084452720457BF500ECABF2 /* go.mp3 */,
+				A08445212045789F00ECABF2 /* eatChess.mp3 */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		A084452920457C4000ECABF2 /* 设置 */ = {
+			isa = PBXGroup;
+			children = (
+				A084452B20457C5400ECABF2 /* C */,
+				A084452A20457C4F00ECABF2 /* V */,
+			);
+			path = "设置";
+			sourceTree = "<group>";
+		};
+		A084452A20457C4F00ECABF2 /* V */ = {
+			isa = PBXGroup;
+			children = (
+				A084452F20457D3B00ECABF2 /* YZSettingTableView.h */,
+				A084453020457D3B00ECABF2 /* YZSettingTableView.m */,
+			);
+			path = V;
+			sourceTree = "<group>";
+		};
+		A084452B20457C5400ECABF2 /* C */ = {
+			isa = PBXGroup;
+			children = (
+				A084452C20457C7500ECABF2 /* YZSettingViewController.h */,
+				A084452D20457C7500ECABF2 /* YZSettingViewController.m */,
+			);
+			path = C;
+			sourceTree = "<group>";
+		};
+		A08445322045877200ECABF2 /* settings */ = {
+			isa = PBXGroup;
+			children = (
+				A08445332045878700ECABF2 /* YZSettings.h */,
+				A08445342045878700ECABF2 /* YZSettings.m */,
+			);
+			path = settings;
 			sourceTree = "<group>";
 		};
 		A0FC10A0201968D6000AA35F /* 菜单 */ = {
@@ -172,6 +237,8 @@
 		A0FC10A92019694D000AA35F /* extern */ = {
 			isa = PBXGroup;
 			children = (
+				A084451A20456C6000ECABF2 /* 动画 */,
+				A084451E204576D700ECABF2 /* Audio */,
 				A037744E1FEA95D40051D41A /* YZGeneral.pch */,
 				A03774411FEA95AD0051D41A /* Assets.xcassets */,
 			);
@@ -201,33 +268,6 @@
 			children = (
 				A0FC10AA201969A9000AA35F /* YZChessViewController.h */,
 				A0FC10AB201969A9000AA35F /* YZChessViewController.m */,
-			);
-			path = C;
-			sourceTree = "<group>";
-		};
-		A0FC10B0201971EC000AA35F /* 开始菜单 */ = {
-			isa = PBXGroup;
-			children = (
-				A0FC10B220197202000AA35F /* C */,
-				A0FC10B1201971FB000AA35F /* V */,
-			);
-			path = "开始菜单";
-			sourceTree = "<group>";
-		};
-		A0FC10B1201971FB000AA35F /* V */ = {
-			isa = PBXGroup;
-			children = (
-				A0FC10B72019722F000AA35F /* YZBeginView.h */,
-				A0FC10B82019722F000AA35F /* YZBeginView.m */,
-			);
-			path = V;
-			sourceTree = "<group>";
-		};
-		A0FC10B220197202000AA35F /* C */ = {
-			isa = PBXGroup;
-			children = (
-				A0FC10B32019720E000AA35F /* YZBeginViewController.h */,
-				A0FC10B42019720E000AA35F /* YZBeginViewController.m */,
 			);
 			path = C;
 			sourceTree = "<group>";
@@ -312,7 +352,9 @@
 			files = (
 				A03774451FEA95AD0051D41A /* LaunchScreen.storyboard in Resources */,
 				A03774421FEA95AD0051D41A /* Assets.xcassets in Resources */,
+				A08445222045789F00ECABF2 /* eatChess.mp3 in Resources */,
 				A03774401FEA95AD0051D41A /* Main.storyboard in Resources */,
+				A084452820457BF500ECABF2 /* go.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,16 +417,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				A03774511FEA96070051D41A /* YZChessView.m in Sources */,
-				A0FC10B52019720E000AA35F /* YZBeginViewController.m in Sources */,
-				A0FC10B92019722F000AA35F /* YZBeginView.m in Sources */,
+				A084451D20456CF900ECABF2 /* YZFlyAnimation.m in Sources */,
 				A03774551FEE8A9F0051D41A /* YZChessPlace.m in Sources */,
 				A0FC10AC201969A9000AA35F /* YZChessViewController.m in Sources */,
+				A084452E20457C7500ECABF2 /* YZSettingViewController.m in Sources */,
 				A03774481FEA95AD0051D41A /* main.m in Sources */,
 				A0FC10A520196921000AA35F /* YZMenuViewController.m in Sources */,
 				A00F94802042A0EE001D3AE5 /* YZWalkManager.m in Sources */,
 				A0FC10A820196931000AA35F /* YZMenuView.m in Sources */,
 				A037743A1FEA95AD0051D41A /* AppDelegate.m in Sources */,
+				A08445352045878700ECABF2 /* YZSettings.m in Sources */,
 				A00F94852042A691001D3AE5 /* YZFlyManager.m in Sources */,
+				A084453120457D3B00ECABF2 /* YZSettingTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

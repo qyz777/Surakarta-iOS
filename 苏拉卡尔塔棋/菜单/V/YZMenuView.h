@@ -10,7 +10,9 @@
 
 @protocol YZMenuViewDelegate <NSObject>
 
-- (void)userDidTouchBeginBtn;
+- (void)userDidTouchPVPBtn;
+- (void)userDidTouchPVEBtn;
+- (void)userDidTouchSettingBtn;
 
 @end
 
@@ -18,6 +20,9 @@
 
 @property(strong,nonatomic)UIButton *beginBtn;
 @property(strong,nonatomic)UIButton *settingBtn;
+@property(strong,nonatomic)UIButton *pvpBtn;
+@property(strong,nonatomic)UIButton *pveBtn;
+@property(strong,nonatomic)UIButton *backBtn;
 @property(weak,nonatomic)id<YZMenuViewDelegate> menuViewDelegate;
 
 

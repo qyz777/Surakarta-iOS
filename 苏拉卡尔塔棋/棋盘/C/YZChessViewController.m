@@ -11,12 +11,16 @@
 #import "YZChessPlace.h"
 #import "YZWalkManager.h"
 #import "YZFlyManager.h"
+#import "YZSettings.h"
+#import <AudioToolbox/AudioToolbox.h>
 
 @interface YZChessViewController ()<YZChessViewDelegate>{
     YZChessView *_kYZChessView;
     NSMutableArray *placeArray;
     NSMutableArray *flyPath;
     NSMutableArray *finishFlyPath;
+    SystemSoundID sourceEatChess;
+    SystemSoundID sourceGoChess;
 }
 
 @end
@@ -41,9 +45,21 @@
     _kYZChessView.isRedChess = false;
     [self.view addSubview:_kYZChessView];
     placeArray = [YZChessPlace initPlace];
+    [self initAudio];
+}
+
+- (void)initAudio{
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)([NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"eatChess.mp3" ofType:@""]]), &sourceEatChess);
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)([NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"go.mp3" ofType:@""]]), &sourceGoChess);
 }
 
 #pragma make - 协议
+- (void)closeBtnDidTouchUpInside{
+    [self dismissViewControllerAnimated:true completion:^{
+        
+    }];
+}
+
 - (void)chessBtnDidTouchWithTag:(NSInteger)tag{
     NSInteger x = 0;
     NSInteger y = 0;
@@ -101,6 +117,13 @@
     shortP.tag = firstTag;
     shortP.camp = shortCamp;
     placeArray[m][n] = shortP;
+    
+    if ([YZSettings isOnWithKey:@"vibrate"]) {
+        AudioServicesPlaySystemSound(1519);
+    }
+    if ([YZSettings isOnWithKey:@"eatChessSource"]) {
+        AudioServicesPlaySystemSound(sourceEatChess);
+    }
 }
 
 /**
@@ -134,6 +157,9 @@
     shortP.tag = shortTag;
     shortP.camp = shortCamp;
     placeArray[m][n] = shortP;
+    if ([YZSettings isOnWithKey:@"goChessSource"]) {
+        AudioServicesPlaySystemSound(sourceGoChess);
+    }
 }
 
 @end

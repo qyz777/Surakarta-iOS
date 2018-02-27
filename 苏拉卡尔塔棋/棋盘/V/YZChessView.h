@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 @protocol YZChessViewDelegate <NSObject>
 
+- (void)closeBtnDidTouchUpInside;
 - (void)chessBtnDidTouchWithTag:(NSInteger)tag;
 - (void)walkBtnDidTouchWithTag:(NSInteger)tag frameX:(CGFloat)x frameY:(CGFloat)y;
 - (void)chessBtnDidEatWithFirstTag:(NSInteger)firstTag lastTag:(NSInteger)lastTag;
@@ -19,7 +20,7 @@
 
 @property(strong,nonatomic)UILabel *label;
 @property(strong,nonatomic)UILabel *messageLabel;
-@property(strong,nonatomic)UIButton *cleanBtn;
+@property(strong,nonatomic)UIButton *closeBtn;
 
 @property(assign,nonatomic)NSInteger walkTag;
 @property(assign,nonatomic)NSInteger flyTag;

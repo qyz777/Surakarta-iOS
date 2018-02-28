@@ -99,8 +99,20 @@
                 if (alreadyFly) {
                     [_flyPath addObject:p];
                     //可以飞行了
-                    [_finishFlyPath addObject:_flyPath.copy];
-                    [_flyPath removeAllObjects];
+                    if (_flyPath.count > 4) {
+                        //飞行溢出情况
+                        NSMutableArray *bugArray = [[NSMutableArray alloc]init];
+                        [bugArray addObject:_flyPath[_flyPath.count-4]];
+                        [bugArray addObject:_flyPath[_flyPath.count-3]];
+                        [bugArray addObject:_flyPath[_flyPath.count-2]];
+                        [bugArray addObject:_flyPath[_flyPath.count-1]];
+                        [_finishFlyPath addObject:bugArray.copy];
+                        [bugArray removeAllObjects];
+                        [_flyPath removeAllObjects];
+                    }else {
+                        [_finishFlyPath addObject:_flyPath.copy];
+                        [_flyPath removeAllObjects];
+                    }
                     return;
                 }else{
                     [_flyPath removeAllObjects];
@@ -143,8 +155,20 @@
         if (ppp.camp + camp == 0) {
             [_flyPath addObject:ppp];
             //可以飞行了
-            [_finishFlyPath addObject:_flyPath.copy];
-            [_flyPath removeAllObjects];
+            if (_flyPath.count > 4) {
+                //飞行溢出情况
+                NSMutableArray *bugArray = [[NSMutableArray alloc]init];
+                [bugArray addObject:_flyPath[_flyPath.count-4]];
+                [bugArray addObject:_flyPath[_flyPath.count-3]];
+                [bugArray addObject:_flyPath[_flyPath.count-2]];
+                [bugArray addObject:_flyPath[_flyPath.count-1]];
+                [_finishFlyPath addObject:bugArray.copy];
+                [bugArray removeAllObjects];
+                [_flyPath removeAllObjects];
+            }else {
+                [_finishFlyPath addObject:_flyPath.copy];
+                [_flyPath removeAllObjects];
+            }
             return;
         }else{
             [_flyPath removeAllObjects];

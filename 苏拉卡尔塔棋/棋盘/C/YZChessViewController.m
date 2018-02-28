@@ -96,6 +96,13 @@
  @param lastTag 被吃子的tag
  */
 - (void)chessBtnDidEatWithFirstTag:(NSInteger)firstTag lastTag:(NSInteger)lastTag{
+    if ([YZSettings isOnWithKey:@"vibrate"]) {
+        AudioServicesPlaySystemSound(1519);
+    }
+    if ([YZSettings isOnWithKey:@"eatChessSource"]) {
+        AudioServicesPlaySystemSound(sourceEatChess);
+    }
+    
     NSInteger shortCamp = 0;
     int m = 0,n = 0;
     for (int i=0; i<6; i++) {
@@ -117,13 +124,6 @@
     shortP.tag = firstTag;
     shortP.camp = shortCamp;
     placeArray[m][n] = shortP;
-    
-    if ([YZSettings isOnWithKey:@"vibrate"]) {
-        AudioServicesPlaySystemSound(1519);
-    }
-    if ([YZSettings isOnWithKey:@"eatChessSource"]) {
-        AudioServicesPlaySystemSound(sourceEatChess);
-    }
 }
 
 /**
@@ -134,6 +134,10 @@
  @param y y坐标
  */
 - (void)walkBtnDidTouchWithTag:(NSInteger)tag frameX:(CGFloat)x frameY:(CGFloat)y{
+    if ([YZSettings isOnWithKey:@"goChessSource"]) {
+        AudioServicesPlaySystemSound(sourceGoChess);
+    }
+    
     NSInteger shortTag = tag;
     NSInteger shortCamp = 0;
     int m = 0;
@@ -157,9 +161,6 @@
     shortP.tag = shortTag;
     shortP.camp = shortCamp;
     placeArray[m][n] = shortP;
-    if ([YZSettings isOnWithKey:@"goChessSource"]) {
-        AudioServicesPlaySystemSound(sourceGoChess);
-    }
 }
 
 @end

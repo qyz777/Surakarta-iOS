@@ -50,8 +50,8 @@
     switch (x) {
         case 0:{
             if (y == 1) {
-                [array addObject:[NSNumber numberWithInteger:0]];
                 [array addObject:[NSNumber numberWithInteger:1]];
+                [array addObject:[NSNumber numberWithInteger:0]];
             }
             if (y == 2) {
                 [array addObject:[NSNumber numberWithInteger:2]];

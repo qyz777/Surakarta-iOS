@@ -39,7 +39,6 @@
             redBtn.tag = i + 1;
             [redBtn addTarget:self action:@selector(pressChessBtn:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:redBtn];
-            redBtn.userInteractionEnabled = false;
             
             UIButton *blueBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             [blueBtn setImage:[UIImage imageNamed:@"blue"] forState:UIControlStateNormal];
@@ -56,7 +55,6 @@
             redBtn.tag = i + 1;
             [redBtn addTarget:self action:@selector(pressChessBtn:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:redBtn];
-            redBtn.userInteractionEnabled = false;
             
             UIButton *blueBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             [blueBtn setImage:[UIImage imageNamed:@"blue"] forState:UIControlStateNormal];

@@ -30,6 +30,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initView];
+    [self initPriority];
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self initPriority];
 }
 
 
@@ -46,6 +52,17 @@
     [self.view addSubview:_kYZChessView];
     placeArray = [YZChessPlace initPlace];
     [self initAudio];
+}
+
+- (void)initPriority{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"选择先手" message:@"" preferredStyle: UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"红方" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        [_kYZChessView redChessGo];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"蓝方" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [_kYZChessView blueChessGo];
+    }]];
+    [self presentViewController:alert animated:true completion:nil];
 }
 
 - (void)initAudio{

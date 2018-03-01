@@ -10,6 +10,14 @@
 
 @interface YZFlyAnimation : CAKeyframeAnimation
 
+
+/**
+ 飞行动画组件
+
+ @param center 棋子的center
+ @param array 吃子点位
+ @return 返回一个动画
+ */
 + (CAKeyframeAnimation *)animationWithChessCenter:(CGPoint)center chessArray:(NSArray*)array;
 
 @end

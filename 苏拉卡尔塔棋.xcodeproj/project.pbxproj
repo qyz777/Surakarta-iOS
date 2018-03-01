@@ -567,6 +567,7 @@
 				DEVELOPMENT_TEAM = 437JAL24TE;
 				GCC_PREFIX_HEADER = "/Users/qyizhong/Desktop/Surakarta/苏拉卡尔塔棋/extern/YZGeneral.pch";
 				INFOPLIST_FILE = "苏拉卡尔塔棋/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "QYizhong.------";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -583,6 +584,7 @@
 				DEVELOPMENT_TEAM = 437JAL24TE;
 				GCC_PREFIX_HEADER = "/Users/qyizhong/Desktop/Surakarta/苏拉卡尔塔棋/extern/YZGeneral.pch";
 				INFOPLIST_FILE = "苏拉卡尔塔棋/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "QYizhong.------";
 				PRODUCT_NAME = "$(TARGET_NAME)";

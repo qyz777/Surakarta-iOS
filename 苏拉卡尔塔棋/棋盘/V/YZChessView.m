@@ -27,7 +27,7 @@
 }
 
 - (void)initView{
-    self.backgroundColor = RGB(211, 211, 211);
+    self.backgroundColor = RGB(245, 245, 245);
     self.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     //建立棋子
     for (int i=0; i<12; i++) {
@@ -232,6 +232,11 @@
     self.messageLabel.text = [NSString stringWithFormat:@"%ld号 Attack %ld号",zeroP.tag,lastP.tag];
     [self flyEatWillEndWithTag:lastP.tag];
     [self.chessDelegate chessBtnDidEatWithFirstTag:self.walkTag lastTag:lastP.tag];
+    if (self.isRedChess) {
+        [self blueChessGo];
+    }else{
+        [self redChessGo];
+    }
 }
 
 - (void)animationDidStart:(CAAnimation *)anim{
@@ -239,11 +244,9 @@
         if (btn.tag < 0) {
             [btn removeFromSuperview];
         }
-    }
-    if (self.isRedChess) {
-        [self blueChessGo];
-    }else{
-        [self redChessGo];
+        if (btn.tag > 0) {
+            btn.userInteractionEnabled = false;
+        }
     }
 }
 

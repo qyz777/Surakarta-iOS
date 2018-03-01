@@ -10,6 +10,12 @@
 
 @implementation YZChessPlace
 
+
+/**
+ 初始化棋盘矩阵
+
+ @return 返回棋盘数组
+ */
 + (NSMutableArray*)initPlace{
     NSMutableArray *placeArray = [[NSMutableArray alloc]init];
     NSInteger k = 1;

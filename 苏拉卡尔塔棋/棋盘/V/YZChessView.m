@@ -197,7 +197,7 @@
     NSArray *array = objc_getAssociatedObject(btn, "firstObject");
     for (UIButton *b in self.subviews) {
         if (b.tag == self.walkTag) {
-            [b bringSubviewToFront:b];
+            [self bringSubviewToFront:b];
             CAKeyframeAnimation *animation = [YZFlyAnimation animationWithChessCenter:b.center chessArray:array];
             animation.delegate = self;
             [b.layer addAnimation:animation forKey:nil];

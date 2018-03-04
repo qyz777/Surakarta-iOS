@@ -17,6 +17,7 @@
         [[NSUserDefaults standardUserDefaults]setObject:shortStr forKey:@"goChessSource"];
         [[NSUserDefaults standardUserDefaults]setObject:shortStr forKey:@"eatChessSource"];
         [[NSUserDefaults standardUserDefaults]setObject:shortStr forKey:@"vibrate"];
+        [[NSUserDefaults standardUserDefaults]synchronize];
     }
 }
 

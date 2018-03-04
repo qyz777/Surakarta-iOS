@@ -119,27 +119,29 @@
         AudioServicesPlaySystemSound(sourceEatChess);
     }
     
-    NSInteger shortCamp = 0;
-    int m = 0,n = 0;
-    for (int i=0; i<6; i++) {
-        for (int j=0; j<6; j++) {
-            YZChessPlace *p = placeArray[i][j];
-            if (p.tag == firstTag) {
-                shortCamp = p.camp;
-                p.tag = 0;
-                p.camp = 0;
-                placeArray[i][j] = p;
-            }
-            if (p.tag == lastTag) {
-                m = i;
-                n = j;
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSInteger shortCamp = 0;
+        int m = 0,n = 0;
+        for (int i=0; i<6; i++) {
+            for (int j=0; j<6; j++) {
+                YZChessPlace *p = placeArray[i][j];
+                if (p.tag == firstTag) {
+                    shortCamp = p.camp;
+                    p.tag = 0;
+                    p.camp = 0;
+                    placeArray[i][j] = p;
+                }
+                if (p.tag == lastTag) {
+                    m = i;
+                    n = j;
+                }
             }
         }
-    }
-    YZChessPlace *shortP = placeArray[m][n];
-    shortP.tag = firstTag;
-    shortP.camp = shortCamp;
-    placeArray[m][n] = shortP;
+        YZChessPlace *shortP = placeArray[m][n];
+        shortP.tag = firstTag;
+        shortP.camp = shortCamp;
+        placeArray[m][n] = shortP;
+    });
 }
 
 /**

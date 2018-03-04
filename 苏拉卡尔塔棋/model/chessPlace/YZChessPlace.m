@@ -28,7 +28,7 @@
             if (i<2) {
                 place.camp = -1;
                 place.tag = k;
-            }else if (i<4){
+            }else if (i<4) {
                 place.camp = 0;
             }else if (i<6) {
                 place.camp = 1;

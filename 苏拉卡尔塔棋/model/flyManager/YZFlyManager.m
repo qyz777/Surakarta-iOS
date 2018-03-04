@@ -99,13 +99,9 @@
                 if (alreadyFly) {
                     [_flyPath addObject:p];
                     //可以飞行了
-                    if (_flyPath.count > 4) {
+                    if (_flyPath.count > 5) {
                         //飞行溢出情况
-                        NSMutableArray *bugArray = [[NSMutableArray alloc]init];
-                        [bugArray addObject:_flyPath[_flyPath.count-4]];
-                        [bugArray addObject:_flyPath[_flyPath.count-3]];
-                        [bugArray addObject:_flyPath[_flyPath.count-2]];
-                        [bugArray addObject:_flyPath[_flyPath.count-1]];
+                        NSMutableArray *bugArray = [self bugArrayWithFlyArray:_flyPath];
                         [_finishFlyPath addObject:bugArray.copy];
                         [bugArray removeAllObjects];
                         [_flyPath removeAllObjects];
@@ -155,13 +151,9 @@
         if (ppp.camp + camp == 0) {
             [_flyPath addObject:ppp];
             //可以飞行了
-            if (_flyPath.count > 4) {
+            if (_flyPath.count > 5) {
                 //飞行溢出情况
-                NSMutableArray *bugArray = [[NSMutableArray alloc]init];
-                [bugArray addObject:_flyPath[_flyPath.count-4]];
-                [bugArray addObject:_flyPath[_flyPath.count-3]];
-                [bugArray addObject:_flyPath[_flyPath.count-2]];
-                [bugArray addObject:_flyPath[_flyPath.count-1]];
+                NSMutableArray *bugArray = [self bugArrayWithFlyArray:_flyPath];
                 [_finishFlyPath addObject:bugArray.copy];
                 [bugArray removeAllObjects];
                 [_flyPath removeAllObjects];
@@ -178,6 +170,14 @@
         dircetion = [YZChessPlace directionTable:_flyX Y:_flyY];
         [self flyEngine:x Y:y Direction:dircetion Camp:camp CanFly:true];
     }
+}
+
+- (NSMutableArray*)bugArrayWithFlyArray:(NSMutableArray*)flyArray{
+    NSMutableArray *bugArray = [[NSMutableArray alloc]init];
+    for (int i=(int)flyArray.count / 4 * 4; i<flyArray.count; i++) {
+        [bugArray addObject:flyArray[i]];
+    }
+    return bugArray;
 }
 
 @end

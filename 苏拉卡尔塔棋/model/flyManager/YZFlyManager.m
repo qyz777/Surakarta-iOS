@@ -13,9 +13,9 @@
 
 @property(assign,nonatomic)NSInteger flyX;
 @property(assign,nonatomic)NSInteger flyY;
-@property(copy,nonatomic)NSMutableArray *flyPath;
-@property(copy,nonatomic)NSMutableArray *finishFlyPath;
-@property(copy,nonatomic)NSMutableArray *placeArray;
+@property(strong,nonatomic)NSMutableArray *flyPath;
+@property(strong,nonatomic)NSMutableArray *finishFlyPath;
+@property(strong,nonatomic)NSMutableArray *placeArray;
 
 @end
 

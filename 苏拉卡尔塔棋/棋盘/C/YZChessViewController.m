@@ -48,7 +48,6 @@
     self.view.backgroundColor = [UIColor whiteColor];
     _kYZChessView = [[YZChessView alloc]init];
     _kYZChessView.chessDelegate = self;
-    _kYZChessView.isRedChess = false;
     [self.view addSubview:_kYZChessView];
     placeArray = [YZChessPlace initPlace];
     [self initAudio];

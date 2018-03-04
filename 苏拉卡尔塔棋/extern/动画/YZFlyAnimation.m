@@ -26,6 +26,7 @@
     [path addLineToPoint:CGPointMake(lastP.frameX, lastP.frameY)];
     duration += 0.5;
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animation];
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     animation.keyPath = @"position";
     animation.duration = duration;
     animation.path = path.CGPath;

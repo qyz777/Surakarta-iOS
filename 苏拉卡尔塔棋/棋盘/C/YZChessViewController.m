@@ -17,6 +17,7 @@
 @interface YZChessViewController ()<YZChessViewDelegate>{
     YZChessView *_kYZChessView;
     NSMutableArray *placeArray;
+    NSMutableArray *recordArray;
     NSMutableArray *flyPath;
     NSMutableArray *finishFlyPath;
     SystemSoundID sourceEatChess;
@@ -50,6 +51,8 @@
     _kYZChessView.chessDelegate = self;
     [self.view addSubview:_kYZChessView];
     placeArray = [YZChessPlace initPlace];
+    recordArray = [[NSMutableArray alloc]init];
+    [recordArray addObject:[YZChessPlace initPlace]];
     [self initAudio];
 }
 
@@ -74,6 +77,13 @@
     [self dismissViewControllerAnimated:true completion:^{
         
     }];
+}
+
+- (void)backBtnDidTouchUpInside{
+    NSMutableArray *chess = recordArray[recordArray.count - 1];
+    [recordArray removeLastObject];
+    [_kYZChessView resetChessPlaceWithArray:chess.copy];
+    placeArray = chess.copy;
 }
 
 - (void)chessBtnDidTouchWithTag:(NSInteger)tag{
@@ -120,6 +130,8 @@
     }
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [self saveChessPlace];
+        
         NSInteger shortCamp = 0;
         int m = 0,n = 0;
         for (int i=0; i<6; i++) {
@@ -155,30 +167,57 @@
     if ([YZSettings isOnWithKey:@"goChessSource"]) {
         AudioServicesPlaySystemSound(sourceGoChess);
     }
-    
-    NSInteger shortTag = tag;
-    NSInteger shortCamp = 0;
-    int m = 0;
-    int n = 0;
-    for (int i=0; i<6; i++) {
-        for (int j=0; j<6; j++) {
-            YZChessPlace *p = placeArray[i][j];
-            if (p.tag == tag) {
-                shortCamp = p.camp;
-                p.tag = 0;
-                p.camp = 0;
-                placeArray[i][j] = p;
-            }
-            if (p.frameX == x && p.frameY == y) {
-                m = i;
-                n = j;
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [self saveChessPlace];
+        
+        NSInteger shortTag = tag;
+        NSInteger shortCamp = 0;
+        int m = 0;
+        int n = 0;
+        for (int i=0; i<6; i++) {
+            for (int j=0; j<6; j++) {
+                YZChessPlace *p = placeArray[i][j];
+                if (p.tag == tag) {
+                    shortCamp = p.camp;
+                    p.tag = 0;
+                    p.camp = 0;
+                    placeArray[i][j] = p;
+                }
+                if (p.frameX == x && p.frameY == y) {
+                    m = i;
+                    n = j;
+                }
             }
         }
+        YZChessPlace *shortP = placeArray[m][n];
+        shortP.tag = shortTag;
+        shortP.camp = shortCamp;
+        placeArray[m][n] = shortP;
+    });
+}
+
+
+/**
+ 临时存储棋盘供悔棋使用
+ */
+- (void)saveChessPlace{
+    NSMutableArray *xArray = [[NSMutableArray alloc]init];
+    for (int i=0; i<6; i++) {
+        NSMutableArray *yArray = [[NSMutableArray alloc]init];
+        for (int j=0; j<6; j++) {
+            YZChessPlace *p = [[YZChessPlace alloc]init];
+            YZChessPlace *pp = placeArray[i][j];
+            p.x = pp.x;
+            p.y = pp.y;
+            p.frameX = pp.frameX;
+            p.frameY = pp.frameY;
+            p.camp = pp.camp;
+            p.tag = pp.tag;
+            [yArray addObject:p];
+        }
+        [xArray addObject:yArray];
     }
-    YZChessPlace *shortP = placeArray[m][n];
-    shortP.tag = shortTag;
-    shortP.camp = shortCamp;
-    placeArray[m][n] = shortP;
+    [recordArray addObject:xArray];
 }
 
 @end

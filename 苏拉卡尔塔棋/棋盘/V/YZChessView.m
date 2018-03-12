@@ -97,6 +97,16 @@
         make.right.equalTo(self).offset(-30);
     }];
     [self.closeBtn addTarget:self action:@selector(pressCloseBtn) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.backBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.backBtn setBackgroundImage:[UIImage imageNamed:@"返回"] forState:UIControlStateNormal];
+    [self addSubview:self.backBtn];
+    [self.backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_offset(CGSizeMake(30, 30));
+        make.top.equalTo(self).offset(30);
+        make.left.equalTo(self).offset(30);
+    }];
+    [self.backBtn addTarget:self action:@selector(pressBackBtn) forControlEvents:UIControlEventTouchUpInside];
 }
 
 //点击了哪个棋子
@@ -106,6 +116,10 @@
 
 - (void)pressCloseBtn{
     [self.chessDelegate closeBtnDidTouchUpInside];
+}
+
+- (void)pressBackBtn{
+    [self.chessDelegate backBtnDidTouchUpInside];
 }
 
 - (void)redChessGo{
@@ -190,6 +204,44 @@
         objc_setAssociatedObject(btn, "firstObject", array, OBJC_ASSOCIATION_COPY_NONATOMIC);
         [btn addTarget:self action:@selector(flyEatChess:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:btn];
+    }
+}
+
+- (void)resetChessPlaceWithArray:(NSArray*)array{
+    for (UIButton *btn in self.subviews) {
+        if (btn.tag > 0) {
+            [btn removeFromSuperview];
+        }
+    }
+    
+    for (int i=0; i<6; i++) {
+        for (int j=0; j<6; j++) {
+            YZChessPlace *p = array[i][j];
+            if (p.camp == -1) {
+                UIButton *redBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+                [redBtn setImage:[UIImage imageNamed:@"red"] forState:UIControlStateNormal];
+                redBtn.frame = CGRectMake(0, 0, 25, 25);
+                redBtn.center = CGPointMake(p.frameX, p.frameY);
+                redBtn.tag = p.tag;
+                [redBtn addTarget:self action:@selector(pressChessBtn:) forControlEvents:UIControlEventTouchUpInside];
+                [self addSubview:redBtn];
+            }
+            if (p.camp == 1) {
+                UIButton *blueBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+                [blueBtn setImage:[UIImage imageNamed:@"blue"] forState:UIControlStateNormal];
+                blueBtn.frame = CGRectMake(0, 0, 25, 25);
+                blueBtn.center = CGPointMake(p.frameX, p.frameY);
+                blueBtn.tag = p.tag;
+                [blueBtn addTarget:self action:@selector(pressChessBtn:) forControlEvents:UIControlEventTouchUpInside];
+                [self addSubview:blueBtn];
+            }
+        }
+    }
+    
+    if (self.isRedChess) {
+        [self blueChessGo];
+    }else {
+        [self redChessGo];
     }
 }
 

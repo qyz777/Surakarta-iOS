@@ -12,6 +12,7 @@
 #import "YZWalkManager.h"
 #import "YZFlyManager.h"
 #import "YZSettings.h"
+#import "YZNormalAI.h"
 #import <AudioToolbox/AudioToolbox.h>
 
 @interface YZChessViewController ()<YZChessViewDelegate>{
@@ -48,6 +49,11 @@
 - (void)initView{
     self.view.backgroundColor = [UIColor whiteColor];
     _kYZChessView = [[YZChessView alloc]init];
+    if (self.gameMode == chessGameModePVP) {
+        _kYZChessView.isAIType = false;
+    }else {
+        _kYZChessView.isAIType = true;
+    }
     _kYZChessView.chessDelegate = self;
     [self.view addSubview:_kYZChessView];
     placeArray = [YZChessPlace initPlace];
@@ -58,18 +64,39 @@
 
 - (void)initPriority{
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"选择先手" message:@"" preferredStyle: UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"红方" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-        [_kYZChessView redChessGo];
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"蓝方" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [_kYZChessView blueChessGo];
-    }]];
+    if (self.gameMode == chessGameModePVP) {
+        [alert addAction:[UIAlertAction actionWithTitle:@"红方" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            [_kYZChessView redChessGo];
+        }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"蓝方" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [_kYZChessView blueChessGo];
+        }]];
+    }else {
+        [alert addAction:[UIAlertAction actionWithTitle:@"AI先手" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            [_kYZChessView redChessGo];
+        }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"玩家先手" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [_kYZChessView blueChessGo];
+        }]];
+    }
     [self presentViewController:alert animated:true completion:nil];
 }
 
 - (void)initAudio{
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)([NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"eatChess.mp3" ofType:@""]]), &sourceEatChess);
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)([NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"go.mp3" ofType:@""]]), &sourceGoChess);
+}
+
+#pragma make - AI
+- (void)AIShouldGo{
+    YZNormalAI *AI = [[YZNormalAI alloc]init];
+    NSDictionary *dict = [AI dictWithChessPlace:placeArray.copy];
+    NSString *str = dict[@"类型"];
+    if ([str isEqualToString:@"飞行"]) {
+        [_kYZChessView setAIFlyWithDict:dict.copy];
+    }else {
+        [_kYZChessView setAIWalkWithDict:dict.copy];
+    }
 }
 
 #pragma make - 协议
@@ -153,6 +180,8 @@
         shortP.tag = firstTag;
         shortP.camp = shortCamp;
         placeArray[m][n] = shortP;
+        
+        [self whoWinGame];
     });
 }
 
@@ -218,6 +247,43 @@
         [xArray addObject:yArray];
     }
     [recordArray addObject:xArray];
+}
+
+
+/**
+ 判断哪一方赢了
+ */
+- (void)whoWinGame{
+    int red = 0;
+    int blue = 0;
+    for (int i=0; i<6; i++) {
+        for (int j=0; j<6; j++) {
+            YZChessPlace *p = placeArray[i][j];
+            if (p.camp == -1) {
+                red++;
+            }
+            if (p.camp == 1) {
+                blue++;
+            }
+        }
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (red == 0) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"结果" message:@"蓝方获胜" preferredStyle: UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+            }]];
+            [self presentViewController:alert animated:true completion:nil];
+        }
+        if (blue == 0) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"结果" message:@"红方获胜" preferredStyle: UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+            }]];
+            [self presentViewController:alert animated:true completion:nil];
+        }
+    });
 }
 
 @end

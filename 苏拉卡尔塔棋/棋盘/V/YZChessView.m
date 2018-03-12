@@ -29,6 +29,7 @@
 - (void)initView{
     self.backgroundColor = RGB(245, 245, 245);
     self.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    self.isAIType = false;
     //建立棋子
     for (int i=0; i<12; i++) {
         if (i<6) {
@@ -37,6 +38,7 @@
             redBtn.frame = CGRectMake(0, 0, 25, 25);
             redBtn.center = CGPointMake(CENTERX-75+i*30, CENTERY-75);
             redBtn.tag = i + 1;
+            redBtn.userInteractionEnabled = false;
             [redBtn addTarget:self action:@selector(pressChessBtn:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:redBtn];
             
@@ -45,6 +47,7 @@
             blueBtn.frame = CGRectMake(0, 0, 25, 25);
             blueBtn.center = CGPointMake(CENTERX-75+i*30, CENTERY+75);
             blueBtn.tag = i + 19;
+            blueBtn.userInteractionEnabled = false;
             [blueBtn addTarget:self action:@selector(pressChessBtn:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:blueBtn];
         }else{
@@ -53,6 +56,7 @@
             redBtn.frame = CGRectMake(0, 0, 25, 25);
             redBtn.center = CGPointMake(CENTERX-75+(i-6)*30, CENTERY-45);
             redBtn.tag = i + 1;
+            redBtn.userInteractionEnabled = false;
             [redBtn addTarget:self action:@selector(pressChessBtn:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:redBtn];
             
@@ -61,6 +65,7 @@
             blueBtn.frame = CGRectMake(0, 0, 25, 25);
             blueBtn.center = CGPointMake(CENTERX-75+(i-6)*30, CENTERY+45);
             blueBtn.tag = i + 7;
+            blueBtn.userInteractionEnabled = false;
             [blueBtn addTarget:self action:@selector(pressChessBtn:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:blueBtn];
         }
@@ -123,15 +128,19 @@
 }
 
 - (void)redChessGo{
-    for (UIButton *btn in self.subviews) {
-        if (btn.tag > 0 && btn.tag <= 12) {
-            btn.userInteractionEnabled = true;
-        }
-        if (btn.tag > 12 && btn.tag <= 24) {
-            btn.userInteractionEnabled = false;
-        }
-    }
     self.isRedChess = true;
+    if (!self.isAIType) {
+        for (UIButton *btn in self.subviews) {
+            if (btn.tag > 0 && btn.tag <= 12) {
+                btn.userInteractionEnabled = true;
+            }
+            if (btn.tag > 12 && btn.tag <= 24) {
+                btn.userInteractionEnabled = false;
+            }
+        }
+    }else {
+        [self.chessDelegate AIShouldGo];
+    }
 }
 
 - (void)blueChessGo{
@@ -144,6 +153,44 @@
         }
     }
     self.isRedChess = false;
+}
+
+#pragma make - AI
+- (void)setAIWalkWithDict:(NSDictionary*)dict{
+    YZChessPlace *p = dict[@"可走位置"];
+    YZChessPlace *preP = dict[@"棋子"];
+    self.walkTag = preP.tag;
+    UIButton *shortBtn;
+    for (UIButton *b in self.subviews) {
+        if (b.tag == preP.tag) {
+            shortBtn = b;
+            [UIView animateWithDuration:0.3f animations:^{
+                b.center = CGPointMake(p.frameX, p.frameY);
+            }];
+        }
+    }
+    [self.chessDelegate walkBtnDidTouchWithTag:shortBtn.tag frameX:shortBtn.center.x frameY:shortBtn.center.y];
+    if (self.isRedChess) {
+        [self blueChessGo];
+    }else{
+        [self redChessGo];
+    }
+}
+
+- (void)setAIFlyWithDict:(NSDictionary*)dict{
+    YZChessPlace *p = dict[@"棋子"];
+    self.walkTag = p.tag;
+    NSArray *AIFlyArray = dict[@"可走位置"];
+    for (UIButton *b in self.subviews) {
+        if (b.tag == p.tag) {
+            [self bringSubviewToFront:b];
+            CAKeyframeAnimation *animation = [YZFlyAnimation animationWithChessCenter:b.center chessArray:AIFlyArray];
+            animation.delegate = self;
+            [b.layer addAnimation:animation forKey:nil];
+            shortFlyArray = AIFlyArray;
+            break;
+        }
+    }
 }
 
 - (void)setWalkEngineWithArray:(NSArray *)array{
@@ -306,6 +353,19 @@
     for (UIButton *btn in self.subviews) {
         if (btn.tag < 0) {
             [btn removeFromSuperview];
+        }
+    }
+}
+
+#pragma make - setter
+- (void)setIsAIType:(BOOL)isAIType{
+    _isAIType = isAIType;
+    if (_isAIType) {
+        self.label.text = @"PVE";
+        for (UIButton *btn in self.subviews) {
+            if (btn.tag > 0 && btn.tag <= 12) {
+                btn.userInteractionEnabled = false;
+            }
         }
     }
 }

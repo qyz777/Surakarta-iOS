@@ -14,6 +14,7 @@
 - (void)chessBtnDidTouchWithTag:(NSInteger)tag;
 - (void)walkBtnDidTouchWithTag:(NSInteger)tag frameX:(CGFloat)x frameY:(CGFloat)y;
 - (void)chessBtnDidEatWithFirstTag:(NSInteger)firstTag lastTag:(NSInteger)lastTag;
+- (void)AIShouldGo;
 
 @end
 
@@ -27,6 +28,7 @@
 @property(assign,nonatomic)NSInteger walkTag;
 @property(assign,nonatomic)NSInteger flyTag;
 @property(assign,nonatomic)BOOL isRedChess;
+@property(assign,nonatomic)BOOL isAIType;
 
 @property(weak,nonatomic)id<YZChessViewDelegate> chessDelegate;
 
@@ -39,5 +41,9 @@
 - (void)blueChessGo;
 
 - (void)resetChessPlaceWithArray:(NSArray*)array;
+
+- (void)setAIWalkWithDict:(NSDictionary*)dict;
+
+- (void)setAIFlyWithDict:(NSDictionary*)dict;
 
 @end

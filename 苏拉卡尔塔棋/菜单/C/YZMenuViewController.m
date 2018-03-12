@@ -43,13 +43,18 @@
 #pragma make - YZMenuView协议
 - (void)userDidTouchPVPBtn{
     YZChessViewController *vc = [[YZChessViewController alloc]init];
+    vc.gameMode = chessGameModePVP;
     [self presentViewController:vc animated:true completion:^{
         
     }];
 }
 
 - (void)userDidTouchPVEBtn{
-    
+    YZChessViewController *vc = [[YZChessViewController alloc]init];
+    vc.gameMode = chessGameModePVE;
+    [self presentViewController:vc animated:true completion:^{
+        
+    }];
 }
 
 - (void)userDidTouchSettingBtn{

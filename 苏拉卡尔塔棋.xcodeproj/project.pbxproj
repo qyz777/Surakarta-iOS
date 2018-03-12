@@ -10,6 +10,7 @@
 		63A254A03495FEEA5E24E39B /* libPods-苏拉卡尔塔棋.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D08F9C527793E65D0203C3 /* libPods-苏拉卡尔塔棋.a */; };
 		A00F94802042A0EE001D3AE5 /* YZWalkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A00F947F2042A0EE001D3AE5 /* YZWalkManager.m */; };
 		A00F94852042A691001D3AE5 /* YZFlyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A00F94842042A691001D3AE5 /* YZFlyManager.m */; };
+		A00FA8D620565FEF0071CCEA /* YZNormalAI.m in Sources */ = {isa = PBXBuildFile; fileRef = A00FA8D520565FEF0071CCEA /* YZNormalAI.m */; };
 		A037743A1FEA95AD0051D41A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A03774391FEA95AD0051D41A /* AppDelegate.m */; };
 		A03774401FEA95AD0051D41A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A037743E1FEA95AD0051D41A /* Main.storyboard */; };
 		A03774421FEA95AD0051D41A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A03774411FEA95AD0051D41A /* Assets.xcassets */; };
@@ -34,6 +35,8 @@
 		A00F947F2042A0EE001D3AE5 /* YZWalkManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZWalkManager.m; sourceTree = "<group>"; };
 		A00F94832042A691001D3AE5 /* YZFlyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZFlyManager.h; sourceTree = "<group>"; };
 		A00F94842042A691001D3AE5 /* YZFlyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZFlyManager.m; sourceTree = "<group>"; };
+		A00FA8D420565FEF0071CCEA /* YZNormalAI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZNormalAI.h; sourceTree = "<group>"; };
+		A00FA8D520565FEF0071CCEA /* YZNormalAI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZNormalAI.m; sourceTree = "<group>"; };
 		A03774351FEA95AD0051D41A /* 苏拉卡尔塔棋.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "苏拉卡尔塔棋.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A03774381FEA95AD0051D41A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A03774391FEA95AD0051D41A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -106,6 +109,15 @@
 			path = chessPlace;
 			sourceTree = "<group>";
 		};
+		A00FA8D320565FD20071CCEA /* AI */ = {
+			isa = PBXGroup;
+			children = (
+				A00FA8D420565FEF0071CCEA /* YZNormalAI.h */,
+				A00FA8D520565FEF0071CCEA /* YZNormalAI.m */,
+			);
+			path = AI;
+			sourceTree = "<group>";
+		};
 		A037742C1FEA95AD0051D41A = {
 			isa = PBXGroup;
 			children = (
@@ -145,6 +157,7 @@
 		A03774521FEA9A620051D41A /* model */ = {
 			isa = PBXGroup;
 			children = (
+				A00FA8D320565FD20071CCEA /* AI */,
 				A08445322045877200ECABF2 /* settings */,
 				A00F94822042A679001D3AE5 /* chessPlace */,
 				A00F94812042A671001D3AE5 /* flyManager */,
@@ -427,6 +440,7 @@
 				A0FC10A820196931000AA35F /* YZMenuView.m in Sources */,
 				A037743A1FEA95AD0051D41A /* AppDelegate.m in Sources */,
 				A08445352045878700ECABF2 /* YZSettings.m in Sources */,
+				A00FA8D620565FEF0071CCEA /* YZNormalAI.m in Sources */,
 				A00F94852042A691001D3AE5 /* YZFlyManager.m in Sources */,
 				A084453120457D3B00ECABF2 /* YZSettingTableView.m in Sources */,
 			);
@@ -565,7 +579,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 437JAL24TE;
-				GCC_PREFIX_HEADER = "/Users/qyizhong/Desktop/Surakarta/苏拉卡尔塔棋/extern/YZGeneral.pch";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/苏拉卡尔塔棋/extern/YZGeneral.pch";
 				INFOPLIST_FILE = "苏拉卡尔塔棋/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -582,7 +596,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 437JAL24TE;
-				GCC_PREFIX_HEADER = "/Users/qyizhong/Desktop/Surakarta/苏拉卡尔塔棋/extern/YZGeneral.pch";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/苏拉卡尔塔棋/extern/YZGeneral.pch";
 				INFOPLIST_FILE = "苏拉卡尔塔棋/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -159,7 +159,6 @@
 - (void)setAIWalkWithDict:(NSDictionary*)dict{
     YZChessPlace *p = dict[@"可走位置"];
     YZChessPlace *preP = dict[@"棋子"];
-    self.walkTag = preP.tag;
     UIButton *shortBtn;
     for (UIButton *b in self.subviews) {
         if (b.tag == preP.tag) {
@@ -181,6 +180,7 @@
     YZChessPlace *p = dict[@"棋子"];
     self.walkTag = p.tag;
     NSArray *AIFlyArray = dict[@"可走位置"];
+    NSLog(@"%ld",AIFlyArray.count);
     for (UIButton *b in self.subviews) {
         if (b.tag == p.tag) {
             [self bringSubviewToFront:b];
@@ -320,7 +320,6 @@
 
 #pragma make - 动画协议
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag{
-    YZChessPlace *zeroP = shortFlyArray.firstObject;
     YZChessPlace *lastP = shortFlyArray.lastObject;
     for (UIButton *btn in self.subviews) {
         if (btn.tag == self.walkTag) {
@@ -328,7 +327,7 @@
             [btn.layer removeAllAnimations];
         }
     }
-    self.messageLabel.text = [NSString stringWithFormat:@"%ld号 Attack %ld号",zeroP.tag,lastP.tag];
+    self.messageLabel.text = [NSString stringWithFormat:@"%ld号 Attack %ld号",self.walkTag,lastP.tag];
     [self flyEatWillEndWithTag:lastP.tag];
     [self.chessDelegate chessBtnDidEatWithFirstTag:self.walkTag lastTag:lastP.tag];
     if (self.isRedChess) {

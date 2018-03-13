@@ -17,7 +17,11 @@
 
 - (NSDictionary*)dictWithChessPlace:(NSArray*)chessPlace{
     place = chessPlace;
-    return [self getFinishPlace].copy;
+    NSDictionary *dict = [self getFinishPlace].copy;
+    if (dict) {
+        return dict;
+    }
+    return nil;
 }
 
 - (NSDictionary*)getFinishPlace{
@@ -66,7 +70,10 @@
             }
         }
     }
-    return finishArray[maxK];
+    if (finishArray.count > 0) {
+        return finishArray[maxK];
+    }
+    return nil;
 }
 
 - (NSMutableDictionary*)getChessValueWithChess:(YZChessPlace*)chess{

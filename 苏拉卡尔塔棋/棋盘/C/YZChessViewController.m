@@ -87,16 +87,23 @@
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)([NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"go.mp3" ofType:@""]]), &sourceGoChess);
 }
 
-#pragma make - AI
+#pragma make - AI协议
 - (void)AIShouldGo{
+    [self performSelector:@selector(AIGo) withObject:nil afterDelay:0.5];
+}
+
+- (void)AIGo{
     YZNormalAI *AI = [[YZNormalAI alloc]init];
     NSDictionary *dict = [AI dictWithChessPlace:placeArray.copy];
-    NSString *str = dict[@"类型"];
-    if ([str isEqualToString:@"飞行"]) {
-        [_kYZChessView setAIFlyWithDict:dict.copy];
-    }else {
-        [_kYZChessView setAIWalkWithDict:dict.copy];
+    if (dict) {
+        NSString *str = dict[@"类型"];
+        if ([str isEqualToString:@"飞行"]) {
+            [_kYZChessView setAIFlyWithDict:dict.copy];
+        }else {
+            [_kYZChessView setAIWalkWithDict:dict.copy];
+        }
     }
+    [[self class] cancelPreviousPerformRequestsWithTarget:self];
 }
 
 #pragma make - 协议

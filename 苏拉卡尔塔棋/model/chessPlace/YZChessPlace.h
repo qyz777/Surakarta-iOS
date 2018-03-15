@@ -29,4 +29,13 @@
 //获取盘面价值
 + (NSInteger)chessValueWithX:(NSInteger)x Y:(NSInteger)y;
 
+//获取一方棋子数量
++ (NSInteger)chessNumWithChessPlace:(NSArray*)place Camp:(NSInteger)camp;
+
+//获取棋子下子范围
++ (NSInteger)chessWalkRangeWithChessPlace:(NSArray*)place X:(NSInteger)x Y:(NSInteger)y;
+
+//获取棋子攻击力
++ (NSInteger)chessAttackRangeWithChessPlace:(NSArray*)place X:(NSInteger)x Y:(NSInteger)y Camp:(NSInteger)camp;
+
 @end

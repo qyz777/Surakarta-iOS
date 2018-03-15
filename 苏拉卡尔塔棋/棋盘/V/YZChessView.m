@@ -157,17 +157,18 @@
 
 #pragma make - AI
 - (void)setAIWalkWithDict:(NSDictionary*)dict{
-    YZChessPlace *p = dict[@"可走位置"];
-    YZChessPlace *preP = dict[@"棋子"];
+    YZChessPlace *p = dict[@"goWhere"];
+    YZChessPlace *whoGo = dict[@"whoGo"];
     UIButton *shortBtn;
     for (UIButton *b in self.subviews) {
-        if (b.tag == preP.tag) {
+        if (b.tag == whoGo.tag) {
             shortBtn = b;
             [UIView animateWithDuration:0.3f animations:^{
                 b.center = CGPointMake(p.frameX, p.frameY);
             }];
         }
     }
+    self.messageLabel.text = [NSString stringWithFormat:@"%ld号 走向 (%ld,%ld)",whoGo.tag,p.x,p.y];
     [self.chessDelegate walkBtnDidTouchWithTag:shortBtn.tag frameX:shortBtn.center.x frameY:shortBtn.center.y];
     if (self.isRedChess) {
         [self blueChessGo];
@@ -177,12 +178,11 @@
 }
 
 - (void)setAIFlyWithDict:(NSDictionary*)dict{
-    YZChessPlace *p = dict[@"棋子"];
-    self.walkTag = p.tag;
-    NSArray *AIFlyArray = dict[@"可走位置"];
-    NSLog(@"%ld",AIFlyArray.count);
+    YZChessPlace *whoGo = dict[@"whoGo"];
+    self.walkTag = whoGo.tag;
+    NSArray *AIFlyArray = dict[@"goWhere"];
     for (UIButton *b in self.subviews) {
-        if (b.tag == p.tag) {
+        if (b.tag == whoGo.tag) {
             [self bringSubviewToFront:b];
             CAKeyframeAnimation *animation = [YZFlyAnimation animationWithChessCenter:b.center chessArray:AIFlyArray];
             animation.delegate = self;

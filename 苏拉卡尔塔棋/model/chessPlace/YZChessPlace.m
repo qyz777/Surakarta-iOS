@@ -7,6 +7,7 @@
 //
 
 #import "YZChessPlace.h"
+#import "YZWalkManager.h"
 
 @implementation YZChessPlace
 
@@ -277,6 +278,34 @@
             break;
     }
     return 0;
+}
+
++ (NSInteger)chessNumWithChessPlace:(NSArray*)place Camp:(NSInteger)camp{
+    NSInteger num = 0;
+    for (int i=0; i<6; i++) {
+        for (int j=0; j<6; j++) {
+            YZChessPlace *p = place[i][j];
+            if (p.camp == camp) {
+                num++;
+            }
+        }
+    }
+    return num;
+}
+
++ (NSInteger)chessWalkRangeWithChessPlace:(NSArray*)place X:(NSInteger)x Y:(NSInteger)y{
+    return [YZWalkManager walkEngine:x Y:y previousArray:place].count;
+}
+
++ (NSInteger)chessAttackRangeWithChessPlace:(NSArray*)place X:(NSInteger)x Y:(NSInteger)y Camp:(NSInteger)camp{
+    NSInteger attackRange = 0;
+    NSArray *walkArray = [YZWalkManager walkEngine:x Y:y previousArray:place];
+    for (YZChessPlace *p in walkArray) {
+        if (p.camp != camp) {
+            attackRange += 1;
+        }
+    }
+    return attackRange;
 }
 
 @end

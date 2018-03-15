@@ -96,8 +96,8 @@
     YZNormalAI *AI = [[YZNormalAI alloc]init];
     NSDictionary *dict = [AI dictWithChessPlace:placeArray.copy];
     if (dict) {
-        NSString *str = dict[@"类型"];
-        if ([str isEqualToString:@"飞行"]) {
+        NSString *str = dict[@"type"];
+        if ([str isEqualToString:@"fly"]) {
             [_kYZChessView setAIFlyWithDict:dict.copy];
         }else {
             [_kYZChessView setAIWalkWithDict:dict.copy];
@@ -279,14 +279,14 @@
         if (red == 0) {
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"结果" message:@"蓝方获胜" preferredStyle: UIAlertControllerStyleAlert];
             [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                
+                [self dismissViewControllerAnimated:true completion:nil];
             }]];
             [self presentViewController:alert animated:true completion:nil];
         }
         if (blue == 0) {
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"结果" message:@"红方获胜" preferredStyle: UIAlertControllerStyleAlert];
             [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                
+                [self dismissViewControllerAnimated:true completion:nil];
             }]];
             [self presentViewController:alert animated:true completion:nil];
         }

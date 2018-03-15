@@ -55,6 +55,7 @@
 //搜索站局面最佳状态导致无子可走所用方法
 - (NSDictionary*)getExtraWalkWithChessPlace:(NSArray*)place{
     NSMutableArray *finishArray = [[NSMutableArray alloc]init];
+    NSMutableArray *flyArray = [[NSMutableArray alloc]init];
     for (int i=0; i<6; i++) {
         for (int j=0; j<6; j++) {
             YZChessPlace *p = place[i][j];
@@ -65,23 +66,37 @@
                     [finishArray addObject:dict];
                 }
             }
+            if (p.camp == 1) {
+                [flyArray addObject:[YZFlyManager flyManageWithX:p.x Y:p.y Camp:p.camp placeArray:place.mutableCopy]];
+            }
         }
     }
-    NSInteger maxValue = 0;
-    int maxK = 0;
     for (int k=0; k<finishArray.count; k++) {
         NSDictionary *d = finishArray[k];
-        NSString *shortStr = d[@"type"];
-        if ([shortStr isEqualToString:@"walk"]) {
-            NSNumber *valueNumber = d[@"value"];
-            if (maxValue < valueNumber.integerValue) {
-                maxValue = valueNumber.integerValue;
-                maxK = k;
+        NSNumber *valueNumberOne = d[@"value"];
+        for (int q=k; q<finishArray.count; q++) {
+            NSDictionary *dd = finishArray[q];
+            NSNumber *valueNumberTwo = dd[@"value"];
+            if (valueNumberOne < valueNumberTwo) {
+                NSDictionary *temp = finishArray[k];
+                finishArray[k] = finishArray[q];
+                finishArray[q] = temp;
             }
         }
     }
     if (finishArray.count > 0) {
-        return finishArray[maxK];
+        NSDictionary *d = finishArray[0];
+        YZChessPlace *p = d[@"goWhere"];
+        for (NSArray *array in flyArray) {
+            for (YZChessPlace *pp in array) {
+                if (p.x == pp.x && p.y == pp.y) {
+                    if (finishArray.count > 1) {
+                        return finishArray[1];
+                    }
+                }
+            }
+        }
+        return finishArray[0];
     }
     return nil;
 }
@@ -226,16 +241,22 @@
     NSInteger chessValue = 0;
     NSInteger walkRange = 0;
     NSInteger ATK = 0;
+    NSInteger chessNum = [YZChessPlace chessNumWithChessPlace:place Camp:camp];
+    
     for (NSArray *array in place) {
         for (YZChessPlace *p in array) {
             if (p.camp == camp) {
-                chessValue += [YZChessPlace chessValueWithX:p.x Y:p.y];
+                if (chessNum <= 12) {
+                    chessValue += [YZChessPlace chessEndingValueWith:p.x Y:p.y];
+                }else {
+                    chessValue += [YZChessPlace chessValueWithX:p.x Y:p.y];
+                }
                 walkRange += [YZChessPlace chessWalkRangeWithChessPlace:place X:p.x Y:p.y];
                 ATK += [YZChessPlace chessAttackRangeWithChessPlace:place X:p.x Y:p.y Camp:camp];
             }
         }
     }
-    NSInteger chessNum = [YZChessPlace chessNumWithChessPlace:place Camp:camp];
+    
     return chessNum * 6 + walkRange + ATK * 2 +chessValue; 
 }
 

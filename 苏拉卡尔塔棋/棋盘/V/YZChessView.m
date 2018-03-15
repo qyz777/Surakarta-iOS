@@ -168,7 +168,7 @@
             }];
         }
     }
-    self.messageLabel.text = [NSString stringWithFormat:@"%ld号 走向 (%ld,%ld)",whoGo.tag,p.x,p.y];
+    self.messageLabel.text = [NSString stringWithFormat:@"%ld号 (%ld,%ld) 走向 (%ld,%ld)",(long)whoGo.tag,(long)whoGo.x,(long)whoGo.y,(long)p.x,(long)p.y];
     [self.chessDelegate walkBtnDidTouchWithTag:shortBtn.tag frameX:shortBtn.center.x frameY:shortBtn.center.y];
     if (self.isRedChess) {
         [self blueChessGo];

@@ -226,6 +226,78 @@
                 return 30;
             }
             if (y == 2 || y == 3) {
+                return 25;
+            }
+            break;
+        }
+        case 2:{
+            if (y == 0 || y == 5) {
+                return 20;
+            }
+            if (y == 1 || y == 4) {
+                return 25;
+            }
+            if (y == 2 || y == 3) {
+                return 40;
+            }
+            break;
+        }
+        case 3:{
+            if (y == 0 || y == 5) {
+                return 20;
+            }
+            if (y == 1 || y == 4) {
+                return 25;
+            }
+            if (y == 2 || y == 3) {
+                return 40;
+            }
+            break;
+        }
+        case 4:{
+            if (y == 0 || y == 5) {
+                return 20;
+            }
+            if (y == 1 || y == 4) {
+                return 30;
+            }
+            if (y == 2 || y == 3) {
+                return 25;
+            }
+            break;
+        }
+        case 5:{
+            if (y == 0 || y == 5) {
+                return 5;
+            }else {
+                return 20;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+    return 0;
+}
+
++ (NSInteger)chessEndingValueWith:(NSInteger)x Y:(NSInteger)y{
+    switch (x) {
+        case 0:{
+            if (y == 0 || y == 5) {
+                return 5;
+            }else {
+                return 20;
+            }
+            break;
+        }
+        case 1:{
+            if (y == 0 || y == 5) {
+                return 20;
+            }
+            if (y == 1 || y == 4) {
+                return 30;
+            }
+            if (y == 2 || y == 3) {
                 return 50;
             }
             break;

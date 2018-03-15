@@ -29,6 +29,9 @@
 //获取盘面价值
 + (NSInteger)chessValueWithX:(NSInteger)x Y:(NSInteger)y;
 
+//获取残局盘面价值
++ (NSInteger)chessEndingValueWith:(NSInteger)x Y:(NSInteger)y;
+
 //获取一方棋子数量
 + (NSInteger)chessNumWithChessPlace:(NSArray*)place Camp:(NSInteger)camp;
 

@@ -373,7 +373,7 @@
     NSInteger attackRange = 0;
     NSArray *walkArray = [YZWalkManager walkEngine:x Y:y previousArray:place];
     for (YZChessPlace *p in walkArray) {
-        if (p.camp != camp) {
+        if (p.camp + camp == 0) {
             attackRange += 1;
         }
     }

@@ -23,6 +23,7 @@
     NSMutableArray *finishFlyPath;
     SystemSoundID sourceEatChess;
     SystemSoundID sourceGoChess;
+    NSInteger stepNum;
 }
 
 @end
@@ -53,6 +54,7 @@
         _kYZChessView.isAIType = false;
     }else {
         _kYZChessView.isAIType = true;
+        stepNum = 0;
     }
     _kYZChessView.chessDelegate = self;
     [self.view addSubview:_kYZChessView];
@@ -94,7 +96,8 @@
 
 - (void)AIGo{
     YZNormalAI *AI = [[YZNormalAI alloc]init];
-    NSDictionary *dict = [AI dictWithChessPlace:placeArray.copy];
+    NSDictionary *dict = [AI dictWithChessPlace:placeArray.copy StepNum:stepNum];
+    stepNum++;
     if (dict) {
         NSString *str = dict[@"type"];
         if ([str isEqualToString:@"fly"]) {

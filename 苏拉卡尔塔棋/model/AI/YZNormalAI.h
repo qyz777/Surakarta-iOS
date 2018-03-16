@@ -14,6 +14,6 @@
 @interface YZNormalAI : NSObject
 
 //传入棋盘
-- (NSDictionary*)dictWithChessPlace:(NSArray*)chessPlace;
+- (NSDictionary*)dictWithChessPlace:(NSArray*)chessPlace StepNum:(NSInteger)num;
 
 @end

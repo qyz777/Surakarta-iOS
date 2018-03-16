@@ -34,7 +34,7 @@
         NSDictionary *tactics = [YZNormalAITactics openingTacticsWithChessPlace:chessPlace StepNum:num];
         YZChessPlace *goWhere = tactics[@"goWhere"];
         YZChessPlace *point = chessPlace[1][4];
-        if (goWhere.camp != 1) {
+        if (goWhere.camp == 0) {
             if (num < 3) {
                 return tactics;
             }else {

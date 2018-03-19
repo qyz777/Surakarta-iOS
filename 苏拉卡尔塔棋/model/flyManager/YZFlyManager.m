@@ -174,8 +174,16 @@
 
 - (NSMutableArray*)bugArrayWithFlyArray:(NSMutableArray*)flyArray{
     NSMutableArray *bugArray = [[NSMutableArray alloc]init];
-    for (int i=(int)flyArray.count / 4 * 4; i<flyArray.count; i++) {
-        [bugArray addObject:flyArray[i]];
+    if (flyArray.count == 8 || flyArray.count == 12) {
+//        处理特殊bug
+        [bugArray addObject:flyArray[flyArray.count-4]];
+        [bugArray addObject:flyArray[flyArray.count-3]];
+        [bugArray addObject:flyArray[flyArray.count-2]];
+        [bugArray addObject:flyArray[flyArray.count-1]];
+    }else {
+        for (int i=(int)flyArray.count / 4 * 4; i<flyArray.count; i++) {
+            [bugArray addObject:flyArray[i]];
+        }
     }
     return bugArray;
 }

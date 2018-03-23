@@ -31,7 +31,7 @@
     [self addSubview:self.beginBtn];
     [self.beginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(120, 40));
-        make.top.equalTo(self).offset(200);
+        make.top.equalTo(self).offset(240);
         make.centerX.equalTo(self);
     }];
     [self.beginBtn addTarget:self action:@selector(pressBeginBtn) forControlEvents:UIControlEventTouchUpInside];
@@ -43,7 +43,7 @@
     [self addSubview:self.settingBtn];
     [self.settingBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(120, 40));
-        make.top.equalTo(self.beginBtn.mas_bottom).offset(20);
+        make.top.equalTo(self.beginBtn.mas_bottom).offset(30);
         make.centerX.equalTo(self);
     }];
     [self.settingBtn addTarget:self action:@selector(pressSettingBtn) forControlEvents:UIControlEventTouchUpInside];
@@ -69,7 +69,7 @@
     self.pveBtn.hidden = true;
     [self.pveBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(120, 40));
-        make.top.equalTo(self.pvpBtn.mas_bottom).offset(20);
+        make.top.equalTo(self.pvpBtn.mas_bottom).offset(30);
         make.centerX.equalTo(self);
     }];
     [self.pveBtn addTarget:self action:@selector(pressPveBtn) forControlEvents:UIControlEventTouchUpInside];
@@ -82,7 +82,7 @@
     self.backBtn.hidden = true;
     [self.backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(120, 40));
-        make.top.equalTo(self.pveBtn.mas_bottom).offset(20);
+        make.top.equalTo(self.pveBtn.mas_bottom).offset(30);
         make.centerX.equalTo(self);
     }];
     [self.backBtn addTarget:self action:@selector(pressBackBtn) forControlEvents:UIControlEventTouchUpInside];

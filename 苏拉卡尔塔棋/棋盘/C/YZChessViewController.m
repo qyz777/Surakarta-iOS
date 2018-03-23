@@ -17,13 +17,21 @@
 
 @interface YZChessViewController ()<YZChessViewDelegate>{
     YZChessView *_kYZChessView;
+//    棋盘
     NSMutableArray *placeArray;
+//    储存棋盘，用于悔棋
     NSMutableArray *recordArray;
+//    飞行数组
     NSMutableArray *flyPath;
+//    有多个飞行数组组成
     NSMutableArray *finishFlyPath;
+//    声音
     SystemSoundID sourceEatChess;
     SystemSoundID sourceGoChess;
-    NSInteger stepNum;
+//    AI下棋步数
+    NSInteger AIStepNum;
+//    双方下棋总步数
+    NSInteger stepNumber;
 }
 
 @end
@@ -50,11 +58,12 @@
 - (void)initView{
     self.view.backgroundColor = [UIColor whiteColor];
     _kYZChessView = [[YZChessView alloc]init];
+    stepNumber = 0;
     if (self.gameMode == chessGameModePVP) {
         _kYZChessView.isAIType = false;
     }else {
         _kYZChessView.isAIType = true;
-        stepNum = 0;
+        AIStepNum = 0;
     }
     _kYZChessView.chessDelegate = self;
     [self.view addSubview:_kYZChessView];
@@ -96,8 +105,8 @@
 
 - (void)AIGo{
     YZNormalAI *AI = [[YZNormalAI alloc]init];
-    NSDictionary *dict = [AI dictWithChessPlace:placeArray.copy StepNum:stepNum];
-    stepNum++;
+    NSDictionary *dict = [AI dictWithChessPlace:placeArray.copy StepNum:AIStepNum];
+    AIStepNum++;
     if (dict) {
         NSString *str = dict[@"type"];
         if ([str isEqualToString:@"fly"]) {
@@ -117,10 +126,14 @@
 }
 
 - (void)backBtnDidTouchUpInside{
-    NSMutableArray *chess = recordArray[recordArray.count - 1];
-    [recordArray removeLastObject];
-    [_kYZChessView resetChessPlaceWithArray:chess.copy];
-    placeArray = chess.copy;
+    if (stepNumber - 1 > 0) {
+        stepNumber--;
+        AIStepNum--;
+        NSMutableArray *chess = recordArray[recordArray.count - 1];
+        [recordArray removeLastObject];
+        [_kYZChessView resetChessPlaceWithArray:chess.copy];
+        placeArray = chess.copy;
+    }
 }
 
 - (void)chessBtnDidTouchWithTag:(NSInteger)tag{
@@ -159,6 +172,8 @@
  @param lastTag 被吃子的tag
  */
 - (void)chessBtnDidEatWithFirstTag:(NSInteger)firstTag lastTag:(NSInteger)lastTag{
+    stepNumber++;
+    
     if ([YZSettings isOnWithKey:@"vibrate"]) {
         AudioServicesPlaySystemSound(1519);
     }
@@ -203,6 +218,8 @@
  @param y y坐标
  */
 - (void)walkBtnDidTouchWithTag:(NSInteger)tag frameX:(CGFloat)x frameY:(CGFloat)y{
+    stepNumber++;
+    
     if ([YZSettings isOnWithKey:@"goChessSource"]) {
         AudioServicesPlaySystemSound(sourceGoChess);
     }

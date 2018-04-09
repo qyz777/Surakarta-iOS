@@ -14,6 +14,10 @@
 
 + (void)changeSettingWithKey:(NSString*)key;
 
++ (void)changeSettingWithKey:(NSString*)key Type:(NSString*)type;
+
 + (BOOL)isOnWithKey:(NSString*)key;
+
++ (NSString*)typeWithKey:(NSString*)key;
 
 @end

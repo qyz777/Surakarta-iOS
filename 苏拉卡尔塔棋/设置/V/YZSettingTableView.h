@@ -14,12 +14,13 @@
 - (void)goSourceDidSwitch;
 - (void)vibrationDidSwitch;
 - (BOOL)switchStateWithSection:(NSInteger)section;
+- (void)specialDidChangeWithType:(NSString*)type;
 
 @end
 
 @interface YZSettingTableView : UITableView<UITableViewDelegate,UITableViewDataSource>
 
-
+@property(copy,nonatomic)NSString *labelType;
 
 @property(nonatomic,weak)id<YZSettingTableViewDelegate> settingDelegate;
 

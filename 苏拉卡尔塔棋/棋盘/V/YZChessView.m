@@ -9,12 +9,15 @@
 #import "YZChessView.h"
 #import "YZChessPlace.h"
 #import "YZFlyAnimation.h"
+#import "YZEmitter.h"
 #import <objc/runtime.h>
 
 @interface YZChessView()<CAAnimationDelegate>{
     NSArray *flyArray;
     NSArray *shortFlyArray;
 }
+
+@property(strong,nonatomic)CAEmitterLayer *emLayer;
 
 @end
 
@@ -73,7 +76,7 @@
     
     self.label = [[UILabel alloc]init];
     self.label.textAlignment = NSTextAlignmentCenter;
-    self.label.text = @"PVP";
+    self.label.text = @"人人对决";
     self.label.font = [UIFont systemFontOfSize:30.0f];
     [self addSubview:self.label];
     [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -165,6 +168,10 @@
             shortBtn = b;
             [UIView animateWithDuration:0.3f animations:^{
                 b.center = CGPointMake(p.frameX, p.frameY);
+            }completion:^(BOOL finished) {
+                self.emLayer = [YZEmitter yzEmitterLayer];
+                [shortBtn.layer addSublayer:self.emLayer];
+                [self startSpecalAnimationWithTag:shortBtn.tag];
             }];
         }
     }
@@ -215,8 +222,13 @@
     for (UIButton *b in self.subviews) {
         if (b.tag == self.walkTag) {
             shortBtn = b;
+//            移动棋子
             [UIView animateWithDuration:0.3f animations:^{
                 b.center = btn.center;
+            }completion:^(BOOL finished) {
+                self.emLayer = [YZEmitter yzEmitterLayer];
+                [shortBtn.layer addSublayer:self.emLayer];
+                [self startSpecalAnimationWithTag:shortBtn.tag];
             }];
         }
     }
@@ -318,6 +330,32 @@
     }
 }
 
+#pragma make -特效
+- (void)startSpecalAnimationWithTag:(NSInteger)tag{
+    CGRect frame;
+    for (UIButton *btn in self.subviews) {
+        if (btn.tag == tag) {
+            frame = btn.frame;
+            break;
+        }
+    }
+    self.emLayer.beginTime = CACurrentMediaTime();
+    self.emLayer.birthRate = 1;
+    self.emLayer.position = CGPointMake(frame.size.width / 2, frame.size.height / 2);
+    [self performSelector:@selector(stopSpecalAnimationWithTag:) withObject:[NSNumber numberWithInteger:tag] afterDelay:0.05];
+}
+
+- (void)stopSpecalAnimationWithTag:(NSNumber*)numTag{
+    NSInteger tag = [numTag integerValue];
+    for (UIButton *btn in self.subviews) {
+        if (btn.tag == tag) {
+            self.emLayer.birthRate = 0;
+            [btn.layer removeAllAnimations];
+            break;
+        }
+    }
+}
+
 #pragma make - 动画协议
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag{
     YZChessPlace *lastP = shortFlyArray.lastObject;
@@ -360,7 +398,7 @@
 - (void)setIsAIType:(BOOL)isAIType{
     _isAIType = isAIType;
     if (_isAIType) {
-        self.label.text = @"PVE";
+        self.label.text = @"人机对决";
         for (UIButton *btn in self.subviews) {
             if (btn.tag > 0 && btn.tag <= 12) {
                 btn.userInteractionEnabled = false;

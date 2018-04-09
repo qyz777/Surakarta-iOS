@@ -25,6 +25,7 @@
 		A084453120457D3B00ECABF2 /* YZSettingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A084453020457D3B00ECABF2 /* YZSettingTableView.m */; };
 		A08445352045878700ECABF2 /* YZSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A08445342045878700ECABF2 /* YZSettings.m */; };
 		A09AFE44205BE36C008AE15B /* YZNormalAITactics.m in Sources */ = {isa = PBXBuildFile; fileRef = A09AFE43205BE36C008AE15B /* YZNormalAITactics.m */; };
+		A0BB6653207AF6D400CEB369 /* YZEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = A0BB6652207AF6D400CEB369 /* YZEmitter.m */; };
 		A0FC10A520196921000AA35F /* YZMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FC10A420196921000AA35F /* YZMenuViewController.m */; };
 		A0FC10A820196931000AA35F /* YZMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FC10A720196931000AA35F /* YZMenuView.m */; };
 		A0FC10AC201969A9000AA35F /* YZChessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FC10AB201969A9000AA35F /* YZChessViewController.m */; };
@@ -63,6 +64,8 @@
 		A08445342045878700ECABF2 /* YZSettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZSettings.m; sourceTree = "<group>"; };
 		A09AFE42205BE36C008AE15B /* YZNormalAITactics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZNormalAITactics.h; sourceTree = "<group>"; };
 		A09AFE43205BE36C008AE15B /* YZNormalAITactics.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZNormalAITactics.m; sourceTree = "<group>"; };
+		A0BB6651207AF6D400CEB369 /* YZEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZEmitter.h; sourceTree = "<group>"; };
+		A0BB6652207AF6D400CEB369 /* YZEmitter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZEmitter.m; sourceTree = "<group>"; };
 		A0FC10A320196921000AA35F /* YZMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZMenuViewController.h; sourceTree = "<group>"; };
 		A0FC10A420196921000AA35F /* YZMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZMenuViewController.m; sourceTree = "<group>"; };
 		A0FC10A620196931000AA35F /* YZMenuView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZMenuView.h; sourceTree = "<group>"; };
@@ -175,6 +178,8 @@
 			children = (
 				A084451B20456CF900ECABF2 /* YZFlyAnimation.h */,
 				A084451C20456CF900ECABF2 /* YZFlyAnimation.m */,
+				A0BB6651207AF6D400CEB369 /* YZEmitter.h */,
+				A0BB6652207AF6D400CEB369 /* YZEmitter.m */,
 			);
 			path = "动画";
 			sourceTree = "<group>";
@@ -344,7 +349,7 @@
 		A037742D1FEA95AD0051D41A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Q YiZhong";
 				TargetAttributes = {
 					A03774341FEA95AD0051D41A = {
@@ -445,6 +450,7 @@
 				A03774511FEA96070051D41A /* YZChessView.m in Sources */,
 				A084451D20456CF900ECABF2 /* YZFlyAnimation.m in Sources */,
 				A03774551FEE8A9F0051D41A /* YZChessPlace.m in Sources */,
+				A0BB6653207AF6D400CEB369 /* YZEmitter.m in Sources */,
 				A0FC10AC201969A9000AA35F /* YZChessViewController.m in Sources */,
 				A084452E20457C7500ECABF2 /* YZSettingViewController.m in Sources */,
 				A03774481FEA95AD0051D41A /* main.m in Sources */,
@@ -496,6 +502,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -503,6 +510,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -551,6 +559,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -558,6 +567,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;

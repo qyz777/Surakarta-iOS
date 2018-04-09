@@ -49,26 +49,26 @@
     [self.settingBtn addTarget:self action:@selector(pressSettingBtn) forControlEvents:UIControlEventTouchUpInside];
     
     self.pvpBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.pvpBtn setTitle:@"PVP" forState:UIControlStateNormal];
+    [self.pvpBtn setTitle:@"人人对决" forState:UIControlStateNormal];
     self.pvpBtn.titleLabel.font = [UIFont systemFontOfSize:30.0f];
     [self.pvpBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self addSubview:self.pvpBtn];
     self.pvpBtn.hidden = true;
     [self.pvpBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(120, 40));
+        make.size.mas_equalTo(CGSizeMake(180, 40));
         make.top.equalTo(self).offset(200);
         make.centerX.equalTo(self);
     }];
     [self.pvpBtn addTarget:self action:@selector(pressPvpBtn) forControlEvents:UIControlEventTouchUpInside];
     
     self.pveBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.pveBtn setTitle:@"PVE" forState:UIControlStateNormal];
+    [self.pveBtn setTitle:@"人机对决" forState:UIControlStateNormal];
     self.pveBtn.titleLabel.font = [UIFont systemFontOfSize:30.0f];
     [self.pveBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self addSubview:self.pveBtn];
     self.pveBtn.hidden = true;
     [self.pveBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(120, 40));
+        make.size.mas_equalTo(CGSizeMake(180, 40));
         make.top.equalTo(self.pvpBtn.mas_bottom).offset(30);
         make.centerX.equalTo(self);
     }];

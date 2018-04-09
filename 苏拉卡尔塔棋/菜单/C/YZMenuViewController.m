@@ -44,6 +44,7 @@
 - (void)userDidTouchPVPBtn{
     YZChessViewController *vc = [[YZChessViewController alloc]init];
     vc.gameMode = chessGameModePVP;
+    vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:vc animated:true completion:^{
         
     }];
@@ -52,6 +53,7 @@
 - (void)userDidTouchPVEBtn{
     YZChessViewController *vc = [[YZChessViewController alloc]init];
     vc.gameMode = chessGameModePVE;
+    vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:vc animated:true completion:^{
         
     }];
@@ -59,6 +61,7 @@
 
 - (void)userDidTouchSettingBtn{
     YZSettingViewController *vc = [[YZSettingViewController alloc]init];
+    vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
     [self presentViewController:vc animated:true completion:^{
         
     }];

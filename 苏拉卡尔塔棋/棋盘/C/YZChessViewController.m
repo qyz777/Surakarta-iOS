@@ -41,7 +41,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initView];
-    [self initPriority];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -77,17 +76,17 @@
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"选择先手" message:@"" preferredStyle: UIAlertControllerStyleAlert];
     if (self.gameMode == chessGameModePVP) {
         [alert addAction:[UIAlertAction actionWithTitle:@"红方" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            [_kYZChessView redChessGo];
+            [self->_kYZChessView redChessGo];
         }]];
         [alert addAction:[UIAlertAction actionWithTitle:@"蓝方" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [_kYZChessView blueChessGo];
+            [self->_kYZChessView blueChessGo];
         }]];
     }else {
         [alert addAction:[UIAlertAction actionWithTitle:@"AI先手" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            [_kYZChessView redChessGo];
+            [self->_kYZChessView redChessGo];
         }]];
         [alert addAction:[UIAlertAction actionWithTitle:@"玩家先手" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [_kYZChessView blueChessGo];
+            [self->_kYZChessView blueChessGo];
         }]];
     }
     [self presentViewController:alert animated:true completion:nil];
@@ -188,12 +187,12 @@
         int m = 0,n = 0;
         for (int i=0; i<6; i++) {
             for (int j=0; j<6; j++) {
-                YZChessPlace *p = placeArray[i][j];
+                YZChessPlace *p = self->placeArray[i][j];
                 if (p.tag == firstTag) {
                     shortCamp = p.camp;
                     p.tag = 0;
                     p.camp = 0;
-                    placeArray[i][j] = p;
+                    self->placeArray[i][j] = p;
                 }
                 if (p.tag == lastTag) {
                     m = i;
@@ -201,10 +200,10 @@
                 }
             }
         }
-        YZChessPlace *shortP = placeArray[m][n];
+        YZChessPlace *shortP = self->placeArray[m][n];
         shortP.tag = firstTag;
         shortP.camp = shortCamp;
-        placeArray[m][n] = shortP;
+        self->placeArray[m][n] = shortP;
         
         [self whoWinGame];
     });
@@ -232,12 +231,12 @@
         int n = 0;
         for (int i=0; i<6; i++) {
             for (int j=0; j<6; j++) {
-                YZChessPlace *p = placeArray[i][j];
+                YZChessPlace *p = self->placeArray[i][j];
                 if (p.tag == tag) {
                     shortCamp = p.camp;
                     p.tag = 0;
                     p.camp = 0;
-                    placeArray[i][j] = p;
+                    self->placeArray[i][j] = p;
                 }
                 if (p.frameX == x && p.frameY == y) {
                     m = i;
@@ -245,10 +244,10 @@
                 }
             }
         }
-        YZChessPlace *shortP = placeArray[m][n];
+        YZChessPlace *shortP = self->placeArray[m][n];
         shortP.tag = shortTag;
         shortP.camp = shortCamp;
-        placeArray[m][n] = shortP;
+        self->placeArray[m][n] = shortP;
     });
 }
 

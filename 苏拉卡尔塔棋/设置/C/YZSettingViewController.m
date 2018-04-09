@@ -32,6 +32,7 @@
     
     settingTableView = [[YZSettingTableView alloc]init];
     settingTableView.settingDelegate = self;
+    settingTableView.labelType = [YZSettings typeWithKey:@"special"];
     [self.view addSubview:settingTableView];
     
     self.titleLabel = [[UILabel alloc]init];
@@ -88,6 +89,10 @@
             break;
     }
     return true;
+}
+
+- (void)specialDidChangeWithType:(NSString *)type{
+    [YZSettings changeSettingWithKey:@"special" Type:type];
 }
 
 @end

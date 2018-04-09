@@ -401,7 +401,7 @@
  @param chessPlace 棋盘
  @return 返回一个模拟下完棋子的棋盘
  */
-- (NSArray*)goWithChess:(YZChessPlace*)goChess toChess:(YZChessPlace*)toChess chessPlace:(NSArray*)chessPlace{
+- (NSArray*) goWithChess:(YZChessPlace*)goChess toChess:(YZChessPlace*)toChess chessPlace:(NSArray*)chessPlace{
     NSInteger shortTag = goChess.tag;
     NSInteger shortCamp = goChess.camp;
     

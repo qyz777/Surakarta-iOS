@@ -79,13 +79,7 @@
     }else {
         NSDictionary *walkDict = [self getWalkStepWithChessPlace:chessPlace.copy];
         if (walkDict) {
-            YZChessPlace *p = walkDict[@"whoGo"];
-            if (p.tag > 12) {
-//                调到了玩家的棋子，是个bug
-                return [self getExtraWalkWithChessPlace:chessPlace];
-            }else {
-                return walkDict;
-            }
+            return walkDict;
         }else {
             return [self getExtraWalkWithChessPlace:chessPlace];
         }
@@ -347,7 +341,7 @@
     for (int i=0; i<6; i++) {
         for (int j=0; j<6; j++) {
             YZChessPlace *tread = place[i][j];
-            if (tread.tag > 0) {
+            if (tread.tag > 0 && tread.camp == camp) {
                 NSArray *walkArray = [YZWalkManager walkEngine:tread.x Y:tread.y previousArray:place];
                 for (YZChessPlace *pp in walkArray) {
                     if (point.frameX == pp.frameX && point.frameY == pp.frameY) {

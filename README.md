@@ -1,6 +1,6 @@
 # Surakarta-iOS
 
-这是一个在iOS上实现的苏拉卡尔塔棋，是学校的一个国家级大创项目，与另一个仓库Surakarta-evaluation-function是配套的
+这是一个在iOS上实现的苏拉卡尔塔棋，是学校的一个国家级大创项目，与另一个仓库[Surakarta-evaluation-function](https://github.com/qyz777/Surakarta-evaluation-function)是配套的
 
 这个项目为了达成两个目标
 
@@ -17,5 +17,6 @@
 详细的实现方法我将会在我的博客和简书中放出来，欢迎访问
 
 [简书](https://www.jianshu.com/u/6d025dc6ea64)
+[iOS实现苏拉卡尔塔棋盘](https://www.jianshu.com/p/ad1a29bea138)
 
 [Qi的博客](http://www.qyizhong.cn)

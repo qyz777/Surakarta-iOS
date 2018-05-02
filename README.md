@@ -17,6 +17,9 @@
 详细的实现方法我将会在我的博客和简书中放出来，欢迎访问
 
 [简书](https://www.jianshu.com/u/6d025dc6ea64)
+
 [iOS实现苏拉卡尔塔棋盘](https://www.jianshu.com/p/ad1a29bea138)
+
+[iOS实现苏拉卡尔塔吃子算法](https://www.jianshu.com/p/ad6b3a9bc280)
 
 [Qi的博客](http://www.qyizhong.cn)

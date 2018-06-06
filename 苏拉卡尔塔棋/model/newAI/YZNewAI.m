@@ -10,6 +10,8 @@
 #import "YZChessPlace.h"
 #import "YZWalkManager.h"
 #import "YZFlyManager.h"
+#import "YZChessValue.h"
+#import "model.h"
 
 NSString const *stepArrayKey = @"stepArrayKey";
 NSString const *goKey = @"goKey";
@@ -19,10 +21,21 @@ NSString const *stepTypeKey = @"stepTypeKey";
 NSString const *stepTypeWalk = @"stepTypeWalk";
 NSString const *stepTypeFly = @"stepTypeFly";
 
+@interface YZNewAI()
+
+@property(nonatomic, assign)BOOL isNeedAgainThink;
+
+@end
+
 @implementation YZNewAI
 
 - (NSDictionary *)stepDataWithChessPlace:(NSArray *)chessPlace {
-    return [self stepWithChessPlace:chessPlace];
+    NSDictionary *step = [self stepWithChessPlace:chessPlace];
+    if (step.count == 0) {
+        self.isNeedAgainThink = true;
+        step = [self stepWithChessPlace:chessPlace];
+    }
+    return step;
 }
 
 - (NSDictionary *)stepWithChessPlace:(NSArray *)chessPlace {
@@ -33,12 +46,20 @@ NSString const *stepTypeFly = @"stepTypeFly";
     for (NSDictionary *d in allStepArray) {
         YZChessPlace *goChess = d[goKey];
         YZChessPlace *toChess = d[toKey];
+//        可以吃子，直接吃
         NSDictionary *flyDict = [self flyStepWithChessPlace:chessPlace chess:goChess];
         if (flyDict) {
             return flyDict;
         }
         chessPlace = [self stepWithChess:goChess toChess:toChess chessPlace:chessPlace.copy];
-        NSInteger value = [self alphaBetaSearchWithDepth:3 alpha:-20000 beta:20000 camp:_camp chessPlace:chessPlace.copy];
+//        如果不是一定会被吃子，模拟下子的位置会被吃，放弃
+        if (!self.isNeedAgainThink) {
+            if ([self chessWillKilledWithChessPlace:chessPlace]) {
+                chessPlace = [self stepWithChess:toChess toChess:goChess chessPlace:chessPlace.copy];
+                continue;
+            }
+        }
+        NSInteger value = [self alphaBetaSearchWithDepth:4 alpha:-20000 beta:20000 camp:_camp chessPlace:chessPlace.copy];
         chessPlace = [self stepWithChess:toChess toChess:goChess chessPlace:chessPlace.copy];
         if (value > maxValue) {
             maxValue = value;
@@ -46,6 +67,16 @@ NSString const *stepTypeFly = @"stepTypeFly";
             [stepDict setObject:goChess forKey:goKey];
             [stepDict setObject:toChess forKey:toKey];
             [stepDict setObject:stepTypeWalk forKey:stepTypeKey];
+        }
+        if (value == maxValue) {
+            int r = arc4random() % 100;
+            if (r > 50) {
+                maxValue = value;
+                [stepDict setObject:[NSNumber numberWithInteger:value] forKey:valueKey];
+                [stepDict setObject:goChess forKey:goKey];
+                [stepDict setObject:toChess forKey:toKey];
+                [stepDict setObject:stepTypeWalk forKey:stepTypeKey];
+            }
         }
     }
     return stepDict.copy;
@@ -66,7 +97,7 @@ NSString const *stepTypeFly = @"stepTypeFly";
         YZChessPlace *goChess = d[goKey];
         YZChessPlace *toChess = d[toKey];
         chessPlace = [self stepWithChess:goChess toChess:toChess chessPlace:chessPlace.copy];
-        NSInteger value = [self alphaBetaSearchWithDepth:depth - 1 alpha:-20000 beta:20000 camp:camp chessPlace:chessPlace.copy];
+        NSInteger value = [self alphaBetaSearchWithDepth:depth - 1 alpha:-beta beta:-alpha camp:-camp chessPlace:chessPlace.copy];
         chessPlace = [self stepWithChess:toChess toChess:goChess chessPlace:chessPlace.copy];
         if (value > alpha) {
             alpha = value;
@@ -87,29 +118,38 @@ NSString const *stepTypeFly = @"stepTypeFly";
  @return 返回评估值
  */
 - (NSInteger)valueWithChessPlace:(NSArray *)chessPlace camp:(NSInteger) camp{
+//    棋盘价值
     NSInteger chessValue = 0;
+//    下子范围
     NSInteger walkRange = 0;
+//    棋子攻击力
     NSInteger ATK = 0;
-    NSInteger chessNum = [YZChessPlace chessNumWithChessPlace:chessPlace Camp:camp];
-    NSInteger shortChessNum = [YZChessPlace chessNumWithChessPlace:chessPlace Camp:-camp];
-    NSInteger willKilledNum = 0;
+//    棋子数量
+    NSInteger chessNum = [YZChessValue chessNumWithChessPlace:chessPlace camp:camp];
+//    坏子得分 —— 负数
+    NSInteger badScore = 0;
+//    坏棋位得分 —— 负数
+    NSInteger badPosition = [YZChessValue badPositionWithChessPlace:chessPlace camp:camp];
     
     for (NSArray *array in chessPlace) {
         for (YZChessPlace *p in array) {
             if (p.camp == camp) {
-                if (chessNum + shortChessNum <= 12 && chessNum <= 6 && shortChessNum <= 6) {
-                    chessValue += [YZChessPlace chessEndingValueWith:p.x Y:p.y];
+                if (chessNum <= 6) {
+//                    进入残局
+                    chessValue += [YZChessValue chessEndingValueWithChess:p];
                 }else {
-                    chessValue += [YZChessPlace chessValueWithX:p.x Y:p.y];
+                    chessValue += [YZChessValue chessValueWithChess:p];
                 }
-                walkRange += [YZChessPlace chessWalkRangeWithChessPlace:chessPlace X:p.x Y:p.y];
-                ATK += [YZChessPlace chessAttackRangeWithChessPlace:chessPlace X:p.x Y:p.y Camp:camp];
-                willKilledNum += [self willKilledChessNumWithChessPlace:chessPlace chess:p];
+                walkRange += [YZChessValue chessWalkRangeWithChessPlace:chessPlace chess:p];
+                ATK += [YZChessValue chessAttackWithChessPlace:chessPlace chess:p];
+            }else if (p.camp == -camp) {
+                badScore += [YZChessValue badStepScoreWithChessPlace:chessPlace chess:p];
             }
         }
     }
-    
-    return chessNum * 6 + walkRange + ATK * 2 + chessValue - willKilledNum * 10;
+//    [self networkPredictionWithChessPlace:chessPlace];
+    NSInteger value = chessNum * 3 + walkRange + ATK + chessValue + badScore + badPosition;
+    return value;
 }
 
 
@@ -121,9 +161,8 @@ NSString const *stepTypeFly = @"stepTypeFly";
  */
 - (NSArray *)createStepsWithChessPlace:(NSArray *)chessPlace {
     NSMutableArray *stepQueen = [[NSMutableArray alloc]init];
-    for (int i=0; i<6; i++) {
-        for (int j=0; j<6; j++) {
-            YZChessPlace *p = chessPlace[i][j];
+    for (NSArray *array in chessPlace) {
+        for (YZChessPlace *p in array) {
             if (p.camp == self.camp) {
                 NSMutableArray *allCanStepArray = [YZWalkManager walkEngine:p.x Y:p.y previousArray:chessPlace];
                 for (YZChessPlace *canStep in allCanStepArray) {
@@ -139,17 +178,50 @@ NSString const *stepTypeFly = @"stepTypeFly";
     return stepQueen.copy;
 }
 
+- (void)networkPredictionWithChessPlace:(NSArray *)chessPlace {
+    NSMutableArray<NSNumber *> *campArray = [[NSMutableArray alloc]init];
+    for (NSArray *array in chessPlace) {
+        for (YZChessPlace *p in array) {
+            if (p.camp == -1) {
+                [campArray addObject:@(-1)];
+            }else if (p.camp == 1) {
+                [campArray addObject:@(1)];
+            }else {
+                [campArray addObject:@(0)];
+            }
+        }
+    }
+    MLMultiArray *feedArray = [[MLMultiArray alloc]initWithShape:@[@36] dataType:MLMultiArrayDataTypeInt32 error:nil];
+    for (int i=0; i<campArray.count; i++) {
+        [feedArray setObject:feedArray[i] atIndexedSubscript:i];
+    }
+    
+    model *network = [model new];
+    NSError *error = nil;
+    modelOutput *networkOutput = [network predictionFromInput:feedArray error:&error];
+    MLMultiArray *shortArray = networkOutput.Prediction;
+    NSLog(@"%@",shortArray[0]);
+}
+
 
 /**
- 获得会被吃子的棋子数量
+ 棋子会不会被吃
 
  @param chessPlace 棋盘
- @param chess 棋子
- @return 被吃子数量
+ @return 是否被吃
  */
-- (NSInteger)willKilledChessNumWithChessPlace:(NSArray *)chessPlace chess:(YZChessPlace *)chess {
-    NSArray *flyStepArray = [YZFlyManager flyManageWithX:chess.x Y:chess.y Camp:chess.camp placeArray:chessPlace.mutableCopy];
-    return flyStepArray.count;
+- (BOOL)chessWillKilledWithChessPlace:(NSArray *)chessPlace {
+    for (NSArray *array in chessPlace) {
+        for (YZChessPlace *p in array) {
+            if (p.camp == -self.camp) {
+                NSArray *flyArray = [YZFlyManager flyManageWithX:p.x Y:p.y Camp:p.camp placeArray:chessPlace.mutableCopy];
+                if (flyArray.count > 0) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 

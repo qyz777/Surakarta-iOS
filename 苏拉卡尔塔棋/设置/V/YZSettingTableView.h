@@ -13,6 +13,7 @@
 - (void)eatSourceDidSwitch;
 - (void)goSourceDidSwitch;
 - (void)vibrationDidSwitch;
+- (void)AIDidSwitch;
 - (BOOL)switchStateWithSection:(NSInteger)section;
 - (void)specialDidChangeWithType:(NSString*)type;
 

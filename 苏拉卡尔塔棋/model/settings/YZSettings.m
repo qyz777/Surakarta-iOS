@@ -18,6 +18,7 @@
         [[NSUserDefaults standardUserDefaults]setObject:shortStr forKey:@"eatChessSource"];
         [[NSUserDefaults standardUserDefaults]setObject:shortStr forKey:@"vibrate"];
         [[NSUserDefaults standardUserDefaults]setObject:[NSDictionary dictionaryWithObject:@"无" forKey:@"type"] forKey:@"special"];
+        [[NSUserDefaults standardUserDefaults]setObject:shortStr forKey:@"whoRed"];
         [[NSUserDefaults standardUserDefaults]synchronize];
     }
 }

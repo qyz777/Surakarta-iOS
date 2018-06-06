@@ -56,8 +56,6 @@
         make.top.equalTo(self.bottomView).offset(0);
     }];
     [pickBtn addTarget:self action:@selector(pressPickBtn) forControlEvents:UIControlEventTouchUpInside];
-    
-    self.labelType = @"无";
 }
 
 - (void)pressPickBtn{
@@ -121,7 +119,7 @@
 
 #pragma make - tableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 4;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectio{
@@ -172,6 +170,9 @@
         case 3:
             cell.textLabel.text = @"特效";
             break;
+        case 4:
+            cell.textLabel.text = @"AI红方";
+            break;
         default:
             break;
     }
@@ -195,6 +196,9 @@
             break;
         case 2:
             [self.settingDelegate vibrationDidSwitch];
+            break;
+        case 4:
+            [self.settingDelegate AIDidSwitch];
             break;
         default:
             break;

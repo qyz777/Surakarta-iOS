@@ -130,35 +130,60 @@
     [self.chessDelegate backBtnDidTouchUpInside];
 }
 
-- (void)redChessGo{
-    self.isRedChess = true;
-    if (!self.isAIType) {
-        for (UIButton *btn in self.subviews) {
-            if (btn.tag > 0 && btn.tag <= 12) {
-                btn.userInteractionEnabled = true;
-            }
-            if (btn.tag > 12 && btn.tag <= 24) {
-                btn.userInteractionEnabled = false;
-            }
+// 交换攻击
+- (void)changeCampColorRed:(BOOL)isRed {
+    for (UIButton *btn in self.subviews) {
+        if (btn.tag > 0 && btn.tag <= 12) {
+            btn.userInteractionEnabled = isRed;
         }
-    }else {
-        [self.chessDelegate AIShouldGo];
+        if (btn.tag > 12 && btn.tag <= 24) {
+            btn.userInteractionEnabled = !isRed;
+        }
     }
 }
 
+- (void)redChessGo{
+    self.isRedChess = true;
+    [self changeCampColorRed:true];
+}
+
 - (void)blueChessGo{
+    self.isRedChess = false;
+    [self changeCampColorRed:false];
+}
+
+#pragma make - AI
+- (void)closeUserClick {
     for (UIButton *btn in self.subviews) {
         if (btn.tag > 0 && btn.tag <= 12) {
             btn.userInteractionEnabled = false;
         }
         if (btn.tag > 12 && btn.tag <= 24) {
-            btn.userInteractionEnabled = true;
+            btn.userInteractionEnabled = false;
         }
     }
-    self.isRedChess = false;
 }
 
-#pragma make - AI
+- (void)AIRedChessGo {
+    self.isRedChess = true;
+    if (self.isAIRed) {
+        [self closeUserClick];
+        [self.chessDelegate AIShouldGo];
+    }else {
+        [self changeCampColorRed:true];
+    }
+}
+
+- (void)AIBlueChessGo {
+    self.isRedChess = false;
+    if (self.isAIRed) {
+        [self changeCampColorRed:false];
+    }else {
+        [self closeUserClick];
+        [self.chessDelegate AIShouldGo];
+    }
+}
+
 - (void)setAIWalkWithDict:(NSDictionary*)dict{
     YZChessPlace *p = dict[@"toKey"];
     YZChessPlace *whoGo = dict[@"goKey"];
@@ -178,9 +203,9 @@
     self.messageLabel.text = [NSString stringWithFormat:@"%ld号 (%ld,%ld) 走向 (%ld,%ld)",(long)whoGo.tag,(long)whoGo.x,(long)whoGo.y,(long)p.x,(long)p.y];
     [self.chessDelegate walkBtnDidTouchWithTag:shortBtn.tag frameX:shortBtn.center.x frameY:shortBtn.center.y];
     if (self.isRedChess) {
-        [self blueChessGo];
+        [self AIBlueChessGo];
     }else{
-        [self redChessGo];
+        [self AIRedChessGo];
     }
 }
 
@@ -239,9 +264,17 @@
         }
     }
     if (self.isRedChess) {
-        [self blueChessGo];
+        if (self.isAIType) {
+            [self AIBlueChessGo];
+        }else {
+            [self blueChessGo];
+        }
     }else{
-        [self redChessGo];
+        if (self.isAIType) {
+            [self AIRedChessGo];
+        }else {
+            [self redChessGo];
+        }
     }
 }
 
@@ -298,9 +331,17 @@
     }
     
     if (self.isRedChess) {
-        [self blueChessGo];
-    }else {
-        [self redChessGo];
+        if (self.isAIType) {
+            [self AIBlueChessGo];
+        }else {
+            [self blueChessGo];
+        }
+    }else{
+        if (self.isAIType) {
+            [self AIRedChessGo];
+        }else {
+            [self redChessGo];
+        }
     }
 }
 
@@ -369,9 +410,17 @@
     [self flyEatWillEndWithTag:lastP.tag];
     [self.chessDelegate chessBtnDidEatWithFirstTag:self.walkTag lastTag:lastP.tag];
     if (self.isRedChess) {
-        [self blueChessGo];
+        if (self.isAIType) {
+            [self AIBlueChessGo];
+        }else {
+            [self blueChessGo];
+        }
     }else{
-        [self redChessGo];
+        if (self.isAIType) {
+            [self AIRedChessGo];
+        }else {
+            [self redChessGo];
+        }
     }
 }
 

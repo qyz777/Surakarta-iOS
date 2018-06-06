@@ -32,7 +32,11 @@
     
     settingTableView = [[YZSettingTableView alloc]init];
     settingTableView.settingDelegate = self;
-    settingTableView.labelType = [YZSettings typeWithKey:@"special"];
+    if ([YZSettings typeWithKey:@"special"]) {
+        settingTableView.labelType = [YZSettings typeWithKey:@"special"];
+    }else {
+        settingTableView.labelType = @"无";
+    }
     [self.view addSubview:settingTableView];
     
     self.titleLabel = [[UILabel alloc]init];
@@ -77,6 +81,10 @@
     [YZSettings changeSettingWithKey:@"vibrate"];
 }
 
+- (void)AIDidSwitch {
+    [YZSettings changeSettingWithKey:@"whoRed"];
+}
+
 - (BOOL)switchStateWithSection:(NSInteger)section{
     switch (section) {
         case 0:
@@ -85,6 +93,8 @@
             return [YZSettings isOnWithKey:@"eatChessSource"];
         case 2:
             return [YZSettings isOnWithKey:@"vibrate"];
+        case 4:
+            return [YZSettings isOnWithKey:@"whoRed"];
         default:
             break;
     }

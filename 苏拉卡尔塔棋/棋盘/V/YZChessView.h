@@ -62,6 +62,7 @@
 
 @property(assign,nonatomic)BOOL isRedChess;
 @property(assign,nonatomic)BOOL isAIType;
+@property(assign,nonatomic)BOOL isAIRed;
 
 @property(weak,nonatomic)id<YZChessViewDelegate> chessDelegate;
 
@@ -100,5 +101,15 @@
  @param dict 数据字典
  */
 - (void)setAIFlyWithDict:(NSDictionary*)dict;
+
+/**
+ AI下红子
+ */
+- (void)AIRedChessGo;
+
+/**
+ AI下蓝子
+ */
+- (void)AIBlueChessGo;
 
 @end

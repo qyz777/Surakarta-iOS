@@ -38,6 +38,92 @@ NSString const *stepTypeFly = @"stepTypeFly";
     return step;
 }
 
+
+/**
+ 获得AI的下一步
+ 使用GCD为搜索树的第一层获得的所有节点开一条线程做并发队列
+ 每个线程中间使用信号量作为线程锁
+ 所有线程在一个GCD的group里，耗时任务结束后统一回到主线程回调
+
+ @param chessPlace 棋盘
+ @param block 下子回调
+ */
+- (void)stepWithChessPlace:(NSArray *)chessPlace block:(void(^)(NSDictionary *step))block {
+    NSArray *allStepArray = [self createStepsWithChessPlace:chessPlace];
+    NSMutableArray *shortPlace = chessPlace.mutableCopy;
+    __block NSMutableDictionary *stepDict = @{}.mutableCopy;
+    __block NSMutableDictionary *flyStep = @{}.mutableCopy;
+    __block NSInteger maxValue = 0;
+    
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_queue_t queue = dispatch_queue_create("qyz.alphaBeta", DISPATCH_QUEUE_CONCURRENT);
+    
+    for (NSDictionary *d in allStepArray) {
+        __block NSArray *cPlace = shortPlace.copy;
+        
+        dispatch_semaphore_t signal = dispatch_semaphore_create(0);
+        dispatch_group_enter(group);
+        dispatch_async(queue, ^{
+            BOOL isNeedContinue = true;
+            YZChessPlace *goChess = d[goKey];
+            YZChessPlace *toChess = d[toKey];
+//            可以吃子，下面的节点不用跑了，直接结束线程
+            NSDictionary *flyDict = [self flyStepWithChessPlace:cPlace chess:goChess];
+            if (flyDict) {
+                flyStep = flyDict.mutableCopy;
+                isNeedContinue = false;
+            }
+            cPlace = [self stepWithChess:goChess toChess:toChess chessPlace:cPlace.copy];
+//            如果不是一定会被吃子，模拟下子的位置会被吃，放弃，直接结束线程
+            if (!self.isNeedAgainThink) {
+                if ([self chessWillKilledWithChessPlace:chessPlace]) {
+                    isNeedContinue = false;
+                }
+            }
+            if (isNeedContinue) {
+                NSInteger value = [self alphaBetaSearchWithDepth:4 alpha:-20000 beta:20000 camp:self.camp chessPlace:cPlace.copy];
+                if (value > maxValue) {
+                    maxValue = value;
+                    [stepDict setObject:[NSNumber numberWithInteger:value] forKey:valueKey];
+                    [stepDict setObject:goChess forKey:goKey];
+                    [stepDict setObject:toChess forKey:toKey];
+                    [stepDict setObject:stepTypeWalk forKey:stepTypeKey];
+                }
+                if (value == maxValue) {
+//                    添加随机情况
+                    int r = arc4random() % 100;
+                    if (r > 50) {
+                        maxValue = value;
+                        [stepDict setObject:[NSNumber numberWithInteger:value] forKey:valueKey];
+                        [stepDict setObject:goChess forKey:goKey];
+                        [stepDict setObject:toChess forKey:toKey];
+                        [stepDict setObject:stepTypeWalk forKey:stepTypeKey];
+                    }
+                }
+            }
+            cPlace = [self stepWithChess:toChess toChess:goChess chessPlace:cPlace.copy];
+            
+            dispatch_semaphore_signal(signal);
+            dispatch_group_leave(group);
+        });
+        dispatch_semaphore_wait(signal, DISPATCH_TIME_FOREVER);
+    }
+    
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        if (flyStep.count > 0) {
+            block(flyStep.copy);
+        }else {
+            if (stepDict.count == 0) {
+                self.isNeedAgainThink = true;
+                [self stepWithChessPlace:chessPlace block:^(NSDictionary *step) {
+                    block(step.copy);
+                }];
+            }
+            block(stepDict.copy);
+        }
+    });
+}
+
 - (NSDictionary *)stepWithChessPlace:(NSArray *)chessPlace {
 //    拿到全部可以下子的位置，此处全部可以下子的的数组不包含可吃子的位置
     NSArray *allStepArray = [self createStepsWithChessPlace:chessPlace];
@@ -200,7 +286,10 @@ NSString const *stepTypeFly = @"stepTypeFly";
     NSError *error = nil;
     modelOutput *networkOutput = [network predictionFromInput:feedArray error:&error];
     MLMultiArray *shortArray = networkOutput.Prediction;
-    NSLog(@"%@",shortArray[0]);
+    NSNumber *a = shortArray[0];
+    if ([a integerValue] > 0 && [a integerValue] < 10000) {
+        NSLog(@"%@",a);
+    }
 }
 
 

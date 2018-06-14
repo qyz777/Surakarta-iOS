@@ -121,16 +121,28 @@
 }
 
 - (void)AIGo{
-    NSDictionary *dict = [self.AI stepDataWithChessPlace:self.chessPlace.copy];
-    self.AIStepNum++;
-    if (dict.count > 0) {
-        NSString *str = dict[stepTypeKey];
-        if ([str isEqualToString:@"stepTypeFly"]) {
-            [self.chessView setAIFlyWithDict:dict];
-        }else {
-            [self.chessView setAIWalkWithDict:dict];
+    __weak typeof(self) weakSelf = self;
+    [self.AI stepWithChessPlace:self.chessPlace block:^(NSDictionary *step) {
+        weakSelf.AIStepNum++;
+        if (step.count > 0) {
+            NSString *str = step[stepTypeKey];
+            if ([str isEqualToString:@"stepTypeFly"]) {
+                [weakSelf.chessView setAIFlyWithDict:step];
+            }else {
+                [weakSelf.chessView setAIWalkWithDict:step];
+            }
         }
-    }
+    }];
+//    NSDictionary *dict = [self.AI stepDataWithChessPlace:self.chessPlace.copy];
+//    self.AIStepNum++;
+//    if (dict.count > 0) {
+//        NSString *str = dict[stepTypeKey];
+//        if ([str isEqualToString:@"stepTypeFly"]) {
+//            [self.chessView setAIFlyWithDict:dict];
+//        }else {
+//            [self.chessView setAIWalkWithDict:dict];
+//        }
+//    }
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
 }
 

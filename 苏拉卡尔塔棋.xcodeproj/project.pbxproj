@@ -12,7 +12,7 @@
 		A00F94852042A691001D3AE5 /* YZFlyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A00F94842042A691001D3AE5 /* YZFlyManager.m */; };
 		A00FA8D620565FEF0071CCEA /* YZNormalAI.m in Sources */ = {isa = PBXBuildFile; fileRef = A00FA8D520565FEF0071CCEA /* YZNormalAI.m */; };
 		A01EF8C020C675A800BF1455 /* YZChessValue.m in Sources */ = {isa = PBXBuildFile; fileRef = A01EF8BF20C675A800BF1455 /* YZChessValue.m */; };
-		A01EF8C220C6955A00BF1455 /* model.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = A01EF8C120C6955A00BF1455 /* model.mlmodel */; };
+		A022FC4020CF831100FEFB57 /* model.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = A022FC3F20CF831100FEFB57 /* model.mlmodel */; };
 		A02468F320C3B9E300800042 /* YZNewAI.m in Sources */ = {isa = PBXBuildFile; fileRef = A02468F220C3B9E300800042 /* YZNewAI.m */; };
 		A037743A1FEA95AD0051D41A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A03774391FEA95AD0051D41A /* AppDelegate.m */; };
 		A03774401FEA95AD0051D41A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A037743E1FEA95AD0051D41A /* Main.storyboard */; };
@@ -44,7 +44,7 @@
 		A00FA8D520565FEF0071CCEA /* YZNormalAI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZNormalAI.m; sourceTree = "<group>"; };
 		A01EF8BE20C675A800BF1455 /* YZChessValue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZChessValue.h; sourceTree = "<group>"; };
 		A01EF8BF20C675A800BF1455 /* YZChessValue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZChessValue.m; sourceTree = "<group>"; };
-		A01EF8C120C6955A00BF1455 /* model.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = model.mlmodel; sourceTree = "<group>"; };
+		A022FC3F20CF831100FEFB57 /* model.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = model.mlmodel; sourceTree = "<group>"; };
 		A02468F120C3B9E300800042 /* YZNewAI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZNewAI.h; sourceTree = "<group>"; };
 		A02468F220C3B9E300800042 /* YZNewAI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZNewAI.m; sourceTree = "<group>"; };
 		A03774351FEA95AD0051D41A /* 苏拉卡尔塔棋.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "苏拉卡尔塔棋.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,7 +145,7 @@
 		A02468F020C3B9A100800042 /* newAI */ = {
 			isa = PBXGroup;
 			children = (
-				A01EF8C120C6955A00BF1455 /* model.mlmodel */,
+				A022FC3F20CF831100FEFB57 /* model.mlmodel */,
 				A02468F120C3B9E300800042 /* YZNewAI.h */,
 				A02468F220C3B9E300800042 /* YZNewAI.m */,
 			);
@@ -488,7 +488,7 @@
 				A09AFE44205BE36C008AE15B /* YZNormalAITactics.m in Sources */,
 				A00F94802042A0EE001D3AE5 /* YZWalkManager.m in Sources */,
 				A0FC10A820196931000AA35F /* YZMenuView.m in Sources */,
-				A01EF8C220C6955A00BF1455 /* model.mlmodel in Sources */,
+				A022FC4020CF831100FEFB57 /* model.mlmodel in Sources */,
 				A037743A1FEA95AD0051D41A /* AppDelegate.m in Sources */,
 				A01EF8C020C675A800BF1455 /* YZChessValue.m in Sources */,
 				A08445352045878700ECABF2 /* YZSettings.m in Sources */,

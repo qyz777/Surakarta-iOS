@@ -19,8 +19,12 @@ UIKIT_EXTERN NSString const *stepTypeFly;
 @interface YZNewAI : NSObject
 
 @property(nonatomic, assign)NSInteger camp;
+@property(nonatomic, assign)NSInteger searchDepth;
 
-//传入棋盘
+// 获得AI下子
 - (NSDictionary *)stepDataWithChessPlace:(NSArray *)chessPlace;
+
+// 使用GCD获得AI下子
+- (void)stepWithChessPlace:(NSArray *)chessPlace block:(void(^)(NSDictionary *step))block;
 
 @end

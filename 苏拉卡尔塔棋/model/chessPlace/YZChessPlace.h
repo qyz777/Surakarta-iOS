@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface YZChessPlace : NSObject
+@interface YZChessPlace : NSObject<NSCopying,NSMutableCopying>
 
 @property(assign,nonatomic)NSInteger camp;
 @property(assign,nonatomic)NSInteger tag;

@@ -11,6 +11,28 @@
 
 @implementation YZChessPlace
 
+- (id)copyWithZone:(NSZone *)zone {
+    YZChessPlace *p = [[[self class] allocWithZone:zone]init];
+    p.camp = self.camp;
+    p.tag = self.tag;
+    p.x = self.x;
+    p.y = self.y;
+    p.frameX = self.frameX;
+    p.frameY = self.frameY;
+    return p;
+}
+
+- (id)mutableCopyWithZone:(NSZone *)zone {
+    YZChessPlace *p = [[[self class] allocWithZone:zone]init];
+    p.camp = self.camp;
+    p.tag = self.tag;
+    p.x = self.x;
+    p.y = self.y;
+    p.frameX = self.frameX;
+    p.frameY = self.frameY;
+    return p;
+}
+
 
 /**
  初始化棋盘矩阵

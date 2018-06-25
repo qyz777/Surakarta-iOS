@@ -18,6 +18,8 @@
 // 棋子数量
 + (NSInteger)chessNumWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp;
 
++ (NSInteger)chessFirstValueWithChess:(YZChessPlace *)chess;
+
 // 普通棋盘价值
 + (NSInteger)chessValueWithChess:(YZChessPlace *)chess;
 
@@ -27,10 +29,16 @@
 // 坏棋减分
 + (NSInteger)badStepScoreWithChessPlace:(NSArray *)chessPlace chess:(YZChessPlace *)chess;
 
-// 棋子站位减分
-+ (NSInteger)badPositionWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp;
-
 // 棋子攻击力
 + (NSInteger)chessAttackWithChessPlace:(NSArray *)chessPlace chess:(YZChessPlace *)chess;
+
+// 棋子可吃子分数
++ (NSInteger)chessWillKillWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp;
+
+// 占角，返回-1不需要 1 2 3 4代表 左上 右上 左下 右下
++ (NSInteger)angleNeedPerchWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp;
+
+// 占角采用不同的局面评估
++ (NSInteger)anglePostionValueWithChessPlace:(NSArray *)chessPlace chess:(YZChessPlace *)chess;
 
 @end

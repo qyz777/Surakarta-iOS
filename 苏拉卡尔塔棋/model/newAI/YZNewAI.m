@@ -49,104 +49,135 @@ NSString const *stepTypeFly = @"stepTypeFly";
  @param block 下子回调
  */
 - (void)stepWithChessPlace:(NSArray *)chessPlace block:(void(^)(NSDictionary *step))block {
-    NSArray *allStepArray = [self createStepsWithChessPlace:chessPlace];
+    NSInteger chessNum = [YZChessValue chessNumWithChessPlace:chessPlace camp:self.camp];
+    if (chessNum == 0) {
+        return;
+    }
+    if (chessNum <= 5) {
+        self.searchDepth = 5;
+    }else {
+        self.searchDepth = 3;
+    }
+    
+    if (self.isFirst) {
+        if (self.stepNum < 3) {
+            block([self firstOpenWithChessPlace:chessPlace]);
+            return;
+        }
+    }
+    
+    NSArray *allStepArray = [self createStepsWithChessPlace:chessPlace camp:self.camp];
     NSMutableArray *shortPlace = chessPlace.mutableCopy;
     __block NSMutableDictionary *stepDict = @{}.mutableCopy;
-    __block NSMutableDictionary *flyStep = @{}.mutableCopy;
-    __block NSInteger maxValue = 0;
+    __block NSInteger maxValue = -9999999;
     
-    dispatch_group_t group = dispatch_group_create();
-    dispatch_queue_t queue = dispatch_queue_create("qyz.alphaBeta", DISPATCH_QUEUE_CONCURRENT);
-    
-    for (NSDictionary *d in allStepArray) {
-        __block NSArray *cPlace = shortPlace.copy;
+    NSDictionary *flyDict = [self flyStepWithChessPlace:chessPlace camp:self.camp];
+    if (flyDict) {
+        block(flyDict);
+    }else {
+        dispatch_group_t group = dispatch_group_create();
+        dispatch_queue_t queue = dispatch_queue_create("qyz.alphaBeta", DISPATCH_QUEUE_CONCURRENT);
         
-        dispatch_semaphore_t signal = dispatch_semaphore_create(0);
-        dispatch_group_enter(group);
-        dispatch_async(queue, ^{
-            BOOL isNeedContinue = true;
-            YZChessPlace *goChess = d[goKey];
-            YZChessPlace *toChess = d[toKey];
-//            可以吃子，下面的节点不用跑了，直接结束线程
-            NSDictionary *flyDict = [self flyStepWithChessPlace:cPlace chess:goChess];
-            if (flyDict) {
-                flyStep = flyDict.mutableCopy;
-                isNeedContinue = false;
-            }
-            cPlace = [self stepWithChess:goChess toChess:toChess chessPlace:cPlace.copy];
-//            如果不是一定会被吃子，模拟下子的位置会被吃，放弃，直接结束线程
-            if (!self.isNeedAgainThink) {
-                if ([self chessWillKilledWithChessPlace:chessPlace]) {
-                    isNeedContinue = false;
+        for (NSDictionary *d in allStepArray) {
+            __block NSArray *cPlace = shortPlace.copy;
+            
+            dispatch_semaphore_t signal = dispatch_semaphore_create(0);
+            dispatch_group_enter(group);
+            dispatch_async(queue, ^{
+                BOOL isNeedContinue = true;
+                YZChessPlace *goChess = d[goKey];
+                YZChessPlace *toChess = d[toKey];
+                cPlace = [self stepWithChess:goChess toChess:toChess chessPlace:cPlace.copy];
+                //            如果不是一定会被吃子，模拟下子的位置会被吃，放弃，直接结束线程
+                if (!self.isNeedAgainThink) {
+                    if ([self chessWillKilledWithChessPlace:chessPlace]) {
+                        isNeedContinue = false;
+                    }
                 }
-            }
-            if (isNeedContinue) {
-                NSInteger value = [self alphaBetaSearchWithDepth:4 alpha:-20000 beta:20000 camp:self.camp chessPlace:cPlace.copy];
-                if (value > maxValue) {
-                    maxValue = value;
-                    [stepDict setObject:[NSNumber numberWithInteger:value] forKey:valueKey];
-                    [stepDict setObject:goChess forKey:goKey];
-                    [stepDict setObject:toChess forKey:toKey];
-                    [stepDict setObject:stepTypeWalk forKey:stepTypeKey];
-                }
-                if (value == maxValue) {
-//                    添加随机情况
-                    int r = arc4random() % 100;
-                    if (r > 50) {
+                if (isNeedContinue) {
+                    NSMutableArray *cShortPlace = [self newChessPlace:cPlace];
+                    NSInteger value = [self alphaBetaSearchWithDepth:self.searchDepth alpha:-20000 beta:20000 camp:-self.camp chessPlace:cShortPlace.copy];
+                    if (value > maxValue) {
                         maxValue = value;
                         [stepDict setObject:[NSNumber numberWithInteger:value] forKey:valueKey];
                         [stepDict setObject:goChess forKey:goKey];
                         [stepDict setObject:toChess forKey:toKey];
                         [stepDict setObject:stepTypeWalk forKey:stepTypeKey];
                     }
+                    if (value == maxValue) {
+                        //                    添加随机情况
+                        int r = arc4random() % 100;
+                        if (r > 50) {
+                            maxValue = value;
+                            [stepDict setObject:[NSNumber numberWithInteger:value] forKey:valueKey];
+                            [stepDict setObject:goChess forKey:goKey];
+                            [stepDict setObject:toChess forKey:toKey];
+                            [stepDict setObject:stepTypeWalk forKey:stepTypeKey];
+                        }
+                    }
                 }
-            }
-            cPlace = [self stepWithChess:toChess toChess:goChess chessPlace:cPlace.copy];
-            
-            dispatch_semaphore_signal(signal);
-            dispatch_group_leave(group);
-        });
-        dispatch_semaphore_wait(signal, DISPATCH_TIME_FOREVER);
-    }
-    
-    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-        if (flyStep.count > 0) {
-            block(flyStep.copy);
-        }else {
+                cPlace = [self stepWithChess:toChess toChess:goChess chessPlace:cPlace.copy];
+                
+                dispatch_semaphore_signal(signal);
+                dispatch_group_leave(group);
+            });
+            dispatch_semaphore_wait(signal, DISPATCH_TIME_FOREVER);
+        }
+        
+        dispatch_group_notify(group, dispatch_get_main_queue(), ^{
             if (stepDict.count == 0) {
                 self.isNeedAgainThink = true;
                 [self stepWithChessPlace:chessPlace block:^(NSDictionary *step) {
                     block(step.copy);
+                    return;
                 }];
             }
             block(stepDict.copy);
-        }
-    });
+            return;
+        });
+    }
 }
 
 - (NSDictionary *)stepWithChessPlace:(NSArray *)chessPlace {
+    NSInteger chessNum = [YZChessValue chessNumWithChessPlace:chessPlace camp:self.camp];
+    if (chessNum <= 5) {
+        self.searchDepth = 5;
+    }else {
+        self.searchDepth = 3;
+    }
+    
+    if (self.isFirst) {
+        if (self.stepNum < 3) {
+            return [self firstOpenWithChessPlace:chessPlace];
+        }
+    }
+    
 //    拿到全部可以下子的位置，此处全部可以下子的的数组不包含可吃子的位置
-    NSArray *allStepArray = [self createStepsWithChessPlace:chessPlace];
+    NSArray *allStepArray = [self createStepsWithChessPlace:chessPlace camp:self.camp];
     NSMutableDictionary *stepDict = @{}.mutableCopy;
-    NSInteger maxValue = 0;
+    NSInteger maxValue = -9999999;
     for (NSDictionary *d in allStepArray) {
         YZChessPlace *goChess = d[goKey];
         YZChessPlace *toChess = d[toKey];
 //        可以吃子，直接吃
-        NSDictionary *flyDict = [self flyStepWithChessPlace:chessPlace chess:goChess];
+        NSDictionary *flyDict = [self flyStepWithChessPlace:chessPlace camp:self.camp];
         if (flyDict) {
             return flyDict;
         }
-        chessPlace = [self stepWithChess:goChess toChess:toChess chessPlace:chessPlace.copy];
+        chessPlace = [self stepWithChess:goChess toChess:toChess chessPlace:chessPlace];
 //        如果不是一定会被吃子，模拟下子的位置会被吃，放弃
         if (!self.isNeedAgainThink) {
             if ([self chessWillKilledWithChessPlace:chessPlace]) {
-                chessPlace = [self stepWithChess:toChess toChess:goChess chessPlace:chessPlace.copy];
+                chessPlace = [self stepWithChess:toChess toChess:goChess chessPlace:chessPlace];
                 continue;
             }
         }
-        NSInteger value = [self alphaBetaSearchWithDepth:4 alpha:-20000 beta:20000 camp:_camp chessPlace:chessPlace.copy];
-        chessPlace = [self stepWithChess:toChess toChess:goChess chessPlace:chessPlace.copy];
+        
+        NSMutableArray *shortPlace = [self newChessPlace:chessPlace];
+        NSInteger value = [self alphaBetaSearchWithDepth:self.searchDepth alpha:-20000 beta:20000 camp:-self.camp chessPlace:shortPlace.copy];
+        
+        chessPlace = [self stepWithChess:toChess toChess:goChess chessPlace:chessPlace];
+    
         if (value > maxValue) {
             maxValue = value;
             [stepDict setObject:[NSNumber numberWithInteger:value] forKey:valueKey];
@@ -178,13 +209,18 @@ NSString const *stepTypeFly = @"stepTypeFly";
     if (depth <= 0) {
         return [self valueWithChessPlace:chessPlace camp:camp] - [self valueWithChessPlace:chessPlace camp:-camp];
     }
-    NSArray *allStepArray = [self createStepsWithChessPlace:chessPlace];
+    
+    NSArray *allStepArray = [self createFlyStepWithChessPlace:chessPlace camp:camp];
+    if (allStepArray.count == 0) {
+        allStepArray = [self createStepsWithChessPlace:chessPlace camp:camp];
+    }
+    
     for (NSDictionary *d in allStepArray) {
         YZChessPlace *goChess = d[goKey];
         YZChessPlace *toChess = d[toKey];
-        chessPlace = [self stepWithChess:goChess toChess:toChess chessPlace:chessPlace.copy];
-        NSInteger value = [self alphaBetaSearchWithDepth:depth - 1 alpha:-beta beta:-alpha camp:-camp chessPlace:chessPlace.copy];
-        chessPlace = [self stepWithChess:toChess toChess:goChess chessPlace:chessPlace.copy];
+        chessPlace = [self stepWithChess:goChess toChess:toChess chessPlace:chessPlace];
+        NSInteger value = [self alphaBetaSearchWithDepth:depth - 1 alpha:-beta beta:-alpha camp:-camp chessPlace:chessPlace];
+        chessPlace = [self stepWithChess:toChess toChess:goChess chessPlace:chessPlace];
         if (value > alpha) {
             alpha = value;
         }
@@ -192,6 +228,7 @@ NSString const *stepTypeFly = @"stepTypeFly";
             break;
         }
     }
+    
     return alpha;
 }
 
@@ -203,7 +240,7 @@ NSString const *stepTypeFly = @"stepTypeFly";
  @param camp 阵营
  @return 返回评估值
  */
-- (NSInteger)valueWithChessPlace:(NSArray *)chessPlace camp:(NSInteger) camp{
+- (NSInteger)valueWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp{
 //    棋盘价值
     NSInteger chessValue = 0;
 //    下子范围
@@ -212,29 +249,44 @@ NSString const *stepTypeFly = @"stepTypeFly";
     NSInteger ATK = 0;
 //    棋子数量
     NSInteger chessNum = [YZChessValue chessNumWithChessPlace:chessPlace camp:camp];
-//    坏子得分 —— 负数
-    NSInteger badScore = 0;
-//    坏棋位得分 —— 负数
-    NSInteger badPosition = [YZChessValue badPositionWithChessPlace:chessPlace camp:camp];
+    
+    NSInteger angle = [YZChessValue angleNeedPerchWithChessPlace:chessPlace camp:camp];
+    
+    NSInteger killScore = 0;
     
     for (NSArray *array in chessPlace) {
         for (YZChessPlace *p in array) {
             if (p.camp == camp) {
-                if (chessNum <= 6) {
-//                    进入残局
-                    chessValue += [YZChessValue chessEndingValueWithChess:p];
+                if (angle != -1) {
+                    if (chessNum <= 6) {
+                        //                    进入残局
+                        //                        TODO:残局优化
+                        chessValue += [YZChessValue chessEndingValueWithChess:p];
+                    }
+                    if (chessNum >= 11) {
+                        chessValue += [YZChessValue chessFirstValueWithChess:p];
+                    }else {
+                        chessValue += [YZChessValue anglePostionValueWithChessPlace:chessPlace chess:p];
+                    }
                 }else {
-                    chessValue += [YZChessValue chessValueWithChess:p];
+                    if (chessNum <= 6) {
+                        //                    进入残局
+                        chessValue += [YZChessValue chessEndingValueWithChess:p];
+                    }
+                    if (chessNum >= 11) {
+                        chessValue += [YZChessValue chessFirstValueWithChess:p];
+                    }else {
+                        chessValue += [YZChessValue chessValueWithChess:p];
+                    }
                 }
                 walkRange += [YZChessValue chessWalkRangeWithChessPlace:chessPlace chess:p];
                 ATK += [YZChessValue chessAttackWithChessPlace:chessPlace chess:p];
-            }else if (p.camp == -camp) {
-                badScore += [YZChessValue badStepScoreWithChessPlace:chessPlace chess:p];
+                killScore += [YZChessValue chessWillKillWithChessPlace:chessPlace camp:camp];
             }
         }
     }
 //    [self networkPredictionWithChessPlace:chessPlace];
-    NSInteger value = chessNum * 3 + walkRange + ATK + chessValue + badScore + badPosition;
+    NSInteger value = chessNum + walkRange + ATK + chessValue;
     return value;
 }
 
@@ -245,11 +297,11 @@ NSString const *stepTypeFly = @"stepTypeFly";
  @param chessPlace 棋盘
  @return 返回一个包含字典的数组 字典包含 [棋子] [棋子可以下的点]->NSArray
  */
-- (NSArray *)createStepsWithChessPlace:(NSArray *)chessPlace {
+- (NSArray *)createStepsWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp {
     NSMutableArray *stepQueen = [[NSMutableArray alloc]init];
     for (NSArray *array in chessPlace) {
         for (YZChessPlace *p in array) {
-            if (p.camp == self.camp) {
+            if (p.camp == camp) {
                 NSMutableArray *allCanStepArray = [YZWalkManager walkEngine:p.x Y:p.y previousArray:chessPlace];
                 for (YZChessPlace *canStep in allCanStepArray) {
                     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
@@ -260,7 +312,26 @@ NSString const *stepTypeFly = @"stepTypeFly";
             }
         }
     }
-    
+    return stepQueen.copy;
+}
+
+- (NSArray *)createFlyStepWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp {
+    NSMutableArray *stepQueen = [[NSMutableArray alloc]init];
+    for (NSArray *array in chessPlace) {
+        for (YZChessPlace *p in array) {
+            if (p.camp == camp) {
+                NSMutableArray *allCanFlyArray = [YZFlyManager flyManageWithX:p.x Y:p.y Camp:p.camp placeArray:chessPlace.mutableCopy];
+                if (allCanFlyArray.count > 0) {
+                    for (NSArray *af in allCanFlyArray) {
+                        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+                        [dict setObject:p forKey:goKey];
+                        [dict setObject:af.lastObject forKey:toKey];
+                        [stepQueen addObject:dict.copy];
+                    }
+                }
+            }
+        }
+    }
     return stepQueen.copy;
 }
 
@@ -318,18 +389,24 @@ NSString const *stepTypeFly = @"stepTypeFly";
  拿到棋子飞行的位置
  
  @param chessPlace 棋盘
- @param chess 棋子
+ @param camp 阵营
  @return 返回一个字典 [价值] [棋子] [下棋子的位置] [类型]
  */
-- (NSDictionary *)flyStepWithChessPlace:(NSArray *)chessPlace chess:(YZChessPlace *)chess{
-    NSArray *flyStepArray = [YZFlyManager flyManageWithX:chess.x Y:chess.y Camp:chess.camp placeArray:chessPlace.mutableCopy];
-    if (flyStepArray.count > 0) {
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-        [dict setObject:@100 forKey:valueKey];
-        [dict setObject:chess forKey:goKey];
-        [dict setObject:flyStepArray.firstObject forKey:toKey];
-        [dict setObject:stepTypeFly forKey:stepTypeKey];
-        return dict.copy;
+- (NSDictionary *)flyStepWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp{
+    for (NSArray *array in chessPlace) {
+        for (YZChessPlace *p in array) {
+            if (p.camp == camp) {
+                NSArray *flyStepArray = [YZFlyManager flyManageWithX:p.x Y:p.y Camp:p.camp placeArray:chessPlace.mutableCopy];
+                if (flyStepArray.count > 0) {
+                    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+                    [dict setObject:@100 forKey:valueKey];
+                    [dict setObject:p forKey:goKey];
+                    [dict setObject:flyStepArray.firstObject forKey:toKey];
+                    [dict setObject:stepTypeFly forKey:stepTypeKey];
+                    return dict.copy;
+                }
+            }
+        }
     }
     return nil;
 }
@@ -344,25 +421,80 @@ NSString const *stepTypeFly = @"stepTypeFly";
  @return 返回一个模拟下完棋子的棋盘
  */
 - (NSArray *)stepWithChess:(YZChessPlace *)goChess toChess:(YZChessPlace *)toChess chessPlace:(NSArray *)chessPlace{
-    NSInteger shortTag = goChess.tag;
-    NSInteger shortCamp = goChess.camp;
+    YZChessPlace *pGo = [chessPlace[goChess.x][goChess.y] copy];
+    YZChessPlace *pTo = [chessPlace[toChess.x][toChess.y] copy];
     
-    for (int i=0; i<6; i++) {
-        for (int j=0; j<6; j++) {
-            YZChessPlace *p = chessPlace[i][j];
-            if (toChess.frameX == p.frameX && toChess.frameY == p.frameY) {
-                toChess.tag = shortTag;
-                toChess.camp = shortCamp;
-                chessPlace[i][j] = toChess;
-            }
-            if (goChess.frameX == p.frameX && goChess.frameY == p.frameY) {
-                goChess.tag = 0;
-                goChess.camp = 0;
-                chessPlace[i][j] = goChess;
-            }
+    pTo.tag = goChess.tag;
+    pTo.camp = goChess.camp;
+    
+    pGo.tag = toChess.tag;
+    pGo.camp = toChess.camp;
+    
+    chessPlace[goChess.x][goChess.y] = pGo;
+    chessPlace[toChess.x][toChess.y] = pTo;
+    
+    goChess.tag = pGo.tag;
+    goChess.camp = pGo.camp;
+    
+    toChess.tag = pTo.tag;
+    toChess.camp = pTo.camp;
+    
+    return chessPlace;
+}
+
+- (NSDictionary *)firstOpenWithChessPlace:(NSArray *)chessPlace {
+    if (self.camp == -1) {
+        if (self.stepNum == 0) {
+            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+            [dict setObject:chessPlace[1][1] forKey:goKey];
+            [dict setObject:chessPlace[2][2] forKey:toKey];
+            return dict;
+        }
+        if (self.stepNum == 1) {
+            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+            [dict setObject:chessPlace[1][0] forKey:goKey];
+            [dict setObject:chessPlace[2][0] forKey:toKey];
+            return dict;
+        }
+        if (self.stepNum == 2) {
+            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+            [dict setObject:chessPlace[0][1] forKey:goKey];
+            [dict setObject:chessPlace[1][1] forKey:toKey];
+            return dict;
+        }
+    }else {
+        if (self.stepNum == 0) {
+            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+            [dict setObject:chessPlace[4][1] forKey:goKey];
+            [dict setObject:chessPlace[3][2] forKey:toKey];
+            return dict;
+        }
+        if (self.stepNum == 1) {
+            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+            [dict setObject:chessPlace[4][0] forKey:goKey];
+            [dict setObject:chessPlace[3][0] forKey:toKey];
+            return dict;
+        }
+        if (self.stepNum == 2) {
+            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+            [dict setObject:chessPlace[5][1] forKey:goKey];
+            [dict setObject:chessPlace[4][1] forKey:toKey];
+            return dict;
         }
     }
-    return chessPlace;
+    return nil;
+}
+
+- (NSMutableArray *)newChessPlace:(NSArray *)chessPlace {
+    NSMutableArray *newChessPlace = [NSMutableArray array];
+    for (NSArray *array in chessPlace) {
+        NSMutableArray *xArray = [NSMutableArray array];
+        for (YZChessPlace *p in array) {
+            [xArray addObject:p.copy];
+        }
+        [newChessPlace addObject:xArray];
+    }
+    return newChessPlace;
 }
 
 @end

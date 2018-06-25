@@ -20,6 +20,9 @@ UIKIT_EXTERN NSString const *stepTypeFly;
 
 @property(nonatomic, assign)NSInteger camp;
 @property(nonatomic, assign)NSInteger searchDepth;
+@property(nonatomic, assign)NSInteger stepNum;
+
+@property(nonatomic, assign)BOOL isFirst;
 
 // 获得AI下子
 - (NSDictionary *)stepDataWithChessPlace:(NSArray *)chessPlace;

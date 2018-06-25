@@ -107,6 +107,7 @@
 
 - (void)initAI {
     self.AI = [YZNewAI new];
+    self.AI.stepNum = 0;
 //      判断AI是红方还是蓝方
     if ([YZSettings isOnWithKey:@"whoRed"]) {
         self.AI.camp = -1;
@@ -121,28 +122,31 @@
 }
 
 - (void)AIGo{
-    __weak typeof(self) weakSelf = self;
-    [self.AI stepWithChessPlace:self.chessPlace block:^(NSDictionary *step) {
-        weakSelf.AIStepNum++;
-        if (step.count > 0) {
-            NSString *str = step[stepTypeKey];
-            if ([str isEqualToString:@"stepTypeFly"]) {
-                [weakSelf.chessView setAIFlyWithDict:step];
-            }else {
-                [weakSelf.chessView setAIWalkWithDict:step];
-            }
-        }
-    }];
-//    NSDictionary *dict = [self.AI stepDataWithChessPlace:self.chessPlace.copy];
-//    self.AIStepNum++;
-//    if (dict.count > 0) {
-//        NSString *str = dict[stepTypeKey];
-//        if ([str isEqualToString:@"stepTypeFly"]) {
-//            [self.chessView setAIFlyWithDict:dict];
-//        }else {
-//            [self.chessView setAIWalkWithDict:dict];
+    if (stepNumber == 0) {
+        self.AI.isFirst = true;
+    }
+//    __weak typeof(self) weakSelf = self;
+//    [self.AI stepWithChessPlace:self.chessPlace block:^(NSDictionary *step) {
+//        weakSelf.AI.stepNum++;
+//        if (step.count > 0) {
+//            NSString *str = step[stepTypeKey];
+//            if ([str isEqualToString:@"stepTypeFly"]) {
+//                [weakSelf.chessView setAIFlyWithDict:step];
+//            }else {
+//                [weakSelf.chessView setAIWalkWithDict:step];
+//            }
 //        }
-//    }
+//    }];
+    NSDictionary *dict = [self.AI stepDataWithChessPlace:self.chessPlace.copy];
+    self.AI.stepNum++;
+    if (dict.count > 0) {
+        NSString *str = dict[stepTypeKey];
+        if ([str isEqualToString:@"stepTypeFly"]) {
+            [self.chessView setAIFlyWithDict:dict];
+        }else {
+            [self.chessView setAIWalkWithDict:dict];
+        }
+    }
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
 }
 
@@ -156,7 +160,7 @@
 - (void)backBtnDidTouchUpInside{
     if (stepNumber - 1 > 0) {
         stepNumber--;
-        self.AIStepNum--;
+        self.AI.stepNum--;
         NSMutableArray *chess = recordArray[recordArray.count - 1];
         [recordArray removeLastObject];
         [self.chessView resetChessPlaceWithArray:chess.copy];

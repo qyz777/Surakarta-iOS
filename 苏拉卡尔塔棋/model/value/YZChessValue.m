@@ -93,7 +93,7 @@
     switch (x) {
         case 0:{
             if (y == 0 || y == 5) {
-                return -20;
+                return 10;
             }else {
                 return 10;
             }
@@ -149,7 +149,7 @@
         }
         case 5:{
             if (y == 0 || y == 5) {
-                return -20;
+                return 10;
             }else {
                 return 10;
             }
@@ -167,7 +167,7 @@
     switch (x) {
         case 0:{
             if (y == 0 || y == 5) {
-                return 10;
+                return -10;
             }else {
                 return 20;
             }
@@ -178,16 +178,16 @@
                 return 20;
             }
             if (y == 1 || y == 4) {
-                return 30;
+                return 40;
             }
             if (y == 2 || y == 3) {
-                return 40;
+                return 30;
             }
             break;
         }
         case 2:{
             if (y == 0 || y == 5) {
-                return 20;
+                return 15;
             }
             if (y == 1 || y == 4) {
                 return 40;
@@ -211,19 +211,19 @@
         }
         case 4:{
             if (y == 0 || y == 5) {
-                return 20;
+                return 15;
             }
             if (y == 1 || y == 4) {
-                return 30;
+                return 40;
             }
             if (y == 2 || y == 3) {
-                return 40;
+                return 30;
             }
             break;
         }
         case 5:{
             if (y == 0 || y == 5) {
-                return 10;
+                return -10;
             }else {
                 return 20;
             }
@@ -429,6 +429,31 @@
             break;
     }
     return 0;
+}
+
++ (NSInteger)endingPostionValueWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp {
+    NSInteger score = 0;
+    if (camp == -1) {
+        YZChessPlace *p1 = chessPlace[0][0];
+        YZChessPlace *p2 = chessPlace[0][5];
+        if (p1.camp == camp) {
+            score -= 25;
+        }
+        if (p2.camp == camp) {
+            score -= 25;
+        }
+    }
+    if (camp == 1) {
+        YZChessPlace *p1 = chessPlace[5][0];
+        YZChessPlace *p2 = chessPlace[5][5];
+        if (p1.camp == camp) {
+            score -= 25;
+        }
+        if (p2.camp == camp) {
+            score -= 25;
+        }
+    }
+    return score;
 }
 
 @end

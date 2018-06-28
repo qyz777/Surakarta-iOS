@@ -257,12 +257,15 @@ NSString const *stepTypeFly = @"stepTypeFly";
     NSInteger ATK = 0;
 //    棋子数量
     NSInteger chessNum = [YZChessValue chessNumWithChessPlace:chessPlace camp:camp];
-    
+//    占位角
     NSInteger angle = [YZChessValue angleNeedPerchWithChessPlace:chessPlace camp:camp];
 //    可吃子得分
     NSInteger killScore = 0;
-    
-    NSInteger endingPostionScore = [YZChessValue endingPostionValueWithChessPlace:chessPlace camp:camp];
+//    残局局面分
+    NSInteger endingPostionScore = 0;
+    if (chessNum < 6) {
+        endingPostionScore = [YZChessValue endingPostionValueWithChessPlace:chessPlace camp:camp];
+    }
     
     for (NSArray *array in chessPlace) {
         for (YZChessPlace *p in array) {
@@ -326,6 +329,14 @@ NSString const *stepTypeFly = @"stepTypeFly";
     return stepQueen.copy;
 }
 
+
+/**
+ 用来生成可吃子的位置
+
+ @param chessPlace 棋盘
+ @param camp 阵营
+ @return 飞行数组
+ */
 - (NSArray *)createFlyStepWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp {
     NSMutableArray *stepQueen = [[NSMutableArray alloc]init];
     for (NSArray *array in chessPlace) {
@@ -395,6 +406,14 @@ NSString const *stepTypeFly = @"stepTypeFly";
     return false;
 }
 
+
+/**
+ 棋子会不会被吃
+
+ @param chessPlace 棋盘
+ @param chess 棋子
+ @return 是否被吃
+ */
 - (BOOL)isChessWillKilledWithChessPlace:(NSArray *)chessPlace chess:(YZChessPlace *)chess{
     for (NSArray *array in chessPlace) {
         for (YZChessPlace *p in array) {
@@ -472,7 +491,13 @@ NSString const *stepTypeFly = @"stepTypeFly";
     return chessPlace;
 }
 
-// 先手策略
+
+/**
+ 先手策略
+
+ @param chessPlace 棋盘
+ @return 下子
+ */
 - (NSDictionary *)precedenceStrategyWithChessPlace:(NSArray *)chessPlace {
     if (self.camp == -1) {
         if (self.stepNum == 0) {
@@ -516,6 +541,13 @@ NSString const *stepTypeFly = @"stepTypeFly";
     return nil;
 }
 
+
+/**
+ 后手策略
+
+ @param chessPlace 棋盘
+ @return 下子
+ */
 - (NSDictionary *)laterStrategyWithChessPlace:(NSArray *)chessPlace {
     if (self.camp == -1) {
         if (self.stepNum == 0) {
@@ -631,6 +663,13 @@ NSString const *stepTypeFly = @"stepTypeFly";
     return nil;
 }
 
+
+/**
+ 深拷贝一个新的棋盘
+
+ @param chessPlace 棋盘
+ @return 新棋盘
+ */
 - (NSMutableArray *)newChessPlace:(NSArray *)chessPlace {
     NSMutableArray *newChessPlace = [NSMutableArray array];
     for (NSArray *array in chessPlace) {

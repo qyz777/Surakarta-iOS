@@ -41,7 +41,7 @@
 // 占角采用不同的局面评估
 + (NSInteger)anglePostionValueWithChessPlace:(NSArray *)chessPlace chess:(YZChessPlace *)chess angle:(NSInteger)angle;
 
-
+// 残局局面平方，用来在残局刺激棋子离开保守的位置
 + (NSInteger)endingPostionValueWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp;
 
 @end

@@ -1,3 +1,5 @@
+[![GPL Licence](https://badges.frapsoft.com/os/gpl/gpl.svg?v=103)](https://opensource.org/licenses/GPL-3.0/)
+
 # Surakarta-iOS
 
 这是一个在iOS上实现的苏拉卡尔塔棋，是学校的一个国家级大创项目，与另一个仓库[Surakarta-evaluation-function](https://github.com/qyz777/Surakarta-evaluation-function)是配套的

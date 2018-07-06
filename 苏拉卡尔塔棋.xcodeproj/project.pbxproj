@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		63A254A03495FEEA5E24E39B /* libPods-苏拉卡尔塔棋.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D08F9C527793E65D0203C3 /* libPods-苏拉卡尔塔棋.a */; };
+		A004243820EF68BB0015CD6A /* YZAIStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = A004243720EF68BB0015CD6A /* YZAIStrategy.m */; };
 		A00F94802042A0EE001D3AE5 /* YZWalkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A00F947F2042A0EE001D3AE5 /* YZWalkManager.m */; };
 		A00F94852042A691001D3AE5 /* YZFlyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A00F94842042A691001D3AE5 /* YZFlyManager.m */; };
 		A00FA8D620565FEF0071CCEA /* YZNormalAI.m in Sources */ = {isa = PBXBuildFile; fileRef = A00FA8D520565FEF0071CCEA /* YZNormalAI.m */; };
@@ -36,6 +37,8 @@
 
 /* Begin PBXFileReference section */
 		52D08F9C527793E65D0203C3 /* libPods-苏拉卡尔塔棋.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-苏拉卡尔塔棋.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A004243620EF68BB0015CD6A /* YZAIStrategy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZAIStrategy.h; sourceTree = "<group>"; };
+		A004243720EF68BB0015CD6A /* YZAIStrategy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZAIStrategy.m; sourceTree = "<group>"; };
 		A00F947E2042A0EE001D3AE5 /* YZWalkManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZWalkManager.h; sourceTree = "<group>"; };
 		A00F947F2042A0EE001D3AE5 /* YZWalkManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZWalkManager.m; sourceTree = "<group>"; };
 		A00F94832042A691001D3AE5 /* YZFlyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZFlyManager.h; sourceTree = "<group>"; };
@@ -96,6 +99,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A004243520EF689E0015CD6A /* strategy */ = {
+			isa = PBXGroup;
+			children = (
+				A004243620EF68BB0015CD6A /* YZAIStrategy.h */,
+				A004243720EF68BB0015CD6A /* YZAIStrategy.m */,
+			);
+			path = strategy;
+			sourceTree = "<group>";
+		};
 		A00F947D2042A0AC001D3AE5 /* walkManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -145,6 +157,8 @@
 		A02468F020C3B9A100800042 /* newAI */ = {
 			isa = PBXGroup;
 			children = (
+				A004243520EF689E0015CD6A /* strategy */,
+				A01EF8BD20C6759000BF1455 /* value */,
 				A022FC3F20CF831100FEFB57 /* model.mlmodel */,
 				A02468F120C3B9E300800042 /* YZNewAI.h */,
 				A02468F220C3B9E300800042 /* YZNewAI.m */,
@@ -191,7 +205,6 @@
 		A03774521FEA9A620051D41A /* model */ = {
 			isa = PBXGroup;
 			children = (
-				A01EF8BD20C6759000BF1455 /* value */,
 				A02468F020C3B9A100800042 /* newAI */,
 				A00FA8D320565FD20071CCEA /* AI */,
 				A08445322045877200ECABF2 /* settings */,
@@ -485,6 +498,7 @@
 				A084452E20457C7500ECABF2 /* YZSettingViewController.m in Sources */,
 				A03774481FEA95AD0051D41A /* main.m in Sources */,
 				A0FC10A520196921000AA35F /* YZMenuViewController.m in Sources */,
+				A004243820EF68BB0015CD6A /* YZAIStrategy.m in Sources */,
 				A09AFE44205BE36C008AE15B /* YZNormalAITactics.m in Sources */,
 				A00F94802042A0EE001D3AE5 /* YZWalkManager.m in Sources */,
 				A0FC10A820196931000AA35F /* YZMenuView.m in Sources */,

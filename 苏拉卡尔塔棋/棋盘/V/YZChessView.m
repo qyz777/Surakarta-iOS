@@ -185,8 +185,8 @@
 }
 
 - (void)setAIWalkWithDict:(NSDictionary*)dict{
-    YZChessPlace *p = dict[@"toKey"];
-    YZChessPlace *whoGo = dict[@"goKey"];
+    YZChessPlace *p = dict[toKey];
+    YZChessPlace *whoGo = dict[goKey];
     UIButton *shortBtn;
     for (UIButton *b in self.subviews) {
         if (b.tag == whoGo.tag) {
@@ -210,9 +210,9 @@
 }
 
 - (void)setAIFlyWithDict:(NSDictionary*)dict{
-    YZChessPlace *whoGo = dict[@"goKey"];
+    YZChessPlace *whoGo = dict[goKey];
     self.walkTag = whoGo.tag;
-    NSArray *AIFlyArray = dict[@"toKey"];
+    NSArray *AIFlyArray = dict[toKey];
     for (UIButton *b in self.subviews) {
         if (b.tag == whoGo.tag) {
             [self bringSubviewToFront:b];

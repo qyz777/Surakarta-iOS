@@ -16,6 +16,7 @@
 + (NSInteger)chessFirstValueWithChess:(YZChessPlace *)chess {
     NSInteger x = chess.x;
     NSInteger y = chess.y;
+    NSInteger camp = chess.camp;
     switch (x) {
         case 0:{
             if (y == 0 || y == 5) {
@@ -38,26 +39,50 @@
             break;
         }
         case 2:{
-            if (y == 0 || y == 5) {
-                return 30;
-            }
-            if (y == 1 || y == 4) {
-                return 15;
-            }
-            if (y == 2 || y == 3) {
-                return 50;
+            if (camp == -1) {
+                if (y == 0 || y == 5) {
+                    return 30;
+                }
+                if (y == 1 || y == 4) {
+                    return 15;
+                }
+                if (y == 2 || y == 3) {
+                    return 50;
+                }
+            }else {
+                if (y == 0 || y == 5) {
+                    return 20;
+                }
+                if (y == 1 || y == 4) {
+                    return 10;
+                }
+                if (y == 2 || y == 3) {
+                    return 30;
+                }
             }
             break;
         }
         case 3:{
-            if (y == 0 || y == 5) {
-                return 30;
-            }
-            if (y == 1 || y == 4) {
-                return 15;
-            }
-            if (y == 2 || y == 3) {
-                return 50;
+            if (camp == 1) {
+                if (y == 0 || y == 5) {
+                    return 30;
+                }
+                if (y == 1 || y == 4) {
+                    return 15;
+                }
+                if (y == 2 || y == 3) {
+                    return 50;
+                }
+            }else {
+                if (y == 0 || y == 5) {
+                    return 20;
+                }
+                if (y == 1 || y == 4) {
+                    return 10;
+                }
+                if (y == 2 || y == 3) {
+                    return 30;
+                }
             }
             break;
         }
@@ -431,6 +456,7 @@
     return 0;
 }
 
+// TODO:修改
 + (NSInteger)endingPostionValueWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp {
     NSInteger score = 0;
     if (camp == -1) {

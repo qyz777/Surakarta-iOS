@@ -11,15 +11,8 @@
 #import "YZWalkManager.h"
 #import "YZFlyManager.h"
 #import "YZChessValue.h"
+#import "YZAIStrategy.h"
 #import "model.h"
-
-NSString const *stepArrayKey = @"stepArrayKey";
-NSString const *goKey = @"goKey";
-NSString const *toKey = @"toKey";
-NSString const *valueKey = @"valueKey";
-NSString const *stepTypeKey = @"stepTypeKey";
-NSString const *stepTypeWalk = @"stepTypeWalk";
-NSString const *stepTypeFly = @"stepTypeFly";
 
 @interface YZNewAI()
 
@@ -53,7 +46,7 @@ NSString const *stepTypeFly = @"stepTypeFly";
     if (chessNum == 0) {
         return;
     }
-    if (chessNum <= 5) {
+    if (chessNum <= 6) {
         self.searchDepth = 5;
     }else {
         self.searchDepth = 3;
@@ -61,7 +54,7 @@ NSString const *stepTypeFly = @"stepTypeFly";
     
     if (self.isFirst) {
         if (self.stepNum < 3) {
-            block([self precedenceStrategyWithChessPlace:chessPlace]);
+            block([YZAIStrategy precedenceStrategyWithChessPlace:chessPlace camp:self.camp stepNum:self.stepNum]);
             return;
         }
     }
@@ -148,12 +141,12 @@ NSString const *stepTypeFly = @"stepTypeFly";
     }
     
     if (self.isFirst) {
-        if (self.stepNum < 3) {
-            return [self precedenceStrategyWithChessPlace:chessPlace];
-        }
+//        if (self.stepNum < 3) {
+//            return [self precedenceStrategyWithChessPlace:chessPlace];
+//        }
     }else {
         if (self.stepNum < 3) {
-            NSDictionary *d = [self laterStrategyWithChessPlace:chessPlace];
+            NSDictionary *d = [YZAIStrategy laterStrategyWithChessPlace:chessPlace camp:self.camp stepNum:self.stepNum];
             if (d) {
                 return d;
             }
@@ -277,7 +270,8 @@ NSString const *stepTypeFly = @"stepTypeFly";
                     }
                     if (chessNum >= 11) {
                         chessValue += [YZChessValue chessFirstValueWithChess:p];
-                    }else {
+                    }
+                    if (chessNum < 6 && chessNum < 11) {
                         chessValue += [YZChessValue anglePostionValueWithChessPlace:chessPlace chess:p angle:angle];
                     }
                 }else {
@@ -287,7 +281,8 @@ NSString const *stepTypeFly = @"stepTypeFly";
                     }
                     if (chessNum >= 11) {
                         chessValue += [YZChessValue chessFirstValueWithChess:p];
-                    }else {
+                    }
+                    if (chessNum < 6 && chessNum < 11) {
                         chessValue += [YZChessValue chessValueWithChess:p];
                     }
                 }
@@ -299,7 +294,7 @@ NSString const *stepTypeFly = @"stepTypeFly";
             }
         }
     }
-//    [self networkPredictionWithChessPlace:chessPlace];
+//    [self networkPredictionWithChessPlace:chessPlace camp:camp];
     NSInteger value = chessNum + walkRange + ATK + chessValue + killScore + endingPostionScore;
     return value;
 }
@@ -357,8 +352,15 @@ NSString const *stepTypeFly = @"stepTypeFly";
     return stepQueen.copy;
 }
 
-- (void)networkPredictionWithChessPlace:(NSArray *)chessPlace {
+- (void)networkPredictionWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp {
     NSMutableArray<NSNumber *> *campArray = [[NSMutableArray alloc]init];
+    for (int i=0; i<6; i++) {
+        if (camp == -1) {
+            [campArray addObject:@(-1)];
+        }else {
+            [campArray addObject:@(1)];
+        }
+    }
     for (NSArray *array in chessPlace) {
         for (YZChessPlace *p in array) {
             if (p.camp == -1) {
@@ -370,7 +372,7 @@ NSString const *stepTypeFly = @"stepTypeFly";
             }
         }
     }
-    MLMultiArray *feedArray = [[MLMultiArray alloc]initWithShape:@[@36] dataType:MLMultiArrayDataTypeInt32 error:nil];
+    MLMultiArray *feedArray = [[MLMultiArray alloc]initWithShape:@[@42] dataType:MLMultiArrayDataTypeInt32 error:nil];
     for (int i=0; i<campArray.count; i++) {
         [feedArray setObject:feedArray[i] atIndexedSubscript:i];
     }
@@ -380,9 +382,7 @@ NSString const *stepTypeFly = @"stepTypeFly";
     modelOutput *networkOutput = [network predictionFromInput:feedArray error:&error];
     MLMultiArray *shortArray = networkOutput.Prediction;
     NSNumber *a = shortArray[0];
-    if ([a integerValue] > 0 && [a integerValue] < 10000) {
-        NSLog(@"%@",a);
-    }
+    NSLog(@"%@",a);
 }
 
 
@@ -489,178 +489,6 @@ NSString const *stepTypeFly = @"stepTypeFly";
     toChess.camp = pTo.camp;
     
     return chessPlace;
-}
-
-
-/**
- 先手策略
-
- @param chessPlace 棋盘
- @return 下子
- */
-- (NSDictionary *)precedenceStrategyWithChessPlace:(NSArray *)chessPlace {
-    if (self.camp == -1) {
-        if (self.stepNum == 0) {
-            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-            [dict setObject:chessPlace[1][1] forKey:goKey];
-            [dict setObject:chessPlace[2][2] forKey:toKey];
-            return dict.copy;
-        }
-        if (self.stepNum == 1) {
-            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-            [dict setObject:chessPlace[1][0] forKey:goKey];
-            [dict setObject:chessPlace[2][0] forKey:toKey];
-            return dict.copy;
-        }
-        if (self.stepNum == 2) {
-            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-            [dict setObject:chessPlace[0][1] forKey:goKey];
-            [dict setObject:chessPlace[1][1] forKey:toKey];
-            return dict.copy;
-        }
-    }else {
-        if (self.stepNum == 0) {
-            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-            [dict setObject:chessPlace[4][1] forKey:goKey];
-            [dict setObject:chessPlace[3][2] forKey:toKey];
-            return dict.copy;
-        }
-        if (self.stepNum == 1) {
-            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-            [dict setObject:chessPlace[4][0] forKey:goKey];
-            [dict setObject:chessPlace[3][0] forKey:toKey];
-            return dict.copy;
-        }
-        if (self.stepNum == 2) {
-            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-            [dict setObject:chessPlace[5][1] forKey:goKey];
-            [dict setObject:chessPlace[4][1] forKey:toKey];
-            return dict.copy;
-        }
-    }
-    return nil;
-}
-
-
-/**
- 后手策略
-
- @param chessPlace 棋盘
- @return 下子
- */
-- (NSDictionary *)laterStrategyWithChessPlace:(NSArray *)chessPlace {
-    if (self.camp == -1) {
-        if (self.stepNum == 0) {
-            YZChessPlace *p1 = chessPlace[3][0];
-            YZChessPlace *p2 = chessPlace[3][2];
-            if (p1.camp == 1 || p2.camp == 1) {
-                NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-                [dict setObject:chessPlace[1][1] forKey:goKey];
-                [dict setObject:chessPlace[2][2] forKey:toKey];
-                return dict.copy;
-            }
-            YZChessPlace *p3 = chessPlace[3][5];
-            YZChessPlace *p4 = chessPlace[3][3];
-            if (p3.camp == 1 || p4.camp == 1) {
-                NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-                [dict setObject:chessPlace[1][4] forKey:goKey];
-                [dict setObject:chessPlace[2][3] forKey:toKey];
-                return dict.copy;
-            }
-        }
-        if (self.stepNum == 1) {
-            YZChessPlace *p1 = chessPlace[3][0];
-            YZChessPlace *p2 = chessPlace[3][2];
-            if (p1.camp == 1 && p2.camp == 1) {
-                NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-                [dict setObject:chessPlace[1][0] forKey:goKey];
-                [dict setObject:chessPlace[2][1] forKey:toKey];
-                return dict.copy;
-            }
-            YZChessPlace *p3 = chessPlace[3][5];
-            YZChessPlace *p4 = chessPlace[3][3];
-            if (p3.camp == 1 && p4.camp == 1) {
-                NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-                [dict setObject:chessPlace[1][5] forKey:goKey];
-                [dict setObject:chessPlace[2][4] forKey:toKey];
-                return dict.copy;
-            }
-        }
-        if (self.stepNum == 2) {
-            YZChessPlace *p1 = chessPlace[4][1];
-            YZChessPlace *p2 = chessPlace[4][4];
-            YZChessPlace *p3 = chessPlace[5][1];
-            YZChessPlace *p4 = chessPlace[5][4];
-            if (p1.camp == 1 && p3.camp == 0) {
-                NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-                [dict setObject:chessPlace[0][1] forKey:goKey];
-                [dict setObject:chessPlace[1][1] forKey:toKey];
-                return dict.copy;
-            }
-            if (p2.camp == 1 && p4.camp == 0) {
-                NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-                [dict setObject:chessPlace[0][4] forKey:goKey];
-                [dict setObject:chessPlace[1][4] forKey:toKey];
-                return dict.copy;
-            }
-        }
-    }else {
-        if (self.stepNum == 0) {
-            YZChessPlace *p1 = chessPlace[2][0];
-            YZChessPlace *p2 = chessPlace[2][2];
-            if (p1.camp == -1 || p2.camp == -1) {
-                NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-                [dict setObject:chessPlace[4][1] forKey:goKey];
-                [dict setObject:chessPlace[3][2] forKey:toKey];
-                return dict.copy;
-            }
-            YZChessPlace *p3 = chessPlace[2][5];
-            YZChessPlace *p4 = chessPlace[2][3];
-            if (p3.camp == -1 || p4.camp == -1) {
-                NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-                [dict setObject:chessPlace[4][4] forKey:goKey];
-                [dict setObject:chessPlace[3][3] forKey:toKey];
-                return dict.copy;
-            }
-        }
-        if (self.stepNum == 1) {
-            YZChessPlace *p1 = chessPlace[2][0];
-            YZChessPlace *p2 = chessPlace[2][2];
-            if (p1.camp == -1 && p2.camp == -1) {
-                NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-                [dict setObject:chessPlace[4][0] forKey:goKey];
-                [dict setObject:chessPlace[3][1] forKey:toKey];
-                return dict.copy;
-            }
-            YZChessPlace *p3 = chessPlace[2][5];
-            YZChessPlace *p4 = chessPlace[2][3];
-            if (p3.camp == -1 && p4.camp == -1) {
-                NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-                [dict setObject:chessPlace[4][5] forKey:goKey];
-                [dict setObject:chessPlace[3][4] forKey:toKey];
-                return dict.copy;
-            }
-        }
-        if (self.stepNum == 2) {
-            YZChessPlace *p1 = chessPlace[1][1];
-            YZChessPlace *p2 = chessPlace[1][4];
-            YZChessPlace *p3 = chessPlace[0][1];
-            YZChessPlace *p4 = chessPlace[0][4];
-            if (p1.camp == -1 && p3.camp == 0) {
-                NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-                [dict setObject:chessPlace[5][1] forKey:goKey];
-                [dict setObject:chessPlace[4][1] forKey:toKey];
-                return dict.copy;
-            }
-            if (p2.camp == -1 && p4.camp == 0) {
-                NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-                [dict setObject:chessPlace[5][4] forKey:goKey];
-                [dict setObject:chessPlace[4][4] forKey:toKey];
-                return dict.copy;
-            }
-        }
-    }
-    return nil;
 }
 
 

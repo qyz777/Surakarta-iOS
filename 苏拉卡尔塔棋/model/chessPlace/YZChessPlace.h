@@ -8,6 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+UIKIT_EXTERN NSString const *stepArrayKey;
+UIKIT_EXTERN NSString const *goKey;
+UIKIT_EXTERN NSString const *toKey;
+UIKIT_EXTERN NSString const *valueKey;
+UIKIT_EXTERN NSString const *stepTypeKey;
+UIKIT_EXTERN NSString const *stepTypeWalk;
+UIKIT_EXTERN NSString const *stepTypeFly;
+
 @interface YZChessPlace : NSObject<NSCopying,NSMutableCopying>
 
 @property(assign,nonatomic)NSInteger camp;

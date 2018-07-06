@@ -9,6 +9,14 @@
 #import "YZChessPlace.h"
 #import "YZWalkManager.h"
 
+NSString const *stepArrayKey = @"stepArrayKey";
+NSString const *goKey = @"goKey";
+NSString const *toKey = @"toKey";
+NSString const *valueKey = @"valueKey";
+NSString const *stepTypeKey = @"stepTypeKey";
+NSString const *stepTypeWalk = @"stepTypeWalk";
+NSString const *stepTypeFly = @"stepTypeFly";
+
 @implementation YZChessPlace
 
 - (id)copyWithZone:(NSZone *)zone {

@@ -9,6 +9,7 @@
 #import "YZSettingViewController.h"
 #import "YZSettingTableView.h"
 #import "YZSettings.h"
+#import "YZAboutMeViewController.h"
 
 @interface YZSettingViewController ()<YZSettingTableViewDelegate>{
     YZSettingTableView *settingTableView;
@@ -103,6 +104,11 @@
 
 - (void)specialDidChangeWithType:(NSString *)type{
     [YZSettings changeSettingWithKey:@"special" Type:type];
+}
+
+- (void)aboutMeDidClicked {
+    YZAboutMeViewController *vc = [YZAboutMeViewController new];
+    [self presentViewController:vc animated:true completion:nil];
 }
 
 @end

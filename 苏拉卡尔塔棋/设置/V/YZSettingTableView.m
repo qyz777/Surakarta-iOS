@@ -117,9 +117,9 @@
     }
 }
 
-#pragma make - tableViewDataSource
+#pragma mark - tableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 5;
+    return 6;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectio{
@@ -134,7 +134,7 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if (indexPath.section != 3) {
+    if (indexPath.section != 3 && indexPath.section != 5) {
         UISwitch *settingSwitch = [[UISwitch alloc]init];
         settingSwitch.on = [self.settingDelegate switchStateWithSection:indexPath.section];
         settingSwitch.tag = indexPath.section;
@@ -145,6 +145,8 @@
             make.centerY.equalTo(cell);
             make.right.equalTo(cell).offset(-25);
         }];
+    }else if (indexPath.section == 5) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }else {
         self.label = [[UILabel alloc]init];
         self.label.text = _labelType;
@@ -172,6 +174,9 @@
             break;
         case 4:
             cell.textLabel.text = @"AI红方";
+            break;
+        case 5:
+            cell.textLabel.text = @"关于我";
             break;
         default:
             break;
@@ -220,6 +225,11 @@
             }];
         }
 
+    }
+    if (indexPath.section == 5) {
+        if ([self.settingDelegate respondsToSelector:@selector(aboutMeDidClicked)]) {
+            [self.settingDelegate aboutMeDidClicked];
+        }
     }
 }
 

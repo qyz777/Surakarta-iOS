@@ -16,6 +16,7 @@
 - (void)AIDidSwitch;
 - (BOOL)switchStateWithSection:(NSInteger)section;
 - (void)specialDidChangeWithType:(NSString*)type;
+- (void)aboutMeDidClicked;
 
 @end
 

@@ -25,3 +25,5 @@
 [iOS实现苏拉卡尔塔吃子算法](https://www.jianshu.com/p/ad6b3a9bc280)
 
 [Qi的博客](http://www.qyizhong.cn)
+
+请注意，这个APP不允许被上架到App Store

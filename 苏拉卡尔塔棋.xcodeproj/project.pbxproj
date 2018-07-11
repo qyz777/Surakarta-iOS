@@ -29,6 +29,8 @@
 		A084452E20457C7500ECABF2 /* YZSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A084452D20457C7500ECABF2 /* YZSettingViewController.m */; };
 		A084453120457D3B00ECABF2 /* YZSettingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A084453020457D3B00ECABF2 /* YZSettingTableView.m */; };
 		A08445352045878700ECABF2 /* YZSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A08445342045878700ECABF2 /* YZSettings.m */; };
+		A08AF5AA20F63CA200EEB49A /* GameRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = A08AF5A920F63CA200EEB49A /* GameRecord.m */; };
+		A08AF5AC20F6479F00EEB49A /* GameRecord.txt in Resources */ = {isa = PBXBuildFile; fileRef = A08AF5AB20F6479F00EEB49A /* GameRecord.txt */; };
 		A09AFE44205BE36C008AE15B /* YZNormalAITactics.m in Sources */ = {isa = PBXBuildFile; fileRef = A09AFE43205BE36C008AE15B /* YZNormalAITactics.m */; };
 		A0BB6653207AF6D400CEB369 /* YZEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = A0BB6652207AF6D400CEB369 /* YZEmitter.m */; };
 		A0FC10A520196921000AA35F /* YZMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FC10A420196921000AA35F /* YZMenuViewController.m */; };
@@ -76,6 +78,9 @@
 		A084453020457D3B00ECABF2 /* YZSettingTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZSettingTableView.m; sourceTree = "<group>"; };
 		A08445332045878700ECABF2 /* YZSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZSettings.h; sourceTree = "<group>"; };
 		A08445342045878700ECABF2 /* YZSettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZSettings.m; sourceTree = "<group>"; };
+		A08AF5A820F63CA200EEB49A /* GameRecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameRecord.h; sourceTree = "<group>"; };
+		A08AF5A920F63CA200EEB49A /* GameRecord.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameRecord.m; sourceTree = "<group>"; };
+		A08AF5AB20F6479F00EEB49A /* GameRecord.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = GameRecord.txt; sourceTree = "<group>"; };
 		A09AFE42205BE36C008AE15B /* YZNormalAITactics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZNormalAITactics.h; sourceTree = "<group>"; };
 		A09AFE43205BE36C008AE15B /* YZNormalAITactics.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZNormalAITactics.m; sourceTree = "<group>"; };
 		A0BB6651207AF6D400CEB369 /* YZEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZEmitter.h; sourceTree = "<group>"; };
@@ -211,6 +216,7 @@
 				A03774431FEA95AD0051D41A /* LaunchScreen.storyboard */,
 				A03774461FEA95AD0051D41A /* Info.plist */,
 				A03774471FEA95AD0051D41A /* main.m */,
+				A08AF5AB20F6479F00EEB49A /* GameRecord.txt */,
 			);
 			path = "苏拉卡尔塔棋";
 			sourceTree = "<group>";
@@ -218,6 +224,7 @@
 		A03774521FEA9A620051D41A /* model */ = {
 			isa = PBXGroup;
 			children = (
+				A08AF5A720F63C8F00EEB49A /* gameRecord */,
 				A02468F020C3B9A100800042 /* newAI */,
 				A00FA8D320565FD20071CCEA /* AI */,
 				A08445322045877200ECABF2 /* settings */,
@@ -282,6 +289,15 @@
 				A08445342045878700ECABF2 /* YZSettings.m */,
 			);
 			path = settings;
+			sourceTree = "<group>";
+		};
+		A08AF5A720F63C8F00EEB49A /* gameRecord */ = {
+			isa = PBXGroup;
+			children = (
+				A08AF5A820F63CA200EEB49A /* GameRecord.h */,
+				A08AF5A920F63CA200EEB49A /* GameRecord.m */,
+			);
+			path = gameRecord;
 			sourceTree = "<group>";
 		};
 		A09AFE41205BE33D008AE15B /* AI战术 */ = {
@@ -441,6 +457,7 @@
 				A08445222045789F00ECABF2 /* eatChess.mp3 in Resources */,
 				A03774401FEA95AD0051D41A /* Main.storyboard in Resources */,
 				A084452820457BF500ECABF2 /* go.mp3 in Resources */,
+				A08AF5AC20F6479F00EEB49A /* GameRecord.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,6 +521,7 @@
 			files = (
 				A03774511FEA96070051D41A /* YZChessView.m in Sources */,
 				A084451D20456CF900ECABF2 /* YZFlyAnimation.m in Sources */,
+				A08AF5AA20F63CA200EEB49A /* GameRecord.m in Sources */,
 				A02468F320C3B9E300800042 /* YZNewAI.m in Sources */,
 				A03774551FEE8A9F0051D41A /* YZChessPlace.m in Sources */,
 				A0BB6653207AF6D400CEB369 /* YZEmitter.m in Sources */,

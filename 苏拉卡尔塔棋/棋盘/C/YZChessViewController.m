@@ -13,6 +13,7 @@
 #import "YZFlyManager.h"
 #import "YZSettings.h"
 #import "YZNewAI.h"
+#import "GameRecord.h"
 #import <AudioToolbox/AudioToolbox.h>
 
 @interface YZChessViewController ()<YZChessViewDelegate>{
@@ -31,6 +32,9 @@
 @property(nonatomic, assign)NSInteger stepNumber;
 @property(nonatomic, strong)YZNewAI *AI;
 
+// 比赛专用
+@property (nonatomic, strong) GameRecord *gameRecord;
+
 @end
 
 @implementation YZChessViewController
@@ -44,6 +48,7 @@
     [super viewDidAppear:animated];
     [self initPriority];
     [self initAI];
+    self.gameRecord = [[GameRecord alloc] init];
 }
 
 
@@ -213,10 +218,13 @@
         
         NSInteger shortCamp = 0;
         int m = 0,n = 0;
+        NSInteger reI = 0,reJ = 0;
         for (int i=0; i<6; i++) {
             for (int j=0; j<6; j++) {
                 YZChessPlace *p = self.chessPlace[i][j];
                 if (p.tag == firstTag) {
+                    reI = p.x;
+                    reJ = p.y;
                     shortCamp = p.camp;
                     p.tag = 0;
                     p.camp = 0;
@@ -228,6 +236,10 @@
                 }
             }
         }
+        
+        //        比赛专用:记录吃子
+        [self.gameRecord eatChessWithFromX:reI fromY:reJ toX:m toY:n camp:shortCamp];
+        
         YZChessPlace *shortP = self.chessPlace[m][n];
         shortP.tag = firstTag;
         shortP.camp = shortCamp;
@@ -278,6 +290,10 @@
                 }
             }
         }
+        
+        //        比赛专用:记录walk
+        [self.gameRecord walkChessWithFromX:go.x fromY:go.y toX:to.x toY:to.y camp:shortCamp];
+        
         YZChessPlace *shortP = self.chessPlace[m][n];
         shortP.tag = shortTag;
         shortP.camp = shortCamp;

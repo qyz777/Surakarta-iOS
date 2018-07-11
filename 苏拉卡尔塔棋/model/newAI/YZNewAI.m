@@ -23,6 +23,7 @@
 @implementation YZNewAI
 
 - (NSDictionary *)stepDataWithChessPlace:(NSArray *)chessPlace {
+    self.isNeedAgainThink = false;
     NSDictionary *step = [self stepWithChessPlace:chessPlace];
     if (step.count == 0) {
         self.isNeedAgainThink = true;
@@ -83,7 +84,7 @@
                 cPlace = [self stepWithChess:goChess toChess:toChess chessPlace:cPlace.copy];
                 //            如果不是一定会被吃子，模拟下子的位置会被吃，放弃，直接结束线程
                 if (!self.isNeedAgainThink) {
-                    if ([self isChessWillKilledWithChessPlace:chessPlace]) {
+                    if ([self isChessWillKilledWithChessPlace:chessPlace chess:toChess]) {
                         isNeedContinue = false;
                     }
                 }
@@ -135,16 +136,12 @@
     NSInteger chessNum = [YZChessValue chessNumWithChessPlace:chessPlace camp:self.camp];
     if (chessNum <= 6) {
         self.searchDepth = 5;
-        self.isNeedAgainThink = YES;
     }else {
         self.searchDepth = 3;
     }
     
-    if (self.isFirst) {
-//        if (self.stepNum < 3) {
-//            return [self precedenceStrategyWithChessPlace:chessPlace];
-//        }
-    }else {
+//    后手策略
+    if (!self.isFirst) {
         if (self.stepNum < 3) {
             NSDictionary *d = [YZAIStrategy laterStrategyWithChessPlace:chessPlace camp:self.camp stepNum:self.stepNum];
             if (d) {
@@ -152,6 +149,24 @@
             }
         }
     }
+    
+//    常规策略
+    if (![self flyStepWithChessPlace:chessPlace camp:self.camp]) {
+        NSDictionary *strategyDict = [YZAIStrategy strategyWithChessPlace:chessPlace camp:self.camp stepNum:self.stepNum];
+        if (strategyDict) {
+            return strategyDict;
+        }
+    }
+    
+//    个别顶点会被吃子时不能挡住的防守点位
+    NSArray *willBeEatChess = [self chessWillKilledWithChessPlace:chessPlace];
+    NSMutableArray<NSDictionary *> *badPosition = [NSMutableArray array];
+    for (YZChessPlace *p in willBeEatChess) {
+        [badPosition addObject:[YZAIStrategy chessWillKilledStrategyWithChessPlace:chessPlace chess:p]];
+    }
+    
+//    需要防守的情况只有满12个棋子的时候有效
+    NSInteger defendPosition = [YZAIStrategy defendStrategyWithChessPlace:chessPlace camp:self.camp];
     
 //    拿到全部可以下子的位置，此处全部可以下子的的数组不包含可吃子的位置
     NSArray *allStepArray = [self createStepsWithChessPlace:chessPlace camp:self.camp];
@@ -165,10 +180,27 @@
         if (flyDict) {
             return flyDict;
         }
+        
+        if (defendPosition != -1 && chessNum == 12) {
+            if ([YZAIStrategy isNeedDefendWithPosition:defendPosition x:toChess.x y:toChess.y]) {
+                continue;
+            }
+        }
+        
+        if (!self.isNeedAgainThink) {
+            for (NSDictionary *badD in badPosition) {
+                NSInteger badX = [badD[@"x"] integerValue];
+                NSInteger badY = [badD[@"y"] integerValue];
+                if (toChess.x == badX && toChess.y == badY) {
+                    continue;
+                }
+            }
+        }
+        
         chessPlace = [self stepWithChess:goChess toChess:toChess chessPlace:chessPlace];
 //        如果不是一定会被吃子，模拟下子的位置会被吃，放弃
         if (!self.isNeedAgainThink) {
-            if ([self isChessWillKilledWithChessPlace:chessPlace]) {
+            if ([self isChessWillKilledWithChessPlace:chessPlace chess:toChess]) {
                 chessPlace = [self stepWithChess:toChess toChess:goChess chessPlace:chessPlace];
                 continue;
             }
@@ -390,20 +422,21 @@
  棋子会不会被吃
 
  @param chessPlace 棋盘
- @return 是否被吃
+ @return 被吃的棋子
  */
-- (BOOL)isChessWillKilledWithChessPlace:(NSArray *)chessPlace {
+- (NSArray *)chessWillKilledWithChessPlace:(NSArray *)chessPlace {
+    NSMutableArray *fly = [NSMutableArray array];
     for (NSArray *array in chessPlace) {
         for (YZChessPlace *p in array) {
             if (p.camp == -self.camp) {
                 NSArray *flyArray = [YZFlyManager flyManageWithX:p.x Y:p.y Camp:p.camp placeArray:chessPlace.mutableCopy];
-                if (flyArray.count > 0) {
-                    return true;
+                for (NSArray *f in flyArray) {
+                    [fly addObject:f.lastObject];
                 }
             }
         }
     }
-    return false;
+    return fly.copy;
 }
 
 

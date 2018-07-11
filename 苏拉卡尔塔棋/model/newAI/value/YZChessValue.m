@@ -54,7 +54,7 @@
                     return 20;
                 }
                 if (y == 1 || y == 4) {
-                    return 10;
+                    return 0;
                 }
                 if (y == 2 || y == 3) {
                     return 30;
@@ -78,7 +78,7 @@
                     return 20;
                 }
                 if (y == 1 || y == 4) {
-                    return 10;
+                    return 0;
                 }
                 if (y == 2 || y == 3) {
                     return 30;
@@ -277,11 +277,6 @@
     return [YZWalkManager walkEngine:chess.x Y:chess.y previousArray:chessPlace].count;
 }
 
-+ (NSInteger)badStepScoreWithChessPlace:(NSArray *)chessPlace chess:(YZChessPlace *)chess {
-    NSArray *flyStepArray = [YZFlyManager flyManageWithX:chess.x Y:chess.y Camp:chess.camp placeArray:chessPlace.mutableCopy];
-    return -(flyStepArray.count * 1000);
-}
-
 + (NSInteger)chessAttackWithChessPlace:(NSArray *)chessPlace chess:(YZChessPlace *)chess; {
     NSArray *firstArray = @[chessPlace[1][2],
                        chessPlace[1][3],
@@ -298,12 +293,12 @@
     NSInteger atk = 0;
     for (YZChessPlace *p in firstArray) {
         if (chess.tag == p.tag) {
-            atk += 15;
+            atk += 10;
         }
     }
     for (YZChessPlace *p in secondArray) {
         if (chess.tag == p.tag) {
-            atk += 10;
+            atk += 5;
         }
     }
     return atk;
@@ -315,7 +310,7 @@
             if (p.camp == camp) {
                 NSArray *flyArray = [YZFlyManager flyManageWithX:p.x Y:p.y Camp:p.camp placeArray:chessPlace.mutableCopy];
                 if (flyArray.count > 0) {
-                    return flyArray.count * 100;
+                    return flyArray.count * 80;
                 }
             }
         }

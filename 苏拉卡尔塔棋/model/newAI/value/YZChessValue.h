@@ -26,9 +26,6 @@
 // 残局棋盘价值
 + (NSInteger)chessEndingValueWithChess:(YZChessPlace *)chess;
 
-// 坏棋减分
-+ (NSInteger)badStepScoreWithChessPlace:(NSArray *)chessPlace chess:(YZChessPlace *)chess;
-
 // 棋子攻击力
 + (NSInteger)chessAttackWithChessPlace:(NSArray *)chessPlace chess:(YZChessPlace *)chess;
 

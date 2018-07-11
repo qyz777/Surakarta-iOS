@@ -332,15 +332,15 @@
     
     if (self.isRedChess) {
         if (self.isAIType) {
-            [self AIBlueChessGo];
+            [self performSelector:@selector(AIBlueChessGo) withObject:nil afterDelay:1];
         }else {
-            [self blueChessGo];
+            [self performSelector:@selector(blueChessGo) withObject:nil afterDelay:1];
         }
     }else{
         if (self.isAIType) {
-            [self AIRedChessGo];
+            [self performSelector:@selector(AIRedChessGo) withObject:nil afterDelay:1];
         }else {
-            [self redChessGo];
+            [self performSelector:@selector(redChessGo) withObject:nil afterDelay:1];
         }
     }
 }

@@ -204,10 +204,8 @@
 		A03774371FEA95AD0051D41A /* 苏拉卡尔塔棋 */ = {
 			isa = PBXGroup;
 			children = (
-				A004243920F1F0680015CD6A /* aboutMe */,
-				A0FC10A0201968D6000AA35F /* 菜单 */,
-				A084452920457C4000ECABF2 /* 设置 */,
-				A0FC10AD20196A72000AA35F /* 棋盘 */,
+				A0E3607520F99C8200E0320B /* Controller */,
+				A0E3607420F99C7800E0320B /* View */,
 				A0FC10A92019694D000AA35F /* extern */,
 				A03774521FEA9A620051D41A /* model */,
 				A03774381FEA95AD0051D41A /* AppDelegate.h */,
@@ -235,15 +233,13 @@
 			path = model;
 			sourceTree = "<group>";
 		};
-		A084451A20456C6000ECABF2 /* 动画 */ = {
+		A084451A20456C6000ECABF2 /* animation */ = {
 			isa = PBXGroup;
 			children = (
 				A084451B20456CF900ECABF2 /* YZFlyAnimation.h */,
 				A084451C20456CF900ECABF2 /* YZFlyAnimation.m */,
-				A0BB6651207AF6D400CEB369 /* YZEmitter.h */,
-				A0BB6652207AF6D400CEB369 /* YZEmitter.m */,
 			);
-			path = "动画";
+			path = animation;
 			sourceTree = "<group>";
 		};
 		A084451E204576D700ECABF2 /* Audio */ = {
@@ -253,33 +249,6 @@
 				A08445212045789F00ECABF2 /* eatChess.mp3 */,
 			);
 			path = Audio;
-			sourceTree = "<group>";
-		};
-		A084452920457C4000ECABF2 /* 设置 */ = {
-			isa = PBXGroup;
-			children = (
-				A084452B20457C5400ECABF2 /* C */,
-				A084452A20457C4F00ECABF2 /* V */,
-			);
-			path = "设置";
-			sourceTree = "<group>";
-		};
-		A084452A20457C4F00ECABF2 /* V */ = {
-			isa = PBXGroup;
-			children = (
-				A084452F20457D3B00ECABF2 /* YZSettingTableView.h */,
-				A084453020457D3B00ECABF2 /* YZSettingTableView.m */,
-			);
-			path = V;
-			sourceTree = "<group>";
-		};
-		A084452B20457C5400ECABF2 /* C */ = {
-			isa = PBXGroup;
-			children = (
-				A084452C20457C7500ECABF2 /* YZSettingViewController.h */,
-				A084452D20457C7500ECABF2 /* YZSettingViewController.m */,
-			);
-			path = C;
 			sourceTree = "<group>";
 		};
 		A08445322045877200ECABF2 /* settings */ = {
@@ -309,69 +278,100 @@
 			path = "AI战术";
 			sourceTree = "<group>";
 		};
-		A0FC10A0201968D6000AA35F /* 菜单 */ = {
+		A0E3607420F99C7800E0320B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				A0FC10A2201968F6000AA35F /* C */,
-				A0FC10A1201968EE000AA35F /* V */,
+				A0E3607C20F99CDC00E0320B /* game */,
+				A0E3607920F99CBD00E0320B /* setting */,
+				A0E3607620F99C9700E0320B /* menu */,
 			);
-			path = "菜单";
+			path = View;
 			sourceTree = "<group>";
 		};
-		A0FC10A1201968EE000AA35F /* V */ = {
+		A0E3607520F99C8200E0320B /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A0E3607A20F99CCF00E0320B /* game */,
+				A0E3607820F99CB500E0320B /* setting */,
+				A0E3607720F99CA600E0320B /* menu */,
+				A004243920F1F0680015CD6A /* aboutMe */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		A0E3607620F99C9700E0320B /* menu */ = {
 			isa = PBXGroup;
 			children = (
 				A0FC10A620196931000AA35F /* YZMenuView.h */,
 				A0FC10A720196931000AA35F /* YZMenuView.m */,
 			);
-			path = V;
+			path = menu;
 			sourceTree = "<group>";
 		};
-		A0FC10A2201968F6000AA35F /* C */ = {
+		A0E3607720F99CA600E0320B /* menu */ = {
 			isa = PBXGroup;
 			children = (
 				A0FC10A320196921000AA35F /* YZMenuViewController.h */,
 				A0FC10A420196921000AA35F /* YZMenuViewController.m */,
 			);
-			path = C;
+			path = menu;
 			sourceTree = "<group>";
 		};
-		A0FC10A92019694D000AA35F /* extern */ = {
+		A0E3607820F99CB500E0320B /* setting */ = {
 			isa = PBXGroup;
 			children = (
-				A084451A20456C6000ECABF2 /* 动画 */,
-				A084451E204576D700ECABF2 /* Audio */,
-				A037744E1FEA95D40051D41A /* YZGeneral.pch */,
-				A03774411FEA95AD0051D41A /* Assets.xcassets */,
+				A084452C20457C7500ECABF2 /* YZSettingViewController.h */,
+				A084452D20457C7500ECABF2 /* YZSettingViewController.m */,
 			);
-			path = extern;
+			path = setting;
 			sourceTree = "<group>";
 		};
-		A0FC10AD20196A72000AA35F /* 棋盘 */ = {
+		A0E3607920F99CBD00E0320B /* setting */ = {
 			isa = PBXGroup;
 			children = (
-				A0FC10AF20196A8A000AA35F /* C */,
-				A0FC10AE20196A7F000AA35F /* V */,
+				A084452F20457D3B00ECABF2 /* YZSettingTableView.h */,
+				A084453020457D3B00ECABF2 /* YZSettingTableView.m */,
 			);
-			path = "棋盘";
+			path = setting;
 			sourceTree = "<group>";
 		};
-		A0FC10AE20196A7F000AA35F /* V */ = {
-			isa = PBXGroup;
-			children = (
-				A03774501FEA96070051D41A /* YZChessView.h */,
-				A037744F1FEA96070051D41A /* YZChessView.m */,
-			);
-			path = V;
-			sourceTree = "<group>";
-		};
-		A0FC10AF20196A8A000AA35F /* C */ = {
+		A0E3607A20F99CCF00E0320B /* game */ = {
 			isa = PBXGroup;
 			children = (
 				A0FC10AA201969A9000AA35F /* YZChessViewController.h */,
 				A0FC10AB201969A9000AA35F /* YZChessViewController.m */,
 			);
-			path = C;
+			path = game;
+			sourceTree = "<group>";
+		};
+		A0E3607C20F99CDC00E0320B /* game */ = {
+			isa = PBXGroup;
+			children = (
+				A03774501FEA96070051D41A /* YZChessView.h */,
+				A037744F1FEA96070051D41A /* YZChessView.m */,
+			);
+			path = game;
+			sourceTree = "<group>";
+		};
+		A0E3607D20F99D1600E0320B /* emitter */ = {
+			isa = PBXGroup;
+			children = (
+				A0BB6651207AF6D400CEB369 /* YZEmitter.h */,
+				A0BB6652207AF6D400CEB369 /* YZEmitter.m */,
+			);
+			path = emitter;
+			sourceTree = "<group>";
+		};
+		A0FC10A92019694D000AA35F /* extern */ = {
+			isa = PBXGroup;
+			children = (
+				A0E3607D20F99D1600E0320B /* emitter */,
+				A084451A20456C6000ECABF2 /* animation */,
+				A084451E204576D700ECABF2 /* Audio */,
+				A037744E1FEA95D40051D41A /* YZGeneral.pch */,
+				A03774411FEA95AD0051D41A /* Assets.xcassets */,
+			);
+			path = extern;
 			sourceTree = "<group>";
 		};
 		B2A1168A3C9D258A12C8C294 /* Frameworks */ = {

@@ -42,13 +42,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initView];
+    [self initAudio];
+    self.stepNumber = 0;
+//    判断游戏模式是人机还是人人
+    if (self.gameMode == chessGameModePVP) {
+        self.chessView.isAIType = false;
+    }else {
+        self.chessView.isAIType = true;
+        self.AIStepNum = 0;
+    }
+    self.gameRecord = [[GameRecord alloc] init];
+    self.chessPlace = [YZChessPlace initPlace];
+    self.recordArray = [[NSMutableArray alloc]init];
+    [self.recordArray addObject:[YZChessPlace initPlace]];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self initPriority];
     [self initAI];
-    self.gameRecord = [[GameRecord alloc] init];
 }
 
 
@@ -60,14 +72,6 @@
 - (void)initView{
     self.view.backgroundColor = [UIColor whiteColor];
     self.chessView = [[YZChessView alloc]init];
-    self.stepNumber = 0;
-//    判断游戏模式是人机还是人人
-    if (self.gameMode == chessGameModePVP) {
-        self.chessView.isAIType = false;
-    }else {
-        self.chessView.isAIType = true;
-        self.AIStepNum = 0;
-    }
 //    判断AI在哪一方
     if ([YZSettings isOnWithKey:@"whoRed"]) {
         self.chessView.isAIRed = true;
@@ -76,10 +80,6 @@
     }
     self.chessView.chessDelegate = self;
     [self.view addSubview:self.chessView];
-    self.chessPlace = [YZChessPlace initPlace];
-    self.recordArray = [[NSMutableArray alloc]init];
-    [self.recordArray addObject:[YZChessPlace initPlace]];
-    [self initAudio];
 }
 
 - (void)initPriority{
@@ -90,6 +90,7 @@
         }else {
             [self.chessView AIRedChessGo];
         }
+        [self.chessView startTime];
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"蓝方" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if (self.gameMode == chessGameModePVP) {
@@ -97,6 +98,7 @@
         }else {
             [self.chessView AIBlueChessGo];
         }
+        [self.chessView startTime];
     }]];
     [self presentViewController:alert animated:true completion:nil];
 }
@@ -119,6 +121,7 @@
 
 #pragma make - AI协议
 - (void)AIShouldGo{
+//    防止偶尔下棋过快
     [self performSelector:@selector(AIGo) withObject:nil afterDelay:0.5];
 }
 
@@ -126,40 +129,30 @@
     if (self.stepNumber == 0) {
         self.AI.isFirst = true;
     }
-//    __weak typeof(self) weakSelf = self;
-//    [self.AI stepWithChessPlace:self.chessPlace block:^(NSDictionary *step) {
-//        weakSelf.AI.stepNum++;
-//        if (step.count > 0) {
-//            NSString *str = step[stepTypeKey];
-//            if ([str isEqualToString:@"stepTypeFly"]) {
-//                [weakSelf.chessView setAIFlyWithDict:step];
-//            }else {
-//                [weakSelf.chessView setAIWalkWithDict:step];
-//            }
-//        }
-//    }];
-    NSDictionary *dict = [self.AI stepDataWithChessPlace:self.chessPlace.copy];
-    self.AI.stepNum++;
-    if (dict.count > 0) {
-        NSString *str = dict[stepTypeKey];
-        if ([str isEqualToString:@"stepTypeFly"]) {
-            [self.chessView setAIFlyWithDict:dict];
-        }else {
-            [self.chessView setAIWalkWithDict:dict];
-        }
-    }
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSDictionary *dict = [self.AI stepDataWithChessPlace:self.chessPlace.copy];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.AI.stepNum++;
+            if (dict.count > 0) {
+                NSString *str = dict[stepTypeKey];
+                if ([str isEqualToString:@"stepTypeFly"]) {
+                    [self.chessView setAIFlyWithDict:dict];
+                }else {
+                    [self.chessView setAIWalkWithDict:dict];
+                }
+            }
+        });
+    });
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
 }
 
-#pragma make - 协议
+#pragma make - YZChessViewDelegate
 - (void)closeBtnDidTouchUpInside{
-    [self dismissViewControllerAnimated:true completion:^{
-        
-    }];
+    [self dismissViewControllerAnimated:true completion:nil];
 }
 
 - (void)backBtnDidTouchUpInside{
-    if (self.stepNumber - 1 > 0) {
+    if (self.stepNumber - 1 >= 0) {
         self.stepNumber--;
         self.AI.stepNum--;
         NSMutableArray *chess = self.recordArray[self.recordArray.count - 1];
@@ -200,10 +193,10 @@
 /**
  棋子吃子完以后的协议
  
- @param firstTag 吃子的tag
- @param lastTag 被吃子的tag
+ @param fromTag 吃子的tag
+ @param toTag 被吃子的tag
  */
-- (void)chessBtnDidEatWithFirstTag:(NSInteger)firstTag lastTag:(NSInteger)lastTag{
+- (void)chessBtnDidEatWith:(NSInteger)fromTag toTag:(NSInteger)toTag {
     self.stepNumber++;
     
     if ([YZSettings isOnWithKey:@"vibrate"]) {
@@ -222,7 +215,7 @@
         for (int i=0; i<6; i++) {
             for (int j=0; j<6; j++) {
                 YZChessPlace *p = self.chessPlace[i][j];
-                if (p.tag == firstTag) {
+                if (p.tag == fromTag) {
                     reI = p.x;
                     reJ = p.y;
                     shortCamp = p.camp;
@@ -230,7 +223,7 @@
                     p.camp = 0;
                     self.chessPlace[i][j] = p;
                 }
-                if (p.tag == lastTag) {
+                if (p.tag == toTag) {
                     m = i;
                     n = j;
                 }
@@ -241,7 +234,7 @@
         [self.gameRecord eatChessWithFromX:reI fromY:reJ toX:m toY:n camp:shortCamp];
         
         YZChessPlace *shortP = self.chessPlace[m][n];
-        shortP.tag = firstTag;
+        shortP.tag = fromTag;
         shortP.camp = shortCamp;
         self.chessPlace[m][n] = shortP;
         
@@ -298,18 +291,6 @@
         shortP.tag = shortTag;
         shortP.camp = shortCamp;
         self.chessPlace[m][n] = shortP;
-        
-//        查看布局
-//        for (NSArray *a in self.chessPlace) {
-//            YZChessPlace *p1 = a[0];
-//            YZChessPlace *p2 = a[1];
-//            YZChessPlace *p3 = a[2];
-//            YZChessPlace *p4 = a[3];
-//            YZChessPlace *p5 = a[4];
-//            YZChessPlace *p6 = a[5];
-//            NSLog(@"%ld %ld %ld %ld %ld %ld",p1.camp,p2.camp,p3.camp,p4.camp,p5.camp,p6.camp);
-//        }
-//        NSLog(@"\n");
     });
 }
 
@@ -361,7 +342,7 @@
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"结果" message:@"蓝方获胜" preferredStyle: UIAlertControllerStyleAlert];
             [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 [self dismissViewControllerAnimated:true completion:^{
-//                    [self saveEndGameDataWithCamp:1];
+                    
                 }];
             }]];
             [self presentViewController:alert animated:true completion:nil];
@@ -370,7 +351,7 @@
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"结果" message:@"红方获胜" preferredStyle: UIAlertControllerStyleAlert];
             [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 [self dismissViewControllerAnimated:true completion:^{
-//                    [self saveEndGameDataWithCamp:-1];
+                    
                 }];
             }]];
             [self presentViewController:alert animated:true completion:nil];

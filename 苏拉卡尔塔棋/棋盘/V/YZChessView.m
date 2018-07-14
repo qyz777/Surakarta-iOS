@@ -19,21 +19,77 @@
 
 @property(strong,nonatomic)CAEmitterLayer *emLayer;
 
+@property (nonatomic, strong) dispatch_source_t timer;
+
+@property (nonatomic, assign) NSInteger blueTime;
+@property (nonatomic, assign) NSInteger redTime;
+
 @end
 
 @implementation YZChessView
 
 - (instancetype)init{
     self = [super init];
-    [self initView];
+    if (self) {
+        [self initView];
+        [self initChess];
+        self.isAIType = false;
+        self.blueTime = 0;
+        self.redTime = 0;
+        [self.closeBtn addTarget:self action:@selector(pressCloseBtn) forControlEvents:UIControlEventTouchUpInside];
+        [self.backBtn addTarget:self action:@selector(pressBackBtn) forControlEvents:UIControlEventTouchUpInside];
+    }
     return self;
 }
 
 - (void)initView{
     self.backgroundColor = RGB(245, 245, 245);
     self.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-    self.isAIType = false;
-    //建立棋子
+    
+    [self addSubview:self.titleLabel];
+    [self addSubview:self.messageLabel];
+    [self addSubview:self.closeBtn];
+    [self addSubview:self.backBtn];
+    [self addSubview:self.redTimeLabel];
+    [self addSubview:self.blueTimeLabel];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_offset(CGSizeMake(180, 40));
+        make.centerX.equalTo(self);
+        make.top.equalTo(self).offset(80);
+    }];
+    
+    [self.messageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_offset(CGSizeMake(250, 40));
+        make.centerX.equalTo(self);
+        make.bottom.equalTo(self).offset(-150);
+    }];
+    
+    [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_offset(CGSizeMake(30, 30));
+        make.top.equalTo(self).offset(30);
+        make.right.equalTo(self).offset(-30);
+    }];
+    
+    [self.backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_offset(CGSizeMake(30, 30));
+        make.top.equalTo(self).offset(30);
+        make.left.equalTo(self).offset(30);
+    }];
+    
+    [self.redTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self).offset(50);
+        make.bottom.equalTo(self).offset(-80);
+    }];
+    
+    [self.blueTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self).offset(-50);
+        make.bottom.equalTo(self).offset(-80);
+    }];
+}
+
+- (void)initChess {
+//    新建棋盘
     for (int i=0; i<12; i++) {
         if (i<6) {
             UIButton *redBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -73,61 +129,23 @@
             [self addSubview:blueBtn];
         }
     }
-    
-    self.label = [[UILabel alloc]init];
-    self.label.textAlignment = NSTextAlignmentCenter;
-    self.label.text = @"人人对决";
-    self.label.font = [UIFont systemFontOfSize:30.0f];
-    [self addSubview:self.label];
-    [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_offset(CGSizeMake(180, 40));
-        make.centerX.equalTo(self);
-        make.top.equalTo(self).offset(80);
-    }];
-    
-    self.messageLabel = [[UILabel alloc]init];
-    self.messageLabel.userInteractionEnabled = true;
-    self.messageLabel.textAlignment = NSTextAlignmentCenter;
-    self.messageLabel.font = [UIFont systemFontOfSize:18.0f];
-    [self addSubview:self.messageLabel];
-    [self.messageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_offset(CGSizeMake(250, 40));
-        make.centerX.equalTo(self);
-        make.bottom.equalTo(self).offset(-150);
-    }];
-    
-    self.closeBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.closeBtn setBackgroundImage:[UIImage imageNamed:@"叉"] forState:UIControlStateNormal];
-    [self addSubview:self.closeBtn];
-    [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_offset(CGSizeMake(30, 30));
-        make.top.equalTo(self).offset(30);
-        make.right.equalTo(self).offset(-30);
-    }];
-    [self.closeBtn addTarget:self action:@selector(pressCloseBtn) forControlEvents:UIControlEventTouchUpInside];
-    
-    self.backBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.backBtn setBackgroundImage:[UIImage imageNamed:@"返回"] forState:UIControlStateNormal];
-    [self addSubview:self.backBtn];
-    [self.backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_offset(CGSizeMake(30, 30));
-        make.top.equalTo(self).offset(30);
-        make.left.equalTo(self).offset(30);
-    }];
-    [self.backBtn addTarget:self action:@selector(pressBackBtn) forControlEvents:UIControlEventTouchUpInside];
 }
 
-//点击了哪个棋子
 - (void)pressChessBtn:(UIButton*)btn{
     [self.chessDelegate chessBtnDidTouchWithTag:btn.tag];
 }
 
 - (void)pressCloseBtn{
+    dispatch_source_cancel(self.timer);
     [self.chessDelegate closeBtnDidTouchUpInside];
 }
 
 - (void)pressBackBtn{
     [self.chessDelegate backBtnDidTouchUpInside];
+}
+
+- (void)startTime {
+    dispatch_resume(self.timer);
 }
 
 // 交换攻击
@@ -334,13 +352,13 @@
         if (self.isAIType) {
             [self performSelector:@selector(AIBlueChessGo) withObject:nil afterDelay:1];
         }else {
-            [self performSelector:@selector(blueChessGo) withObject:nil afterDelay:1];
+            [self blueChessGo];
         }
     }else{
         if (self.isAIType) {
             [self performSelector:@selector(AIRedChessGo) withObject:nil afterDelay:1];
         }else {
-            [self performSelector:@selector(redChessGo) withObject:nil afterDelay:1];
+            [self redChessGo];
         }
     }
 }
@@ -371,7 +389,37 @@
     }
 }
 
-#pragma make -特效
+#pragma mark - timer
+- (void)startRedTime {
+    self.redTime++;
+    self.redTimeLabel.text = [self handleTime:self.redTime];
+}
+
+- (void)startBlueTime {
+    self.blueTime++;
+    self.blueTimeLabel.text = [self handleTime:self.blueTime];
+}
+
+- (NSString *)handleTime:(NSInteger)time {
+    NSInteger minute = time / 60;
+    NSInteger second = time % 60;
+    NSString *mStr = @"";
+    NSString *sStr = @"";
+    
+    if (minute > 9) {
+        mStr = [NSString stringWithFormat:@"%ld",minute];
+    }else {
+        mStr = [NSString stringWithFormat:@"0%ld",minute];
+    }
+    if (second > 9) {
+        sStr = [NSString stringWithFormat:@"%ld",second];
+    }else {
+        sStr = [NSString stringWithFormat:@"0%ld",second];
+    }
+    return [NSString stringWithFormat:@"%@:%@",mStr,sStr];
+}
+
+#pragma mark -特效
 - (void)startSpecalAnimationWithTag:(NSInteger)tag{
     CGRect frame;
     for (UIButton *btn in self.subviews) {
@@ -397,34 +445,36 @@
     }
 }
 
-#pragma make - 动画协议
-- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag{
-    YZChessPlace *lastP = shortFlyArray.lastObject;
-    for (UIButton *btn in self.subviews) {
-        if (btn.tag == self.walkTag) {
-            btn.center = CGPointMake(lastP.frameX, lastP.frameY);
-            [btn.layer removeAllAnimations];
+#pragma mark - CAAnimationDelegate
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
+    if (flag) {
+        YZChessPlace *to = shortFlyArray.lastObject;
+        for (UIButton *btn in self.subviews) {
+            if (btn.tag == self.walkTag) {
+                btn.center = CGPointMake(to.frameX, to.frameY);
+                [btn.layer removeAllAnimations];
+            }
         }
-    }
-    self.messageLabel.text = [NSString stringWithFormat:@"%ld号 Attack %ld号",self.walkTag,lastP.tag];
-    [self flyEatWillEndWithTag:lastP.tag];
-    [self.chessDelegate chessBtnDidEatWithFirstTag:self.walkTag lastTag:lastP.tag];
-    if (self.isRedChess) {
-        if (self.isAIType) {
-            [self AIBlueChessGo];
-        }else {
-            [self blueChessGo];
-        }
-    }else{
-        if (self.isAIType) {
-            [self AIRedChessGo];
-        }else {
-            [self redChessGo];
+        self.messageLabel.text = [NSString stringWithFormat:@"%ld号 Attack %ld号",self.walkTag,to.tag];
+        [self flyEatWillEndWithTag:to.tag];
+        [self.chessDelegate chessBtnDidEatWith:self.walkTag toTag:to.tag];
+        if (self.isRedChess) {
+            if (self.isAIType) {
+                [self AIBlueChessGo];
+            }else {
+                [self blueChessGo];
+            }
+        }else{
+            if (self.isAIType) {
+                [self AIRedChessGo];
+            }else {
+                [self redChessGo];
+            }
         }
     }
 }
 
-- (void)animationDidStart:(CAAnimation *)anim{
+- (void)animationDidStart:(CAAnimation *)anim {
     for (UIButton *btn in self.subviews) {
         if (btn.tag < 0) {
             [btn removeFromSuperview];
@@ -447,20 +497,87 @@
 - (void)setIsAIType:(BOOL)isAIType{
     _isAIType = isAIType;
     if (_isAIType) {
-        self.label.text = @"人机对决";
-        for (UIButton *btn in self.subviews) {
-            if (btn.tag > 0 && btn.tag <= 12) {
-                btn.userInteractionEnabled = false;
-            }
-        }
+        self.titleLabel.text = @"人机对决";
     }
 }
 
-/**
- 贝塞尔曲线绘制棋盘，一个格子30
+#pragma mark - getter
+- (dispatch_source_t)timer {
+    if (!_timer) {
+        _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(0, 0));
+        dispatch_source_set_timer(_timer, DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC, 0);
+        dispatch_source_set_event_handler(_timer, ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (self.isRedChess) {
+                    [self startRedTime];
+                }else {
+                    [self startBlueTime];
+                }
+            });
+        });
+    }
+    return _timer;
+}
 
- @param rect nope
- */
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        _titleLabel = [UILabel new];
+        _titleLabel.textAlignment = NSTextAlignmentCenter;
+        _titleLabel.text = @"人人对决";
+        _titleLabel.font = [UIFont systemFontOfSize:30.0f];
+    }
+    return _titleLabel;
+}
+
+- (UILabel *)messageLabel {
+    if (!_messageLabel) {
+        _messageLabel = [UILabel new];
+        _messageLabel.textAlignment = NSTextAlignmentCenter;
+        _messageLabel.font = [UIFont systemFontOfSize:18.0f];
+    }
+    return _messageLabel;
+}
+
+- (UIButton *)closeBtn {
+    if (!_closeBtn) {
+        _closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_closeBtn setBackgroundImage:[UIImage imageNamed:@"叉"] forState:UIControlStateNormal];
+    }
+    return _closeBtn;
+}
+
+- (UIButton *)backBtn {
+    if (!_backBtn) {
+        _backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _backBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+        [_backBtn setBackgroundImage:[UIImage imageNamed:@"返回"] forState:UIControlStateNormal];
+    }
+    return _backBtn;
+}
+
+- (UILabel *)redTimeLabel {
+    if (!_redTimeLabel) {
+        _redTimeLabel = [UILabel new];
+        _redTimeLabel.textColor = [UIColor redColor];
+        _redTimeLabel.textAlignment = NSTextAlignmentCenter;
+        _redTimeLabel.font = [UIFont systemFontOfSize:18.0f weight:UIFontWeightMedium];
+        _redTimeLabel.text = @"00:00";
+    }
+    return _redTimeLabel;
+}
+
+- (UILabel *)blueTimeLabel {
+    if (!_blueTimeLabel) {
+        _blueTimeLabel = [UILabel new];
+        _blueTimeLabel.textColor = [UIColor blueColor];
+        _blueTimeLabel.textAlignment = NSTextAlignmentCenter;
+        _blueTimeLabel.font = [UIFont systemFontOfSize:18.0f weight:UIFontWeightMedium];
+        _blueTimeLabel.text = @"00:00";
+    }
+    return _blueTimeLabel;
+}
+
+#pragma mark - 贝塞尔曲线棋盘 一个格子30
 - (void)drawRect:(CGRect)rect{
     //绘制棋盘
     UIBezierPath *bezierPath = UIBezierPath.bezierPath;

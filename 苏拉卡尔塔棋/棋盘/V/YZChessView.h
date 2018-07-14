@@ -38,10 +38,10 @@
 /**
  棋子被吃后调用
 
- @param firstTag 吃子的棋子标签
- @param lastTag 被吃的棋子标签
+ @param fromTag 吃子的棋子标签
+ @param toTag 被吃的棋子标签
  */
-- (void)chessBtnDidEatWithFirstTag:(NSInteger)firstTag lastTag:(NSInteger)lastTag;
+- (void)chessBtnDidEatWith:(NSInteger)fromTag toTag:(NSInteger)toTag;
 
 /**
  玩家下子或吃子完的协议，供AI下子
@@ -52,10 +52,13 @@
 
 @interface YZChessView : UIView
 
-@property(strong,nonatomic)UILabel *label;
+@property(strong,nonatomic)UILabel *titleLabel;
 @property(strong,nonatomic)UILabel *messageLabel;
 @property(strong,nonatomic)UIButton *closeBtn;
 @property(strong,nonatomic)UIButton *backBtn;
+
+@property (nonatomic, strong) UILabel *blueTimeLabel;
+@property (nonatomic, strong) UILabel *redTimeLabel;
 
 @property(assign,nonatomic)NSInteger walkTag;
 @property(assign,nonatomic)NSInteger flyTag;
@@ -111,5 +114,10 @@
  AI下蓝子
  */
 - (void)AIBlueChessGo;
+
+/**
+ 开始计时
+ */
+- (void)startTime;
 
 @end

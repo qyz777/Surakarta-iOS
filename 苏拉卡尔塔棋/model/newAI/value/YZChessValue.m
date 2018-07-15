@@ -13,105 +13,6 @@
 
 @implementation YZChessValue
 
-+ (NSInteger)chessFirstValueWithChess:(YZChessPlace *)chess {
-    NSInteger x = chess.x;
-    NSInteger y = chess.y;
-    NSInteger camp = chess.camp;
-    switch (x) {
-        case 0:{
-            if (y == 0 || y == 5) {
-                return -20;
-            }else {
-                return 10;
-            }
-            break;
-        }
-        case 1:{
-            if (y == 0 || y == 5) {
-                return 10;
-            }
-            if (y == 1 || y == 4) {
-                return 50;
-            }
-            if (y == 2 || y == 3) {
-                return 25;
-            }
-            break;
-        }
-        case 2:{
-            if (camp == -1) {
-                if (y == 0 || y == 5) {
-                    return 30;
-                }
-                if (y == 1 || y == 4) {
-                    return 15;
-                }
-                if (y == 2 || y == 3) {
-                    return 50;
-                }
-            }else {
-                if (y == 0 || y == 5) {
-                    return 20;
-                }
-                if (y == 1 || y == 4) {
-                    return 0;
-                }
-                if (y == 2 || y == 3) {
-                    return 30;
-                }
-            }
-            break;
-        }
-        case 3:{
-            if (camp == 1) {
-                if (y == 0 || y == 5) {
-                    return 30;
-                }
-                if (y == 1 || y == 4) {
-                    return 15;
-                }
-                if (y == 2 || y == 3) {
-                    return 50;
-                }
-            }else {
-                if (y == 0 || y == 5) {
-                    return 20;
-                }
-                if (y == 1 || y == 4) {
-                    return 0;
-                }
-                if (y == 2 || y == 3) {
-                    return 30;
-                }
-            }
-            break;
-        }
-        case 4:{
-            if (y == 0 || y == 5) {
-                return 10;
-            }
-            if (y == 1 || y == 4) {
-                return 50;
-            }
-            if (y == 2 || y == 3) {
-                return 25;
-            }
-            break;
-        }
-        case 5:{
-            if (y == 0 || y == 5) {
-                return -20;
-            }else {
-                return 10;
-            }
-            break;
-        }
-        default:
-            break;
-    }
-    return 0;
-}
-
 + (NSInteger)chessValueWithChess:(YZChessPlace *)chess {
     NSInteger x = chess.x;
     NSInteger y = chess.y;
@@ -194,7 +95,7 @@
             if (y == 0 || y == 5) {
                 return -10;
             }else {
-                return 20;
+                return 10;
             }
             break;
         }
@@ -203,10 +104,10 @@
                 return 20;
             }
             if (y == 1 || y == 4) {
-                return 40;
+                return 50;
             }
             if (y == 2 || y == 3) {
-                return 30;
+                return 20;
             }
             break;
         }
@@ -215,10 +116,10 @@
                 return 15;
             }
             if (y == 1 || y == 4) {
-                return 40;
+                return 20;
             }
             if (y == 2 || y == 3) {
-                return 30;
+                return 40;
             }
             break;
         }
@@ -227,10 +128,10 @@
                 return 20;
             }
             if (y == 1 || y == 4) {
-                return 40;
+                return 30;
             }
             if (y == 2 || y == 3) {
-                return 30;
+                return 40;
             }
             break;
         }
@@ -239,10 +140,10 @@
                 return 15;
             }
             if (y == 1 || y == 4) {
-                return 40;
+                return 50;
             }
             if (y == 2 || y == 3) {
-                return 30;
+                return 20;
             }
             break;
         }
@@ -250,7 +151,7 @@
             if (y == 0 || y == 5) {
                 return -10;
             }else {
-                return 20;
+                return 10;
             }
             break;
         }
@@ -293,12 +194,12 @@
     NSInteger atk = 0;
     for (YZChessPlace *p in firstArray) {
         if (chess.tag == p.tag) {
-            atk += 10;
+            atk += 2;
         }
     }
     for (YZChessPlace *p in secondArray) {
         if (chess.tag == p.tag) {
-            atk += 5;
+            atk += 1;
         }
     }
     return atk;
@@ -310,7 +211,7 @@
             if (p.camp == camp) {
                 NSArray *flyArray = [YZFlyManager flyManageWithX:p.x Y:p.y Camp:p.camp placeArray:chessPlace.mutableCopy];
                 if (flyArray.count > 0) {
-                    return flyArray.count * 80;
+                    return flyArray.count * 2;
                 }
             }
         }
@@ -319,7 +220,7 @@
 }
 
 + (NSInteger)angleNeedPerchWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp {
-//    角的三个是对方的，需要卡住中间那个位置
+    NSInteger scroe = 0;
     if (camp == -1) {
         YZChessPlace *p1 = chessPlace[0][0];
         YZChessPlace *p2 = chessPlace[0][1];
@@ -329,11 +230,11 @@
         YZChessPlace *p6 = chessPlace[0][4];
         YZChessPlace *p7 = chessPlace[1][5];
         YZChessPlace *p8 = chessPlace[1][4];
-        if (p1.camp == -camp && p2.camp == -camp && p3.camp == -camp && p4.camp == 0) {
-            return 1;
+        if (p1.camp == camp && p2.camp == camp && p3.camp == camp && p4.camp == -camp) {
+            scroe -= 50;
         }
-        if (p5.camp == -camp && p6.camp == -camp && p7.camp == -camp && p8.camp == 0) {
-            return 2;
+        if (p5.camp == camp && p6.camp == camp && p7.camp == camp && p8.camp == -camp) {
+            scroe -= 50;
         }
     }
     if (camp == 1) {
@@ -345,136 +246,14 @@
         YZChessPlace *p6 = chessPlace[5][4];
         YZChessPlace *p7 = chessPlace[4][5];
         YZChessPlace *p8 = chessPlace[4][4];
-        if (p1.camp == -camp && p2.camp == -camp && p3.camp == -camp && p4.camp == 0) {
-            return 3;
+        if (p1.camp == camp && p2.camp == camp && p3.camp == camp && p4.camp == -camp) {
+            scroe -= 50;
         }
-        if (p5.camp == -camp && p6.camp == -camp && p7.camp == -camp && p8.camp == 0) {
-            return 4;
-        }
-    }
-    return -1;
-}
-
-+ (NSInteger)anglePostionValueWithChessPlace:(NSArray *)chessPlace chess:(YZChessPlace *)chess angle:(NSInteger)angle {
-    NSInteger x = chess.x;
-    NSInteger y = chess.y;
-    switch (x) {
-        case 0:{
-            if (y == 0 || y == 5) {
-                return 10;
-            }else {
-                return 20;
-            }
-            break;
-        }
-        case 1:{
-            if (y == 0 || y == 5) {
-                return 20;
-            }
-            if (y == 1) {
-                if (angle == 1) {
-                    return 100;
-                }else {
-                    return 30;
-                }
-            }
-            if (y == 4) {
-                if (angle == 2) {
-                    return 100;
-                }else {
-                    return 30;
-                }
-            }
-            if (y == 2 || y == 3) {
-                return 30;
-            }
-            break;
-        }
-        case 2:{
-            if (y == 0 || y == 5) {
-                return 20;
-            }
-            if (y == 1 || y == 4) {
-                return 40;
-            }
-            if (y == 2 || y == 3) {
-                return 30;
-            }
-            break;
-        }
-        case 3:{
-            if (y == 0 || y == 5) {
-                return 20;
-            }
-            if (y == 1 || y == 4) {
-                return 40;
-            }
-            if (y == 2 || y == 3) {
-                return 30;
-            }
-            break;
-        }
-        case 4:{
-            if (y == 0 || y == 5) {
-                return 20;
-            }
-            if (y == 1) {
-                if (angle == 3) {
-                    return 100;
-                }else {
-                    return 30;
-                }
-            }
-            if (y == 4) {
-                if (angle == 4) {
-                    return 100;
-                }else {
-                    return 30;
-                }
-            }
-            if (y == 2 || y == 3) {
-                return 30;
-            }
-            break;
-        }
-        case 5:{
-            if (y == 0 || y == 5) {
-                return 10;
-            }else {
-                return 20;
-            }
-            break;
-        }
-        default:
-            break;
-    }
-    return 0;
-}
-
-// TODO:修改
-+ (NSInteger)endingPostionValueWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp {
-    NSInteger score = 0;
-    if (camp == -1) {
-        YZChessPlace *p1 = chessPlace[0][0];
-        YZChessPlace *p2 = chessPlace[0][5];
-        if (p1.camp == camp) {
-            score -= 25;
-        }
-        if (p2.camp == camp) {
-            score -= 25;
+        if (p5.camp == camp && p6.camp == camp && p7.camp == camp && p8.camp == -camp) {
+            scroe -= 50;
         }
     }
-    if (camp == 1) {
-        YZChessPlace *p1 = chessPlace[5][0];
-        YZChessPlace *p2 = chessPlace[5][5];
-        if (p1.camp == camp) {
-            score -= 25;
-        }
-        if (p2.camp == camp) {
-            score -= 25;
-        }
-    }
-    return score;
+    return scroe;
 }
 
 @end

@@ -40,10 +40,9 @@
 
  @param chessPlace 棋盘
  @param camp 阵营
- @param stepNum 步数
  @return 棋位
  */
-+ (NSDictionary *)strategyWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp stepNum:(NSInteger)stepNum;
++ (NSDictionary *)strategyWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp;
 
 
 /**

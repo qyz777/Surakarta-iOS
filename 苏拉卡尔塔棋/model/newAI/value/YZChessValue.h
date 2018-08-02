@@ -33,5 +33,7 @@
 // 占角分数
 + (NSInteger)angleNeedPerchWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp;
 
+// 用来控制开局棋子走向，开局前三步用
++ (BOOL)openingChessShouldGo:(YZChessPlace *)goChess to:(YZChessPlace *)toChess camp:(NSInteger)camp;
 
 @end

@@ -211,7 +211,7 @@
             if (p.camp == camp) {
                 NSArray *flyArray = [YZFlyManager flyManageWithX:p.x Y:p.y Camp:p.camp placeArray:chessPlace.mutableCopy];
                 if (flyArray.count > 0) {
-                    return flyArray.count * 2;
+                    return flyArray.count * 5;
                 }
             }
         }
@@ -254,6 +254,25 @@
         }
     }
     return scroe;
+}
+
++ (BOOL)openingChessShouldGo:(YZChessPlace *)goChess to:(YZChessPlace *)toChess camp:(NSInteger)camp {
+    if (camp == -1) {
+        if (goChess.x == 1 && toChess.x == 2 && toChess.y == 2) {
+            return true;
+        }
+        if (goChess.x == 1 && toChess.x == 2 && toChess.y == 3) {
+            return true;
+        }
+    }else {
+        if (goChess.x == 4 && toChess.x == 3 && toChess.y == 2) {
+            return true;
+        }
+        if (goChess.x == 4 && toChess.x == 3 && toChess.y == 3) {
+            return true;
+        }
+    }
+    return false;
 }
 
 @end

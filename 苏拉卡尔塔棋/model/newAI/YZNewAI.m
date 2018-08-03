@@ -43,13 +43,13 @@
     
 //    先后手策略
     if (self.isFirst) {
-//        NSDictionary *d = [YZAIStrategy precedenceStrategyWithChessPlace:chessPlace camp:self.camp stepNum:self.stepNum];
-//        if (d) {
-//            if (self.stepNum == 4) {
-//                self.isNeedAgainThink = true;
-//            }
-//            return d;
-//        }
+        NSDictionary *d = [YZAIStrategy precedenceStrategyWithChessPlace:chessPlace camp:self.camp stepNum:self.stepNum];
+        if (d) {
+            if (self.stepNum == 4) {
+                self.isNeedAgainThink = true;
+            }
+            return d;
+        }
     }else {
         if (self.stepNum < 3) {
             NSDictionary *d = [YZAIStrategy laterStrategyWithChessPlace:chessPlace camp:self.camp stepNum:self.stepNum];
@@ -76,7 +76,6 @@
     NSInteger defendPosition = [YZAIStrategy defendStrategyWithChessPlace:chessPlace camp:self.camp];
     
 //    拿到全部可以下子的位置，此处全部可以下子的的数组不包含可吃子的位置
-//    NSArray *allStepArray = [self createStepsWithChessPlace:chessPlace camp:self.camp];
     NSArray *walkArray = [self createStepsWithChessPlace:chessPlace camp:self.camp];
     NSArray *flyArray = [self flyStepWithChessPlace:chessPlace camp:self.camp];
     NSMutableArray *allStepArray = [NSMutableArray arrayWithArray:walkArray];
@@ -247,7 +246,6 @@
             }
         }
     }
-//    [self networkPredictionWithChessPlace:chessPlace camp:camp];
     NSInteger value = chessNum * 6 + walkRange * 2 + ATK + chessValue + killScore + angleScore;
     return value;
 }
@@ -305,39 +303,6 @@
         }
     }
     return stepQueen.copy;
-}
-
-- (void)networkPredictionWithChessPlace:(NSArray *)chessPlace camp:(NSInteger)camp {
-    NSMutableArray<NSNumber *> *campArray = [[NSMutableArray alloc]init];
-    for (int i=0; i<6; i++) {
-        if (camp == -1) {
-            [campArray addObject:@(-1)];
-        }else {
-            [campArray addObject:@(1)];
-        }
-    }
-    for (NSArray *array in chessPlace) {
-        for (YZChessPlace *p in array) {
-            if (p.camp == -1) {
-                [campArray addObject:@(-1)];
-            }else if (p.camp == 1) {
-                [campArray addObject:@(1)];
-            }else {
-                [campArray addObject:@(0)];
-            }
-        }
-    }
-    MLMultiArray *feedArray = [[MLMultiArray alloc]initWithShape:@[@42] dataType:MLMultiArrayDataTypeInt32 error:nil];
-    for (int i=0; i<campArray.count; i++) {
-        [feedArray setObject:feedArray[i] atIndexedSubscript:i];
-    }
-    
-    model *network = [model new];
-    NSError *error = nil;
-    modelOutput *networkOutput = [network predictionFromInput:feedArray error:&error];
-    MLMultiArray *shortArray = networkOutput.Prediction;
-    NSNumber *a = shortArray[0];
-    NSLog(@"%@",a);
 }
 
 

@@ -35,10 +35,10 @@
 - (NSDictionary *)stepWithChessPlace:(NSArray *)chessPlace {
     NSInteger chessNum = [YZChessValue chessNumWithChessPlace:chessPlace camp:self.camp];
     NSInteger chessOtherNum = [YZChessValue chessNumWithChessPlace:chessPlace camp:-self.camp];
-    if (chessNum <= 6 || chessOtherNum <= 6) {
+    if (chessNum <= 8 || chessOtherNum <= 8) {
         self.searchDepth = 5;
     }else {
-        self.searchDepth = 3;
+        self.searchDepth = 4;
     }
     
 //    先后手策略
@@ -57,12 +57,6 @@
                 return d;
             }
         }
-    }
-    
-//    常规策略
-    NSDictionary *strategyDict = [YZAIStrategy strategyWithChessPlace:chessPlace camp:self.camp];
-    if (strategyDict) {
-        return strategyDict;
     }
     
 //    个别顶点会被吃子时不能挡住的防守点位
@@ -118,10 +112,10 @@
             }
         }
         
-        if ((toChess.x == 0 && toChess.y == 0) || (toChess.x == 0 && toChess.y == 5) || (toChess.x == 5 && toChess.y == 0) || (toChess.x == 5 && toChess.y == 5)) {
-            chessPlace = [self stepWithChess:toChess toChess:goChess chessPlace:chessPlace];
-            continue;
-        }
+//        if ((toChess.x == 0 && toChess.y == 0) || (toChess.x == 0 && toChess.y == 5) || (toChess.x == 5 && toChess.y == 0) || (toChess.x == 5 && toChess.y == 5)) {
+//            chessPlace = [self stepWithChess:toChess toChess:goChess chessPlace:chessPlace];
+//            continue;
+//        }
         
         NSMutableArray *shortPlace = [self newChessPlace:chessPlace];
         NSInteger value = [self alphaBetaSearchWithDepth:self.searchDepth alpha:-20000 beta:20000 camp:-self.camp chessPlace:shortPlace.copy];
@@ -130,9 +124,9 @@
         value += angleScore * 2;
         
         if ((goChess.x == 0 && goChess.y == 0) || (goChess.x == 0 && goChess.y == 5) || (goChess.x == 5 && goChess.y == 0) || (goChess.x == 5 && goChess.y == 5)) {
-            value += 50;
+            value += 15;
         }
-        if (type == stepTypeFly) {
+        if (type == stepTypeFly && value >= 0) {
             value += 100;
         }
         
@@ -154,7 +148,7 @@
             }
         }
         
-        NSLog(@"%ld,%ld->%ld,%ld value:%ld",goChess.x,goChess.y,toChess.x,toChess.y,value);
+        NSLog(@"%ld:%ld,%ld->%ld,%ld value:%ld",self.stepNum,goChess.x,goChess.y,toChess.x,toChess.y,value);
         
         chessPlace = [self stepWithChess:toChess toChess:goChess chessPlace:chessPlace];
     
@@ -183,9 +177,10 @@
                            chessPlace:(NSArray *)chessPlace
 {
     if (depth <= 0) {
-        return [self valueWithChessPlace:chessPlace camp:camp] - [self valueWithChessPlace:chessPlace camp:-camp];
+        return [self valueWithChessPlace:chessPlace camp:self.camp] - [self valueWithChessPlace:chessPlace camp:-self.camp];
     }
     
+    //    todo:飞行和行走都考虑
     NSArray *allStepArray = [self createFlyStepWithChessPlace:chessPlace camp:camp];
     if (allStepArray.count == 0) {
         allStepArray = [self createStepsWithChessPlace:chessPlace camp:camp];
@@ -246,6 +241,7 @@
             }
         }
     }
+//    在对换棋子的过程中，一方到最终比对方多吃子就代表着这次对换的胜利。所以在评估函数中，计算搜索最终节点的吃子数量是必要的。
     NSInteger value = chessNum * 6 + walkRange * 2 + ATK + chessValue + killScore + angleScore;
     return value;
 }

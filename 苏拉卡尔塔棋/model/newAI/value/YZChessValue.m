@@ -175,6 +175,7 @@
 }
 
 + (NSInteger)chessWalkRangeWithChessPlace:(NSArray *)chessPlace chess:(YZChessPlace *)chess {
+    //    todo:返回不被吃子的数量
     return [YZWalkManager walkEngine:chess.x Y:chess.y previousArray:chessPlace].count;
 }
 
@@ -194,12 +195,12 @@
     NSInteger atk = 0;
     for (YZChessPlace *p in firstArray) {
         if (chess.tag == p.tag) {
-            atk += 2;
+            atk += 1;
         }
     }
     for (YZChessPlace *p in secondArray) {
         if (chess.tag == p.tag) {
-            atk += 1;
+            atk += 2;
         }
     }
     return atk;
